@@ -11,7 +11,8 @@ public enum Command {
     ADD_EVENT_NAME("Название урока"),
     ALL_LESSONS("Покажи все уроки"),
     SAVE_EVENT_NAME("/saveName"),
-    SAVE_EVENT_DESCRIPTION("/saveDesc")
+    SAVE_EVENT_DESCRIPTION("/saveDesc"),
+    BACK_TO_MAIN_MENU("Главное меню")
     ;
     private final String name;
 

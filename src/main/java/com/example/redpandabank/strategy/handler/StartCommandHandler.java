@@ -2,6 +2,8 @@ package com.example.redpandabank.strategy.handler;
 
 import com.example.redpandabank.buttons.main.MainMenuButton;
 import com.example.redpandabank.service.MessageSender;
+import com.vdurmont.emoji.Emoji;
+import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -19,7 +21,7 @@ public class StartCommandHandler implements CommandHandler {
         String response;
         Long userId = update.getMessage().getChatId();
 
-        response = "Привет! Что ты хочешь посмотреть?";
+        response = EmojiParser.parseToUnicode("Привет! :blush:") ;
        SendMessage sendMessage =  SendMessage.builder()
                 .text(response)
                 .chatId(userId)

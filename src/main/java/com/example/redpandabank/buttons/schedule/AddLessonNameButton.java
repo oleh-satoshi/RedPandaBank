@@ -22,12 +22,15 @@ public class AddLessonNameButton {
 
         // Первая строчка клавиатуры
         KeyboardRow firstRow = new KeyboardRow();
+        KeyboardRow secondRow = new KeyboardRow();
 
         // Добавляем кнопки в первую строку клавиатуры
         firstRow.add(ScheduleButtonEnum.ADD_EVENT_NAME.getName());
+        secondRow.add(ScheduleButtonEnum.BACK_TO_MAIN_MENU.getName());
 
         // Добавляем все строки клавиатуры в список
         keyboard.add(firstRow);
+        keyboard.add(secondRow);
 
         // добавляем список в клавиатуру
         replyKeyboardMarkup.setKeyboard(keyboard);

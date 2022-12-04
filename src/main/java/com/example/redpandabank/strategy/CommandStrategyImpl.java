@@ -1,11 +1,13 @@
 package com.example.redpandabank.strategy;
 
+import com.example.redpandabank.buttons.main.BackToMainMenuButton;
 import com.example.redpandabank.buttons.main.MainMenuButton;
 import com.example.redpandabank.buttons.schedule.AddLessonNameButton;
 import com.example.redpandabank.buttons.schedule.EditMenuButton;
 import com.example.redpandabank.buttons.schedule.MenuButton;
 import com.example.redpandabank.model.Command;
 import com.example.redpandabank.service.MessageSender;
+import com.example.redpandabank.strategy.handler.BackToMainMenuCommandHandler;
 import com.example.redpandabank.strategy.handler.CommandHandler;
 import com.example.redpandabank.strategy.handler.scheduleCommand.AddScheduleEventCommandHandler;
 import com.example.redpandabank.strategy.handler.scheduleCommand.EditScheduleCommandHandler;
@@ -25,25 +27,29 @@ public class CommandStrategyImpl implements CommandStrategy {
     private final EditMenuButton editMenuButton;
     private final AddLessonNameButton addLessonNameButton;
     private final MessageSender messageSender;
+    private final BackToMainMenuButton backToMainMenuButton;
 
     public CommandStrategyImpl(MainMenuButton mainMenuButton,
                                MenuButton menuButton,
                                EditMenuButton editMenuButton,
                                AddLessonNameButton addLessonNameButton,
-                               MessageSender messageSender) {
+                               MessageSender messageSender,
+                               BackToMainMenuButton backToMainMenuButton) {
         this.mainMenuButton = mainMenuButton;
         this.menuButton = menuButton;
         this.editMenuButton = editMenuButton;
         this.addLessonNameButton = addLessonNameButton;
         this.messageSender = messageSender;
+        this.backToMainMenuButton = backToMainMenuButton;
 
         strategyMap = Map.of(Command.START.getName(), new StartCommandHandler(this.mainMenuButton),
                 Command.SCHEDULE.getName(), new ShowScheduleMenuCommandHandler(menuButton),
-                Command.EDIT_SCHEDULE.getName(), new EditScheduleCommandHandler(editMenuButton),
+                Command.EDIT_SCHEDULE.getName(), new EditScheduleCommandHandler(editMenuButton, backToMainMenuButton),
                 Command.ALL_LESSONS.getName(), new ShowLessonsListCommandHandler(),
-                Command.SAVE_EVENT_NAME.getName(), new AddScheduleEventCommandHandler(this.messageSender),
-                Command.SAVE_EVENT_DESCRIPTION.getName(), new AddScheduleEventCommandHandler(this.messageSender),
-                Command.ADD_SCHEDULE_EVENT.getName(), new AddScheduleEventCommandHandler(this.messageSender));
+                Command.SAVE_EVENT_NAME.getName(), new AddScheduleEventCommandHandler(this.backToMainMenuButton, this.messageSender),
+                Command.SAVE_EVENT_DESCRIPTION.getName(), new AddScheduleEventCommandHandler(this.backToMainMenuButton, this.messageSender),
+                Command.ADD_SCHEDULE_EVENT.getName(), new AddScheduleEventCommandHandler(this.backToMainMenuButton, this.messageSender),
+                Command.BACK_TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.mainMenuButton));
     }
 
     @Override
@@ -66,7 +72,7 @@ public class CommandStrategyImpl implements CommandStrategy {
             System.out.println(result);
             return  result;
         } else {
-            return commandName;
+            return command;
         }
     }
 
@@ -75,7 +81,7 @@ public class CommandStrategyImpl implements CommandStrategy {
         if (commandDecs.contains(command) && !commandDecs.equals(command)) {
             return command.substring(0, 9);
         } else {
-            return commandDecs;
+            return command;
         }
     }
 }
