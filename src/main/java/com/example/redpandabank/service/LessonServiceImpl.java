@@ -1,15 +1,13 @@
 package com.example.redpandabank.service;
 
-import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.repository.LessonRepository;
+import com.example.redpandabank.model.Lesson;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
-public class LessonServiceImpl implements LessonService{
-    private LessonRepository lessonRepository;
+public class LessonServiceImpl implements LessonService {
+    private final LessonRepository lessonRepository;
 
     public LessonServiceImpl(LessonRepository lessonRepository) {
         this.lessonRepository = lessonRepository;
@@ -25,17 +23,9 @@ public class LessonServiceImpl implements LessonService{
         lessonRepository.deleteById(id);
     }
 
-//    @Override
-//    public List<Lesson> getBeetween(LocalDateTime from, LocalDateTime to) {
-//        return lessonRepository.;
-//    }
-
     @Override
     public Lesson getById(Long id) {
         return lessonRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Can't find lesson by id: " + id));
     }
-
-
-
 }

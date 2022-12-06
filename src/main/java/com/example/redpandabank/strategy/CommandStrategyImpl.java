@@ -1,12 +1,13 @@
 package com.example.redpandabank.strategy;
 
+import com.example.redpandabank.model.Command;
 import com.example.redpandabank.buttons.main.BackToMainMenuButton;
 import com.example.redpandabank.buttons.main.MainMenuButton;
+import com.example.redpandabank.repository.ChildRepository;
+import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.buttons.schedule.AddLessonNameButton;
 import com.example.redpandabank.buttons.schedule.EditMenuButton;
 import com.example.redpandabank.buttons.schedule.MenuButton;
-import com.example.redpandabank.model.Command;
-import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.strategy.handler.BackToMainMenuCommandHandler;
 import com.example.redpandabank.strategy.handler.CommandHandler;
 import com.example.redpandabank.strategy.handler.scheduleCommand.AddScheduleEventCommandHandler;
@@ -16,7 +17,6 @@ import com.example.redpandabank.strategy.handler.StartCommandHandler;
 import com.example.redpandabank.strategy.handler.scheduleCommand.ShowLessonsListCommandHandler;
 import com.example.redpandabank.strategy.handler.scheduleCommand.ShowScheduleMenuCommandHandler;
 import org.springframework.stereotype.Component;
-
 import java.util.Map;
 
 @Component
@@ -28,21 +28,24 @@ public class CommandStrategyImpl implements CommandStrategy {
     private final AddLessonNameButton addLessonNameButton;
     private final MessageSender messageSender;
     private final BackToMainMenuButton backToMainMenuButton;
+    private final ChildRepository childRepository;
 
     public CommandStrategyImpl(MainMenuButton mainMenuButton,
                                MenuButton menuButton,
                                EditMenuButton editMenuButton,
                                AddLessonNameButton addLessonNameButton,
                                MessageSender messageSender,
-                               BackToMainMenuButton backToMainMenuButton) {
+                               BackToMainMenuButton backToMainMenuButton,
+                               ChildRepository childRepository) {
         this.mainMenuButton = mainMenuButton;
         this.menuButton = menuButton;
         this.editMenuButton = editMenuButton;
         this.addLessonNameButton = addLessonNameButton;
         this.messageSender = messageSender;
         this.backToMainMenuButton = backToMainMenuButton;
+        this.childRepository = childRepository;
 
-        strategyMap = Map.of(Command.START.getName(), new StartCommandHandler(this.mainMenuButton),
+        strategyMap = Map.of(Command.START.getName(), new StartCommandHandler(this.mainMenuButton, this.childRepository),
                 Command.SCHEDULE.getName(), new ShowScheduleMenuCommandHandler(menuButton),
                 Command.EDIT_SCHEDULE.getName(), new EditScheduleCommandHandler(editMenuButton, backToMainMenuButton),
                 Command.ALL_LESSONS.getName(), new ShowLessonsListCommandHandler(),
@@ -69,7 +72,6 @@ public class CommandStrategyImpl implements CommandStrategy {
         String commandName = Command.SAVE_EVENT_NAME.getName();
         if (command.contains(commandName) && !commandName.equals(command)) {
             String result = command.substring(0, 9);
-            System.out.println(result);
             return  result;
         } else {
             return command;
@@ -78,7 +80,7 @@ public class CommandStrategyImpl implements CommandStrategy {
 
     private String checkSaveEventDescription(String command) {
         String commandDecs = Command.SAVE_EVENT_DESCRIPTION.getName();
-        if (commandDecs.contains(command) && !commandDecs.equals(command)) {
+        if (command.contains(commandDecs) && !commandDecs.equals(command)) {
             return command.substring(0, 9);
         } else {
             return command;

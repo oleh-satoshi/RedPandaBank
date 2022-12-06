@@ -2,9 +2,6 @@ package com.example.redpandabank.service;
 
 import com.example.redpandabank.model.Lesson;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
 public interface LessonService {
     Lesson create(Lesson category);
 

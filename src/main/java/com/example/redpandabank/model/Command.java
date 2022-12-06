@@ -5,15 +5,15 @@ import lombok.Getter;
 @Getter
 public enum Command {
     START("/start"),
+
     SCHEDULE("Расписание"),
     EDIT_SCHEDULE("Редактировать"),
-    ADD_SCHEDULE_EVENT("Новый урок"),
-    ADD_EVENT_NAME("Название урока"),
     ALL_LESSONS("Покажи все уроки"),
+    ADD_SCHEDULE_EVENT("Новый урок"),
     SAVE_EVENT_NAME("/saveName"),
     SAVE_EVENT_DESCRIPTION("/saveDesc"),
-    BACK_TO_MAIN_MENU("Главное меню")
-    ;
+    SAVE_EVENT_DURATION("/saveDuration"),
+    BACK_TO_MAIN_MENU("Главное меню");
     private final String name;
 
     Command(String name) {

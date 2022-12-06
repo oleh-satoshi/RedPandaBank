@@ -30,40 +30,68 @@ public class AddScheduleEventCommandHandler implements CommandHandler {
         String response;
         Long userId = update.getMessage().getChatId();
         String text = update.getMessage().getText();;
-
         if (text.contains(Command.ADD_SCHEDULE_EVENT.getName())) {
-            response = "Напиши название урока, то что ты напишешь будет отображаться в расписании как название урока!";
+            response = "Давай назовем новый урок, как ты говоришь он у тебя записан в дневнике? "
+                    + "Я сохраню это название в базу данных и буду тебе его показывать каждый раз "
+                    + "когда ты захочешь посмотреть расписание! \n"
+                    + "Я тебе прислал название команды выше этого сообщения, можешь просто скопировать и отправить "
+                    + "эту команду написав рядом название урока"
+                    + " , например: \n\n <i>/saveName Maтематика</i> \n\n или вот еще: \n <i>/saveName Лесоведенье</i>";
+            messageSender.sendToTelegram(userId, Command.SAVE_EVENT_NAME.getName());
             return SendMessage.builder()
                     .chatId(userId)
-//                    .replyMarkup(backToMainMenuButton.getBackToMainMenuButton())
-                    .text(response)
-                    .build();
-        } else if (text.contains(Command.SAVE_EVENT_NAME.getName())) {
-            title = text.substring(4);
-            System.out.println(title);
-            response = "Отлично! Мы сохранили название урока, можем идти дальше!\n "
-                    + "Если для тебя это новый урок и его название тебе ничего говорит, "
-                    + "то можешь добавить описание урока, например: \n"
-                    + "<i>\"На этом уроке мы учим историю Мира\"</i>";
-            return new SendMessage().builder()
-                    .text(response)
-//                    .replyMarkup(backToMainMenuButton.getBackToMainMenuButton())
                     .parseMode("HTML")
-                    .chatId(userId)
-                    .build();
-        } else if (text.contains(Command.SAVE_EVENT_DESCRIPTION.getName())) {
-            description = text.substring(9);
-            System.out.println(description);
-            response = "Отлично! Мы сохранили описание урока, можем идти дальше!\n "
-                    + "Если для тебя это новый урок и его название тебе ничего говорит, "
-                    + "то можешь добавить описание урока, например: \n"
-                    + "<i>\"На этом уроке мы учим историю Мира\"</i>";
-            return SendMessage.builder()
-                    .text(response)
                     .replyMarkup(backToMainMenuButton.getBackToMainMenuButton())
-                    .parseMode("HTML")
-                    .chatId(userId)
+                    .text(response)
                     .build();
+            }
+        if (text.contains(Command.SAVE_EVENT_NAME.getName())) {
+            if (text.trim().equals(Command.SAVE_EVENT_NAME.getName())) {
+                response = "Хорошо, команду ты отправил, пол дела сделано, "
+                        + "сейчас давай добавим к ней название урока и должно получится так:   "
+                        + "/saveName Бамбукоматика";
+                messageSender.sendToTelegram(userId, response);
+            } else {
+                title = text.substring(4);
+                response = "Давай пушистый пять! Мы сохранили название урока и можем идти дальше!\n\n"
+                        + "Помню в школе иногда добавляли новые уроки и по названию я не всегда мог понять "
+                        + "что именно мы тут учим, тогда я просто записывал в блокноте что мы делали на этом уроке "
+                        + ", например: \n\n"
+                        + "<i>\"Мы смотрели на бамбук под микроскопом и я еще не совсем понял что это за урок\"</i>\n\n"
+                        + "<i>\"А тут мы читали рассказ \"Два совенка и ручеек\" скорее всего это лесная литература\"\n\n</i>"
+                        + "Я также прислал тебе команду выше скопируй ее и допиши к ней описание урока, "
+                        + "это конечно если ты хочешь, должно получиться так: \n\n"
+                        + "<i>/saveDesc урок ХРВЛ - расшифровывается как Химические Реакции В Лесу - "
+                        + "нам рассказывали почему осенние листики на полу вредные </i>\n\n"
+                        + "правда полезно же!?";
+                messageSender.sendToTelegram(userId, Command.SAVE_EVENT_DESCRIPTION.getName());
+                return new SendMessage().builder()
+                        .text(response)
+                        .replyMarkup(backToMainMenuButton.getBackToMainMenuButton())
+                        .parseMode("HTML")
+                        .chatId(userId)
+                        .build();
+            }
+        } else if (text.contains(Command.SAVE_EVENT_DESCRIPTION.getName())) {
+            if (text.trim().equals(Command.SAVE_EVENT_DESCRIPTION.getName())) {
+                //TODO сделай отправку через MessageSender
+                response = "Ага, все таки пустое описание мне отправил, ну тогда держи анекдот: "
+                        + "Идёт слон в штанах. Навстречу муравей: - Слон, сними штаны. - Зачем? - "
+                        + "Ну, сними, сними. Слон снял штаны. Муравей долго ползал по ним и говорит: "
+                        + "- Надевай, слон, это не мои, мои с кармашками были.";
+                messageSender.sendToTelegram(userId, response);
+            } else {
+                description = text.substring(9);
+                System.out.println(description);
+                response = "А мне уже успели рассказать что ты трудолюбец, а тут я уже и сам вижу!\n"
+                        + "Описание сохранили!";
+                return SendMessage.builder()
+                        .text(response)
+                        .replyMarkup(backToMainMenuButton.getBackToMainMenuButton())
+                        .parseMode("HTML")
+                        .chatId(userId)
+                        .build();
+            }
         }
         return null;
     }
