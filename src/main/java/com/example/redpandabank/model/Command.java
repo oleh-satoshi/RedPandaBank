@@ -13,7 +13,9 @@ public enum Command {
     SAVE_EVENT_NAME("/saveName"),
     SAVE_EVENT_DESCRIPTION("/saveDesc"),
     SAVE_EVENT_DURATION("/saveDuration"),
-    BACK_TO_MAIN_MENU("Главное меню");
+    SAVE_EVENT_SCHEDULE("/saveSchedule"),
+    BACK_TO_MAIN_MENU("Главное меню"),
+    SAVE_EVENT_MONDAY("/scheduleMonday");
     private final String name;
 
     Command(String name) {

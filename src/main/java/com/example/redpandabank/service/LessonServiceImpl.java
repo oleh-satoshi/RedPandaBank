@@ -24,6 +24,11 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
+    public Long getLessonsQuantity() {
+        return lessonRepository.getLessonsQuantity();
+    }
+
+    @Override
     public Lesson getById(Long id) {
         return lessonRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Can't find lesson by id: " + id));

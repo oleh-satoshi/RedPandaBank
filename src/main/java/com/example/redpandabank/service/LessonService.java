@@ -9,5 +9,5 @@ public interface LessonService {
 
     void deleteById(Long id);
 
-//    List<Lesson> getBeetween(LocalDateTime from, LocalDateTime to);
+    Long getLessonsQuantity();
 }

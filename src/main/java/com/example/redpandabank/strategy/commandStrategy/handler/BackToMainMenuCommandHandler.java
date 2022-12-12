@@ -1,14 +1,12 @@
-package com.example.redpandabank.strategy.handler;
+package com.example.redpandabank.strategy.commandStrategy.handler;
 
-import com.example.redpandabank.buttons.main.BackToMainMenuButton;
 import com.example.redpandabank.buttons.main.MainMenuButton;
-import com.example.redpandabank.buttons.main.MainMenuButtonEnum;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
-public class BackToMainMenuCommandHandler implements CommandHandler {
+public class BackToMainMenuCommandHandler implements CommandHandler<Update> {
     private final MainMenuButton mainMenuButton;
 
     public BackToMainMenuCommandHandler(MainMenuButton mainMenuButton) {

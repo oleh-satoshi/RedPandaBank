@@ -1,14 +1,14 @@
-package com.example.redpandabank.strategy.handler.scheduleCommand;
+package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
 import com.example.redpandabank.buttons.main.BackToMainMenuButton;
 import com.example.redpandabank.buttons.schedule.EditMenuButton;
-import com.example.redpandabank.strategy.handler.CommandHandler;
+import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
-public class EditScheduleCommandHandler implements CommandHandler {
+public class EditScheduleCommandHandler implements CommandHandler<Update> {
     private final EditMenuButton editMenuButton;
     private final BackToMainMenuButton backToMainMenuButton;
 

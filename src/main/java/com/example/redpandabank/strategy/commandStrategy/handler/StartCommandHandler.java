@@ -1,5 +1,6 @@
-package com.example.redpandabank.strategy.handler;
+package com.example.redpandabank.strategy.commandStrategy.handler;
 
+import com.example.redpandabank.buttons.main.BackToMainMenuButton;
 import com.example.redpandabank.buttons.main.MainMenuButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.repository.ChildRepository;
@@ -10,16 +11,19 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.math.BigDecimal;
 
 @Service
-public class StartCommandHandler implements CommandHandler {
+public class StartCommandHandler implements CommandHandler<Update> {
     private final Integer ZERO = 0;
     private final MainMenuButton mainMenuButton;
     private final ChildRepository childRepository;
     private boolean isInitialize;
+    private final BackToMainMenuButton backToMainMenuButton;
 
     public StartCommandHandler(MainMenuButton mainMenuButton,
-                               ChildRepository childRepository) {
+                               ChildRepository childRepository,
+                               BackToMainMenuButton backToMainMenuButton) {
         this.mainMenuButton = mainMenuButton;
         this.childRepository = childRepository;
+        this.backToMainMenuButton = backToMainMenuButton;
     }
 
     @Override
@@ -60,6 +64,7 @@ public class StartCommandHandler implements CommandHandler {
             response = EmojiParser.parseToUnicode("Эй! Мы же с тобой познакомились уже! Ты что забыл? :sweat_smile:");
             return SendMessage.builder()
                     .text(response)
+                    .replyMarkup(backToMainMenuButton.getBackToMainMenuButton())
                     .parseMode("HTML")
                     .chatId(userId)
                     .build();

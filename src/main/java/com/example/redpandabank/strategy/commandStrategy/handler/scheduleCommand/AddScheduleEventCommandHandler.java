@@ -1,35 +1,50 @@
-package com.example.redpandabank.strategy.handler.scheduleCommand;
+package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
+import com.example.redpandabank.buttons.Inline;
 import com.example.redpandabank.buttons.main.BackToMainMenuButton;
 import com.example.redpandabank.model.Command;
 import com.example.redpandabank.model.Lesson;
+import com.example.redpandabank.model.LessonTime;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.LessonTimeService;
 import com.example.redpandabank.service.MessageSender;
-import com.example.redpandabank.strategy.handler.CommandHandler;
+import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
-import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
-public class AddScheduleEventCommandHandler implements CommandHandler {
+public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
+    private final LessonService lessonService;
+    private final LessonTimeService lessonTimeService;
     private final BackToMainMenuButton backToMainMenuButton;
     private final MessageSender messageSender;
-    private String title;
-    private String description;
-    private LocalDateTime startTime;
+    private final Inline inline;
 
-    public AddScheduleEventCommandHandler(BackToMainMenuButton backToMainMenuButton,
-                                          MessageSender messageSender) {
+    public AddScheduleEventCommandHandler(LessonService lessonService,
+                                          LessonTimeService lessonTimeService,
+                                          BackToMainMenuButton backToMainMenuButton,
+                                          MessageSender messageSender,
+                                          Inline inline) {
+        this.lessonService = lessonService;
+        this.lessonTimeService = lessonTimeService;
         this.backToMainMenuButton = backToMainMenuButton;
         this.messageSender = messageSender;
+        this.inline = inline;
     }
 
     @Override
     public SendMessage handle(Update update) {
+        String title;
+        String description;
+        LocalTime startTime;
+        Integer duration;
         String response;
         Long userId = update.getMessage().getChatId();
-        String text = update.getMessage().getText();;
+        String text = update.getMessage().getText();
         if (text.contains(Command.ADD_SCHEDULE_EVENT.getName())) {
             response = "Давай назовем новый урок, как ты говоришь он у тебя записан в дневнике? "
                     + "Я сохраню это название в базу данных и буду тебе его показывать каждый раз "
@@ -52,7 +67,11 @@ public class AddScheduleEventCommandHandler implements CommandHandler {
                         + "/saveName Бамбукоматика";
                 messageSender.sendToTelegram(userId, response);
             } else {
-                title = text.substring(4);
+                title = text.substring(9).trim();
+                Lesson lesson = new Lesson();
+                lesson.setChildId(userId);
+                lesson.setTitle(title);
+                lessonService.create(lesson);
                 response = "Давай пушистый пять! Мы сохранили название урока и можем идти дальше!\n\n"
                         + "Помню в школе иногда добавляли новые уроки и по названию я не всегда мог понять "
                         + "что именно мы тут учим, тогда я просто записывал в блокноте что мы делали на этом уроке "
@@ -82,9 +101,13 @@ public class AddScheduleEventCommandHandler implements CommandHandler {
                 messageSender.sendToTelegram(userId, response);
             } else {
                 description = text.substring(9);
-                System.out.println(description);
+                Long id = lessonService.getLessonsQuantity();
+                Lesson lesson = lessonService.getById(id);
+                lesson.setDescription(description);
+                lessonService.create(lesson);
                 response = "А мне уже успели рассказать что ты трудолюбец, а тут я уже и сам вижу!\n"
-                        + "Описание сохранили!";
+                        + "Описание сохранили! Теперь мне нужно знать сколько длится урок, должно быть так: \n" +
+                        Command.SAVE_EVENT_DURATION.getName()  + " 45";
                 return SendMessage.builder()
                         .text(response)
                         .replyMarkup(backToMainMenuButton.getBackToMainMenuButton())
@@ -92,15 +115,66 @@ public class AddScheduleEventCommandHandler implements CommandHandler {
                         .chatId(userId)
                         .build();
             }
+        } else if (text.contains(Command.SAVE_EVENT_DURATION.getName())) {
+            if (text.trim().equals(Command.SAVE_EVENT_DURATION.getName())) {
+                response = "Обязательно добавь длительность, это нужно что бы я знал когда присылать тебе напоминания!";
+                return SendMessage.builder()
+                        .text(response)
+                        .parseMode("HTML")
+                        .chatId(userId)
+                        .build();
+            } else {
+                duration = Integer.valueOf(text.substring(13).trim());
+                Long id = lessonService.getLessonsQuantity();
+                Lesson lesson = lessonService.getById(id);
+                lesson.setDuration(duration);
+                lessonService.create(lesson);
+                response = "Длительность урока сохранили! Теперь давай передадим время начала урока, должно быть так:\n" +
+                        Command.SAVE_EVENT_SCHEDULE.getName() + " 10:45";
+                return SendMessage.builder()
+                        .text(response)
+                        .parseMode("HTML")
+                        .chatId(userId)
+                        .build();
+            }
+        } else if (text.contains(Command.SAVE_EVENT_SCHEDULE.getName())) {
+            if (text.trim().equals(Command.SAVE_EVENT_SCHEDULE.getName())) {
+                response = "Обязательно напиши время начала урока," +
+                        " это нужно что бы я знал когда присылать тебе напоминания!";
+                return SendMessage.builder()
+                        .text(response)
+                        .parseMode("HTML")
+                        .chatId(userId)
+                        .build();
+            } else {
+                startTime = parseTime(text);
+                LessonTime lessonTime = new LessonTime();
+                lessonTime.setLessonsStartTime(startTime);
+
+                Long id = lessonService.getLessonsQuantity();
+                Lesson lesson = lessonService.getById(id);
+                lessonTime.setLessonsFinishTime(startTime.plusMinutes(lesson.getDuration()));
+                lessonTime.setNotificationsTime(startTime.plusMinutes(lesson.getDuration()).plusMinutes(1));
+                lessonTimeService.create(lessonTime);
+                List<LessonTime> list = new ArrayList();
+                list.add(lessonTime);
+                lesson.setLessonsTime(list  );
+                lessonService.create(lesson);
+                response = "Время начала урока сохранили! Теперь выбери в какой день будет этот урок";
+                return new SendMessage().builder()
+                        .chatId(userId)
+                        .text(response)
+                        .replyMarkup(inline.getInline())
+                        .parseMode("HTML")
+                        .build();
+                }
+
         }
         return null;
     }
 
-    private Lesson createLesson(String title, String description, LocalDateTime startTime) {
-        Lesson lesson = new Lesson();
-        lesson.setTitle(title);
-        lesson.setDescription(description);
-        lesson.setLessonsStartTime(startTime);
-        return lesson;
+    private LocalTime parseTime(String text) {
+        String[] response = text.substring(13).trim().split(":");
+        return LocalTime.of(Integer.valueOf(response[0]), Integer.valueOf(response[1]));
     }
 }
