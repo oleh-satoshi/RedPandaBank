@@ -1,39 +1,34 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
-import com.example.redpandabank.buttons.Inline;
+import com.example.redpandabank.buttons.schedule.InlineAddEventByWeekday;
 import com.example.redpandabank.buttons.main.BackToMainMenuButton;
 import com.example.redpandabank.model.Command;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.model.LessonTime;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.LessonTimeService;
 import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
     private final LessonService lessonService;
-    private final LessonTimeService lessonTimeService;
     private final BackToMainMenuButton backToMainMenuButton;
     private final MessageSender messageSender;
-    private final Inline inline;
+    private final InlineAddEventByWeekday inlineAddEventByWeekday;
+
 
     public AddScheduleEventCommandHandler(LessonService lessonService,
-                                          LessonTimeService lessonTimeService,
                                           BackToMainMenuButton backToMainMenuButton,
                                           MessageSender messageSender,
-                                          Inline inline) {
+                                          InlineAddEventByWeekday inlineAddEventByWeekday) {
         this.lessonService = lessonService;
-        this.lessonTimeService = lessonTimeService;
         this.backToMainMenuButton = backToMainMenuButton;
         this.messageSender = messageSender;
-        this.inline = inline;
+        this.inlineAddEventByWeekday = inlineAddEventByWeekday;
     }
 
     @Override
@@ -100,10 +95,11 @@ public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
                         + "- Надевай, слон, это не мои, мои с кармашками были.";
                 messageSender.sendToTelegram(userId, response);
             } else {
-                description = text.substring(9);
-                Long id = lessonService.getLessonsQuantity();
-                Lesson lesson = lessonService.getById(id);
+                description = text.substring(9).trim();
+                List<Lesson> lessons = lessonService.findAllByChildId(userId);
+                Lesson  lesson = (lessons.size() == 1) ? lessons.get(0) : lessons.get(lessons.size() - 1);
                 lesson.setDescription(description);
+                lesson.setId(lesson.getId());
                 lessonService.create(lesson);
                 response = "А мне уже успели рассказать что ты трудолюбец, а тут я уже и сам вижу!\n"
                         + "Описание сохранили! Теперь мне нужно знать сколько длится урок, должно быть так: \n" +
@@ -125,9 +121,11 @@ public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
                         .build();
             } else {
                 duration = Integer.valueOf(text.substring(13).trim());
-                Long id = lessonService.getLessonsQuantity();
-                Lesson lesson = lessonService.getById(id);
+                List<Lesson> lessons = lessonService.findAllByChildId(userId);
+                Lesson  lesson = (lessons.size() == 1) ? lessons.get(0) : lessons.get(lessons.size() - 1);
                 lesson.setDuration(duration);
+                //чекни айди тут
+                lesson.setId(lesson.getId());
                 lessonService.create(lesson);
                 response = "Длительность урока сохранили! Теперь давай передадим время начала урока, должно быть так:\n" +
                         Command.SAVE_EVENT_SCHEDULE.getName() + " 10:45";
@@ -148,23 +146,17 @@ public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
                         .build();
             } else {
                 startTime = parseTime(text);
-                LessonTime lessonTime = new LessonTime();
-                lessonTime.setLessonsStartTime(startTime);
-
-                Long id = lessonService.getLessonsQuantity();
-                Lesson lesson = lessonService.getById(id);
-                lessonTime.setLessonsFinishTime(startTime.plusMinutes(lesson.getDuration()));
-                lessonTime.setNotificationsTime(startTime.plusMinutes(lesson.getDuration()).plusMinutes(1));
-                lessonTimeService.create(lessonTime);
-                List<LessonTime> list = new ArrayList();
-                list.add(lessonTime);
-                lesson.setLessonsTime(list  );
+                List<Lesson> lessons = lessonService.findAllByChildId(userId);
+                Lesson  lesson = (lessons.size() == 1) ? lessons.get(0) : lessons.get(lessons.size() - 1);
+                lesson.setLessonsStartTime(startTime);
                 lessonService.create(lesson);
+
+                //чекни айди тут
                 response = "Время начала урока сохранили! Теперь выбери в какой день будет этот урок";
                 return new SendMessage().builder()
                         .chatId(userId)
                         .text(response)
-                        .replyMarkup(inline.getInline())
+                        .replyMarkup(inlineAddEventByWeekday.getInline())
                         .parseMode("HTML")
                         .build();
                 }

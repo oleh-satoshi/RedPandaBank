@@ -2,27 +2,24 @@ package com.example.redpandabank.strategy.commandStrategy.handler;
 
 import com.example.redpandabank.buttons.main.BackToMainMenuButton;
 import com.example.redpandabank.buttons.main.MainMenuButton;
-import com.example.redpandabank.model.Child;
-import com.example.redpandabank.repository.ChildRepository;
+import com.example.redpandabank.service.ChildService;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import java.math.BigDecimal;
 
 @Service
 public class StartCommandHandler implements CommandHandler<Update> {
-    private final Integer ZERO = 0;
     private final MainMenuButton mainMenuButton;
-    private final ChildRepository childRepository;
+    private final ChildService childService;
     private boolean isInitialize;
     private final BackToMainMenuButton backToMainMenuButton;
 
     public StartCommandHandler(MainMenuButton mainMenuButton,
-                               ChildRepository childRepository,
+                               ChildService childService,
                                BackToMainMenuButton backToMainMenuButton) {
         this.mainMenuButton = mainMenuButton;
-        this.childRepository = childRepository;
+        this.childService = childService;
         this.backToMainMenuButton = backToMainMenuButton;
     }
 
@@ -30,9 +27,9 @@ public class StartCommandHandler implements CommandHandler<Update> {
     public SendMessage handle(Update update) {
         String response;
         Long userId = update.getMessage().getChatId();
-        isInitialize = childRepository.findById(userId).isPresent();
+        isInitialize = childService.findById(userId);
         if (!isInitialize) {
-            Child child = createChild(userId);
+            childService.createChild(userId);
             response = EmojiParser.parseToUnicode("\"Гаааррр!\" :grinning: "
                     + "Это значит \"Привет!\" на языке панд :stuck_out_tongue: \n\n"
                     + "В нашем :deciduous_tree: лесу меня знают все, такая уж у меня работа :card_index_dividers: \n\n"
@@ -71,12 +68,4 @@ public class StartCommandHandler implements CommandHandler<Update> {
         }
     }
 
-        private Child createChild(Long userId) {
-            Child child = new Child();
-            child.setUserId(userId);
-            child.setCount(BigDecimal.ZERO);
-            child.setRating(ZERO);
-            childRepository.save(child);
-            return child;
-        }
 }

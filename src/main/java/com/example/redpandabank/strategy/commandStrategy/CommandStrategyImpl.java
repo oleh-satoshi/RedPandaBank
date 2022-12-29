@@ -1,16 +1,12 @@
 package com.example.redpandabank.strategy.commandStrategy;
 
-import com.example.redpandabank.buttons.Inline;
+import com.example.redpandabank.buttons.schedule.*;
 import com.example.redpandabank.model.Command;
 import com.example.redpandabank.buttons.main.BackToMainMenuButton;
 import com.example.redpandabank.buttons.main.MainMenuButton;
-import com.example.redpandabank.repository.ChildRepository;
+import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.LessonTimeService;
 import com.example.redpandabank.service.MessageSender;
-import com.example.redpandabank.buttons.schedule.AddLessonNameButton;
-import com.example.redpandabank.buttons.schedule.EditMenuButton;
-import com.example.redpandabank.buttons.schedule.MenuButton;
 import com.example.redpandabank.strategy.commandStrategy.handler.BackToMainMenuCommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.*;
@@ -30,10 +26,10 @@ public class CommandStrategyImpl implements CommandStrategy {
     private final AddLessonNameButton addLessonNameButton;
     private final MessageSender messageSender;
     private final BackToMainMenuButton backToMainMenuButton;
-    private final ChildRepository childRepository;
     private final LessonService lessonService;
-    private final LessonTimeService lessonTimeService;
-    private final Inline inline;
+    private final InlineAddEventByWeekday inlineAddEventByWeekday;
+    private final ChildService childService;
+    private final InlineShowAllDays inlineShowAllDays;
 
     public CommandStrategyImpl(MainMenuButton mainMenuButton,
                                MenuButton menuButton,
@@ -41,49 +37,34 @@ public class CommandStrategyImpl implements CommandStrategy {
                                AddLessonNameButton addLessonNameButton,
                                MessageSender messageSender,
                                BackToMainMenuButton backToMainMenuButton,
-                               ChildRepository childRepository,
                                LessonService lessonService,
-                               LessonTimeService lessonTimeService, Inline inline) {
+                               InlineAddEventByWeekday inlineAddEventByWeekday,
+                               ChildService childService,
+                               InlineShowAllDays inlineShowAllDays) {
         this.mainMenuButton = mainMenuButton;
         this.menuButton = menuButton;
         this.editMenuButton = editMenuButton;
         this.addLessonNameButton = addLessonNameButton;
         this.messageSender = messageSender;
         this.backToMainMenuButton = backToMainMenuButton;
-        this.childRepository = childRepository;
+        this.childService = childService;
         this.lessonService = lessonService;
-        this.lessonTimeService = lessonTimeService;
-        this.inline = inline;
+        this.inlineAddEventByWeekday = inlineAddEventByWeekday;
+        this.inlineShowAllDays = inlineShowAllDays;
 
         strategyMap = new HashMap<>();
-        strategyMap.put(Command.START.getName(), new StartCommandHandler(this.mainMenuButton, this.childRepository, backToMainMenuButton));
+        strategyMap.put(Command.START.getName(), new StartCommandHandler(this.mainMenuButton, childService, backToMainMenuButton));
         strategyMap.put(Command.SCHEDULE.getName(), new ShowScheduleMenuCommandHandler(menuButton));
         strategyMap.put(Command.EDIT_SCHEDULE.getName(), new EditScheduleCommandHandler(editMenuButton, backToMainMenuButton));
-        strategyMap.put(Command.ALL_LESSONS.getName(), new ShowLessonsListCommandHandler());
-        strategyMap.put(Command.SAVE_EVENT_NAME.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender, this.inline));
-        strategyMap.put(Command.SAVE_EVENT_DESCRIPTION.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender, this.inline));
-        strategyMap.put(Command.ADD_SCHEDULE_EVENT.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender, this.inline));
-        strategyMap.put(Command.SAVE_EVENT_DURATION.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender, this.inline));
-        strategyMap.put(Command.SAVE_EVENT_SCHEDULE.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender, this.inline));
-        strategyMap.put(Command.SAVE_EVENT_MONDAY.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender, this.inline));
+        strategyMap.put(Command.SAVE_EVENT_NAME.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
+        strategyMap.put(Command.SAVE_EVENT_DESCRIPTION.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
+        strategyMap.put(Command.ADD_SCHEDULE_EVENT.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
+        strategyMap.put(Command.SAVE_EVENT_DURATION.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
+        strategyMap.put(Command.SAVE_EVENT_SCHEDULE.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
+        strategyMap.put(Command.SAVE_EVENT_MONDAY.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
         strategyMap.put(Command.BACK_TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.mainMenuButton));
+        strategyMap.put(Command.CHOOSE_EVENT_BY_DAY.getName(), new ChooseEventByDayCommandHandler(this.lessonService, this.inlineShowAllDays));
     }
-
-
-//                Command.START.getName(), new StartCommandHandler(this.mainMenuButton, this.childRepository),
-//                Command.SCHEDULE.getName(), new ShowScheduleMenuCommandHandler(menuButton),
-//                Command.EDIT_SCHEDULE.getName(), new EditScheduleCommandHandler(editMenuButton, backToMainMenuButton),
-//                Command.ALL_LESSONS.getName(), new ShowLessonsListCommandHandler(),
-//
-//                Command.SAVE_EVENT_NAME.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender),
-//                Command.SAVE_EVENT_DESCRIPTION.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender),
-//                Command.ADD_SCHEDULE_EVENT.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender),
-//                Command.SAVE_EVENT_DURATION.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender),
-//                //Command.SAVE_EVENT_MONDAY.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender),
-//
-//                Command.SAVE_EVENT_SCHEDULE.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.lessonTimeService, this.backToMainMenuButton, this.messageSender),
-//                Command.BACK_TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.mainMenuButton));
-//    }
 
     @Override
     public CommandHandler get(String command) {

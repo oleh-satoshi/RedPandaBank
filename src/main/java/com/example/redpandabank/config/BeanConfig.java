@@ -1,4 +1,4 @@
-package com.example.redpandabank.buttons.config;
+package com.example.redpandabank.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;

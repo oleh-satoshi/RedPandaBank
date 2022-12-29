@@ -17,6 +17,6 @@ public class BotController {
 
     @PostMapping("/")
     public BotApiMethod onUpdateReceivedParent(@RequestBody Update update) {
-        return telegramBot.onWebhookUpdateReceived(update);
+        return telegramBot. onWebhookUpdateReceived(update);
     }
 }

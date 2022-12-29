@@ -1,5 +1,0 @@
-databaseChangeLog:
-#    - include:
-#        file: /db/changelog/changes/create-movie-character-seq.sql
-    - include:
-        file: /db/changelog/changes/create-children-table.sql

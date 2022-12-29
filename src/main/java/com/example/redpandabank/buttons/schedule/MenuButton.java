@@ -25,7 +25,7 @@ public class MenuButton {
 
         // Добавляем кнопки в первую строку клавиатуры
         firstRow.add(ScheduleButtonEnum.EDIT.getName());
-        firstRow.add("Кнопка");
+        firstRow.add(ScheduleButtonEnum.SHOW_EVENT_MONDAY.getName());
         secondRow.add(ScheduleButtonEnum.BACK_TO_MAIN_MENU.getName());
 
         // Добавляем все строки клавиатуры в список
