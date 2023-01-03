@@ -16,13 +16,10 @@ public interface LessonService {
 
     List<Lesson> findAllByChildId(Long childId);
 
-    String getStringLessonByDay(Long userId, String day);
+    String getLessonsByDayAndChildId(Long userId, String day);
 
     Lesson getById(Long id);
 
-
-//    List<Lesson> getByUserId(Long userId);
-
-//    List<Lesson> getLessonsByDay(Long userId, String day);
+    Boolean findAllByTitle(String title, Long childId);
 
 }

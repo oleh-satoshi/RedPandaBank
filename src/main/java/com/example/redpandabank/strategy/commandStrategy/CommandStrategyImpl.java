@@ -5,6 +5,7 @@ import com.example.redpandabank.model.Command;
 import com.example.redpandabank.buttons.main.BackToMainMenuButton;
 import com.example.redpandabank.buttons.main.MainMenuButton;
 import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.strategy.commandStrategy.handler.BackToMainMenuCommandHandler;
@@ -30,6 +31,7 @@ public class CommandStrategyImpl implements CommandStrategy {
     private final InlineAddEventByWeekday inlineAddEventByWeekday;
     private final ChildService childService;
     private final InlineShowAllDays inlineShowAllDays;
+    private final LessonScheduleService lessonScheduleService;
 
     public CommandStrategyImpl(MainMenuButton mainMenuButton,
                                MenuButton menuButton,
@@ -40,7 +42,8 @@ public class CommandStrategyImpl implements CommandStrategy {
                                LessonService lessonService,
                                InlineAddEventByWeekday inlineAddEventByWeekday,
                                ChildService childService,
-                               InlineShowAllDays inlineShowAllDays) {
+                               InlineShowAllDays inlineShowAllDays,
+                               LessonScheduleService lessonScheduleService) {
         this.mainMenuButton = mainMenuButton;
         this.menuButton = menuButton;
         this.editMenuButton = editMenuButton;
@@ -51,17 +54,18 @@ public class CommandStrategyImpl implements CommandStrategy {
         this.lessonService = lessonService;
         this.inlineAddEventByWeekday = inlineAddEventByWeekday;
         this.inlineShowAllDays = inlineShowAllDays;
+        this.lessonScheduleService = lessonScheduleService;
 
         strategyMap = new HashMap<>();
         strategyMap.put(Command.START.getName(), new StartCommandHandler(this.mainMenuButton, childService, backToMainMenuButton));
         strategyMap.put(Command.SCHEDULE.getName(), new ShowScheduleMenuCommandHandler(menuButton));
         strategyMap.put(Command.EDIT_SCHEDULE.getName(), new EditScheduleCommandHandler(editMenuButton, backToMainMenuButton));
-        strategyMap.put(Command.SAVE_EVENT_NAME.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
-        strategyMap.put(Command.SAVE_EVENT_DESCRIPTION.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
-        strategyMap.put(Command.ADD_SCHEDULE_EVENT.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
-        strategyMap.put(Command.SAVE_EVENT_DURATION.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
-        strategyMap.put(Command.SAVE_EVENT_SCHEDULE.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
-        strategyMap.put(Command.SAVE_EVENT_MONDAY.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday));
+        strategyMap.put(Command.SAVE_EVENT_NAME.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday, this.lessonScheduleService));
+        strategyMap.put(Command.SAVE_EVENT_TEACHER_NAME.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday, this.lessonScheduleService));
+        strategyMap.put(Command.ADD_SCHEDULE_EVENT.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday, this.lessonScheduleService));
+        strategyMap.put(Command.SAVE_EVENT_DURATION.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday, this.lessonScheduleService));
+        strategyMap.put(Command.SAVE_EVENT_SCHEDULE.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday, this.lessonScheduleService));
+        strategyMap.put(Command.SAVE_EVENT_MONDAY.getName(), new AddScheduleEventCommandHandler(this.lessonService, this.backToMainMenuButton, this.messageSender, this.inlineAddEventByWeekday, this.lessonScheduleService));
         strategyMap.put(Command.BACK_TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.mainMenuButton));
         strategyMap.put(Command.CHOOSE_EVENT_BY_DAY.getName(), new ChooseEventByDayCommandHandler(this.lessonService, this.inlineShowAllDays));
     }
@@ -69,7 +73,7 @@ public class CommandStrategyImpl implements CommandStrategy {
     @Override
     public CommandHandler get(String command) {
         command = checkSaveEventName(command);
-        command = checkSaveEventDescription(command);
+        command = checkSaveEventTeacher(command);
         command = checkSaveEventDuration(command);
         command = checkSaveEventSchedule(command);
         CommandHandler commandHandler = strategyMap.get(command);
@@ -91,30 +95,27 @@ public class CommandStrategyImpl implements CommandStrategy {
         }
     }
 
-    private String checkSaveEventDescription(String command) {
-        String commandDecs = Command.SAVE_EVENT_DESCRIPTION.getName();
-        if (command.contains(commandDecs) && !commandDecs.equals(command)) {
-            return command.substring(0, 9);
-        } else {
-            return command;
+    private String checkSaveEventTeacher(String command) {
+        String commandTeacher = Command.SAVE_EVENT_TEACHER_NAME.getName();
+        if (command.contains(commandTeacher) && !commandTeacher.equals(command)) {
+            return command.substring(0, commandTeacher.length());
         }
+        return command;
     }
 
     private String checkSaveEventDuration(String command) {
         String commandDuration = Command.SAVE_EVENT_DURATION.getName();
         if (command.contains(commandDuration) && !commandDuration.equals(command)) {
-            return command.substring(0, 13);
-        } else {
-            return command;
+            return command.substring(0, commandDuration.length());
         }
+        return command;
     }
 
     private String checkSaveEventSchedule(String command) {
         String commandSchedule = Command.SAVE_EVENT_SCHEDULE.getName();
         if (command.contains(commandSchedule) && !commandSchedule.equals(command)) {
-            return command.substring(0, 13);
-        } else {
-            return command;
+            return command.substring(0, commandSchedule.length());
         }
+        return command;
     }
 }

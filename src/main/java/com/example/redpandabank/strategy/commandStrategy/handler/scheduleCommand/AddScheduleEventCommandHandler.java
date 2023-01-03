@@ -4,6 +4,8 @@ import com.example.redpandabank.buttons.schedule.InlineAddEventByWeekday;
 import com.example.redpandabank.buttons.main.BackToMainMenuButton;
 import com.example.redpandabank.model.Command;
 import com.example.redpandabank.model.Lesson;
+import com.example.redpandabank.model.LessonSchedule;
+import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
@@ -19,22 +21,25 @@ public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
     private final BackToMainMenuButton backToMainMenuButton;
     private final MessageSender messageSender;
     private final InlineAddEventByWeekday inlineAddEventByWeekday;
+    private final LessonScheduleService lessonScheduleService;
 
 
     public AddScheduleEventCommandHandler(LessonService lessonService,
                                           BackToMainMenuButton backToMainMenuButton,
                                           MessageSender messageSender,
-                                          InlineAddEventByWeekday inlineAddEventByWeekday) {
+                                          InlineAddEventByWeekday inlineAddEventByWeekday,
+                                          LessonScheduleService lessonScheduleService) {
         this.lessonService = lessonService;
         this.backToMainMenuButton = backToMainMenuButton;
         this.messageSender = messageSender;
         this.inlineAddEventByWeekday = inlineAddEventByWeekday;
+        this.lessonScheduleService = lessonScheduleService;
     }
 
     @Override
     public SendMessage handle(Update update) {
         String title;
-        String description;
+        String teacher;
         LocalTime startTime;
         Integer duration;
         String response;
@@ -47,7 +52,7 @@ public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
                     + "Я тебе прислал название команды выше этого сообщения, можешь просто скопировать и отправить "
                     + "эту команду написав рядом название урока"
                     + " , например: \n\n <i>/saveName Maтематика</i> \n\n или вот еще: \n <i>/saveName Лесоведенье</i>";
-            messageSender.sendToTelegram(userId, Command.SAVE_EVENT_NAME.getName());
+           // messageSender.sendToTelegram(userId, Command.SAVE_EVENT_NAME.getName());
             return SendMessage.builder()
                     .chatId(userId)
                     .parseMode("HTML")
@@ -60,25 +65,29 @@ public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
                 response = "Хорошо, команду ты отправил, пол дела сделано, "
                         + "сейчас давай добавим к ней название урока и должно получится так:   "
                         + "/saveName Бамбукоматика";
-                messageSender.sendToTelegram(userId, response);
+               // messageSender.sendToTelegram(userId, response);
             } else {
-                title = text.substring(9).trim();
-                Lesson lesson = new Lesson();
-                lesson.setChildId(userId);
-                lesson.setTitle(title);
-                lessonService.create(lesson);
-                response = "Давай пушистый пять! Мы сохранили название урока и можем идти дальше!\n\n"
-                        + "Помню в школе иногда добавляли новые уроки и по названию я не всегда мог понять "
-                        + "что именно мы тут учим, тогда я просто записывал в блокноте что мы делали на этом уроке "
-                        + ", например: \n\n"
-                        + "<i>\"Мы смотрели на бамбук под микроскопом и я еще не совсем понял что это за урок\"</i>\n\n"
-                        + "<i>\"А тут мы читали рассказ \"Два совенка и ручеек\" скорее всего это лесная литература\"\n\n</i>"
-                        + "Я также прислал тебе команду выше скопируй ее и допиши к ней описание урока, "
-                        + "это конечно если ты хочешь, должно получиться так: \n\n"
-                        + "<i>/saveDesc урок ХРВЛ - расшифровывается как Химические Реакции В Лесу - "
-                        + "нам рассказывали почему осенние листики на полу вредные </i>\n\n"
-                        + "правда полезно же!?";
-                messageSender.sendToTelegram(userId, Command.SAVE_EVENT_DESCRIPTION.getName());
+                title = text.substring(Command.SAVE_EVENT_NAME.getName().length()).trim();
+
+                if (!lessonService.findAllByTitle(title, userId)) {
+                    Lesson lesson = new Lesson();
+                    lesson.setChildId(userId);
+                    lessonService.create(lesson);
+                    List<Lesson> lessons = lessonService.findAllByChildId(userId);
+                    Lesson  lesson1 = (lessons.size() == 1) ? lessons.get(0) : lessons.get(lessons.size() - 1);
+                    lesson1.setTitle(title);
+                    lessonService.create(lesson1);
+                } else {
+                    response = "Такой урок уже сохраняли!";
+                    return new SendMessage().builder()
+                            .text(response)
+                            .replyMarkup(backToMainMenuButton.getBackToMainMenuButton())
+                            .parseMode("HTML")
+                            .chatId(userId)
+                            .build();
+                }
+                response = "А как зовут твоего учителя?";
+                //messageSender.sendToTelegram(userId, Command.SAVE_EVENT_TEACHER_NAME.getName());
                 return new SendMessage().builder()
                         .text(response)
                         .replyMarkup(backToMainMenuButton.getBackToMainMenuButton())
@@ -86,20 +95,17 @@ public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
                         .chatId(userId)
                         .build();
             }
-        } else if (text.contains(Command.SAVE_EVENT_DESCRIPTION.getName())) {
-            if (text.trim().equals(Command.SAVE_EVENT_DESCRIPTION.getName())) {
+        } else if (text.contains(Command.SAVE_EVENT_TEACHER_NAME.getName())) {
+            if (text.trim().equals(Command.SAVE_EVENT_TEACHER_NAME.getName())) {
                 //TODO сделай отправку через MessageSender
-                response = "Ага, все таки пустое описание мне отправил, ну тогда держи анекдот: "
-                        + "Идёт слон в штанах. Навстречу муравей: - Слон, сними штаны. - Зачем? - "
-                        + "Ну, сними, сними. Слон снял штаны. Муравей долго ползал по ним и говорит: "
-                        + "- Надевай, слон, это не мои, мои с кармашками были.";
-                messageSender.sendToTelegram(userId, response);
+                response = "Давай напишем имя учителя!";
+                //dfsmessageSender.sendToTelegram(userId, response);
             } else {
-                description = text.substring(9).trim();
+                teacher = text.substring(Command.SAVE_EVENT_TEACHER_NAME.getName().length()).trim();
                 List<Lesson> lessons = lessonService.findAllByChildId(userId);
                 Lesson  lesson = (lessons.size() == 1) ? lessons.get(0) : lessons.get(lessons.size() - 1);
-                lesson.setDescription(description);
-                lesson.setId(lesson.getId());
+                lesson.setTeacher(teacher);
+                lesson.setLessonId(lesson.getLessonId());
                 lessonService.create(lesson);
                 response = "А мне уже успели рассказать что ты трудолюбец, а тут я уже и сам вижу!\n"
                         + "Описание сохранили! Теперь мне нужно знать сколько длится урок, должно быть так: \n" +
@@ -125,7 +131,7 @@ public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
                 Lesson  lesson = (lessons.size() == 1) ? lessons.get(0) : lessons.get(lessons.size() - 1);
                 lesson.setDuration(duration);
                 //чекни айди тут
-                lesson.setId(lesson.getId());
+                lesson.setLessonId(lesson.getLessonId());
                 lessonService.create(lesson);
                 response = "Длительность урока сохранили! Теперь давай передадим время начала урока, должно быть так:\n" +
                         Command.SAVE_EVENT_SCHEDULE.getName() + " 10:45";
@@ -146,9 +152,13 @@ public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
                         .build();
             } else {
                 startTime = parseTime(text);
+                LessonSchedule lessonSchedule = new LessonSchedule();
+                lessonSchedule.setChildId(userId);
+                lessonSchedule.setLessonStartTime(startTime);
                 List<Lesson> lessons = lessonService.findAllByChildId(userId);
                 Lesson  lesson = (lessons.size() == 1) ? lessons.get(0) : lessons.get(lessons.size() - 1);
-                lesson.setLessonsStartTime(startTime);
+                lesson.getLessonSchedules().add(lessonSchedule);
+                lessonScheduleService.create(lessonSchedule);
                 lessonService.create(lesson);
 
                 //чекни айди тут
@@ -166,6 +176,7 @@ public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
     }
 
     private LocalTime parseTime(String text) {
+        //TODO пропусти регексом, что бы проходили только цифры
         String[] response = text.substring(13).trim().split(":");
         return LocalTime.of(Integer.valueOf(response[0]), Integer.valueOf(response[1]));
     }

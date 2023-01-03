@@ -28,7 +28,6 @@ public class TelegramBot {
             commandMessage = update.getCallbackQuery().getData();
             InlineHandler inlineHandler = inlineStrategy.get(commandMessage);
             return inlineHandler.handle(update);
-           
         }
         return null;
     }

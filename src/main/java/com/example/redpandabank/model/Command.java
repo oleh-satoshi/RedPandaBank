@@ -9,7 +9,7 @@ public enum Command {
     EDIT_SCHEDULE("Редактировать"),
     ADD_SCHEDULE_EVENT("Новый урок"),
     SAVE_EVENT_NAME("/saveName"),
-    SAVE_EVENT_DESCRIPTION("/saveDesc"),
+    SAVE_EVENT_TEACHER_NAME("/saveTeacher"),
     SAVE_EVENT_DURATION("/saveDuration"),
     SAVE_EVENT_SCHEDULE("/saveSchedule"),
     BACK_TO_MAIN_MENU("Главное меню"),

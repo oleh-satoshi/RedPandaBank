@@ -2,6 +2,7 @@ package com.example.redpandabank.strategy.commandStrategy.handler.scheduleComman
 
 import com.example.redpandabank.buttons.schedule.InlineShowAllDays;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -18,6 +19,7 @@ public class ChooseEventByDayCommandHandler implements CommandHandler<Update> {
 
     @Override
     public BotApiMethod<?> handle(Update update) {
+
         return new SendMessage().builder()
                 .chatId(update.getMessage().getChatId())
                 .text("На какой день недели тебе интересно посмотреть уроки?")

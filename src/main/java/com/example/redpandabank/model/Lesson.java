@@ -3,7 +3,6 @@ package com.example.redpandabank.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalTime;
 import java.util.List;
 
 @Data
@@ -12,12 +11,12 @@ import java.util.List;
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "lesson_id")
-    private Long id;
+    private Long lessonId;
     private String title;
-    private String description;
+    private String teacher;
     private Integer duration;
     private Long childId;
-    private LocalTime lessonsStartTime;
-    private String weekDay;
+    @OneToMany
+    @JoinColumn(name = "lesson_id", nullable = false)
+    private List<LessonSchedule> lessonSchedules;
 }
