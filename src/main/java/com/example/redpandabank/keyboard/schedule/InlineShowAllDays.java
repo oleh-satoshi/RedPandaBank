@@ -1,4 +1,4 @@
-package com.example.redpandabank.buttons.schedule;
+package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.model.WeekDay;
 import org.springframework.stereotype.Component;
@@ -53,7 +53,6 @@ public class InlineShowAllDays {
         List<List<InlineKeyboardButton>> firstRowList = new ArrayList<>();
 
         firstRowList.add(firstListButtons);
-//        firstRowList.add(secondListButtons);
         keyboardMarkup.setKeyboard(firstRowList);
         return keyboardMarkup;
     }

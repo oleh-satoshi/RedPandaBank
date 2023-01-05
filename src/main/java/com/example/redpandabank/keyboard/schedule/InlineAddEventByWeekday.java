@@ -1,4 +1,4 @@
-package com.example.redpandabank.buttons.schedule;
+package com.example.redpandabank.keyboard.schedule;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;

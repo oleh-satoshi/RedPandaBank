@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
-import com.example.redpandabank.buttons.main.BackToMainMenuButton;
-import com.example.redpandabank.buttons.schedule.EditMenuButton;
+import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
+import com.example.redpandabank.keyboard.schedule.EditMenuButton;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -21,7 +21,6 @@ public class EditScheduleCommandHandler implements CommandHandler<Update> {
     @Override
     public SendMessage handle(Update update) {
         Long userId = update.getMessage().getChatId();
-
         String response = "Это меню редактирования";
         SendMessage sendMessage =  SendMessage.builder()
                 .text(response)

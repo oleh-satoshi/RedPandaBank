@@ -1,6 +1,6 @@
-package com.example.redpandabank.buttons.main;
+package com.example.redpandabank.keyboard.main;
 
-import com.example.redpandabank.buttons.schedule.ScheduleButtonEnum;
+import com.example.redpandabank.keyboard.schedule.ScheduleButtonEnum;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;

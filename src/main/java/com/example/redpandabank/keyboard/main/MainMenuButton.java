@@ -1,4 +1,4 @@
-package com.example.redpandabank.buttons.schedule;
+package com.example.redpandabank.keyboard.main;
 
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class MenuButton {
-    public ReplyKeyboardMarkup getScheduleMenuButton() {
+public class MainMenuButton {
+    public ReplyKeyboardMarkup getMainMenuButton() {
         // Создаем клавиуатуру
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         replyKeyboardMarkup.setSelective(false);
@@ -21,16 +21,13 @@ public class MenuButton {
 
         // Первая строчка клавиатуры
         KeyboardRow firstRow = new KeyboardRow();
-        KeyboardRow secondRow = new KeyboardRow();
 
         // Добавляем кнопки в первую строку клавиатуры
-        firstRow.add(ScheduleButtonEnum.EDIT.getName());
-        firstRow.add(ScheduleButtonEnum.SHOW_EVENT_MONDAY.getName());
-        secondRow.add(ScheduleButtonEnum.BACK_TO_MAIN_MENU.getName());
+        firstRow.add(MainMenuButtonEnum.SCHEDULE.getName());
+        firstRow.add("Кнопка");
 
         // Добавляем все строки клавиатуры в список
         keyboard.add(firstRow);
-        keyboard.add(secondRow);
 
         // добавляем список в клавиатуру
         replyKeyboardMarkup.setKeyboard(keyboard);

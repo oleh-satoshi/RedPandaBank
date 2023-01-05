@@ -22,4 +22,11 @@ public interface LessonService {
 
     Boolean findAllByTitle(String title, Long childId);
 
+    Lesson findLessonByTitleAndChildId(Long childId, String title);
+
+    String getDuration(Integer duration);
+
+    String getStartTime(Lesson lesson);
+
+    String getFinishTime(Lesson lesson);
 }

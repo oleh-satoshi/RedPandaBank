@@ -1,4 +1,4 @@
-package com.example.redpandabank.buttons.main;
+package com.example.redpandabank.keyboard.main;
 
 import com.example.redpandabank.model.Command;
 

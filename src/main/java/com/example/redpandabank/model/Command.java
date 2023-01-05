@@ -6,8 +6,8 @@ import lombok.Getter;
 public enum Command {
     START("/start"),
     SCHEDULE("Расписание"),
-    EDIT_SCHEDULE("Редактировать"),
-    ADD_SCHEDULE_EVENT("Новый урок"),
+    EDIT_SCHEDULE("Редактировать расписание"),
+    ADD_SCHEDULE_EVENT("Добавить новый урок"),
     SAVE_EVENT_NAME("/saveName"),
     SAVE_EVENT_TEACHER_NAME("/saveTeacher"),
     SAVE_EVENT_DURATION("/saveDuration"),
@@ -20,7 +20,9 @@ public enum Command {
     SAVE_EVENT_FRIDAY("/scheduleFriday"),
     SAVE_EVENT_SATURDAY("/scheduleSaturday"),
     SAVE_EVENT_SUNDAY("/scheduleSunday"),
-    CHOOSE_EVENT_BY_DAY("Выбрать день");
+    CHOOSE_EVENT_BY_DAY("Выбрать день"),
+    DELETE_EVENT("Удалить урок"),
+    DELETE_EVENT_BY_ID("/deleteEventById");
     private final String name;
 
     Command(String name) {

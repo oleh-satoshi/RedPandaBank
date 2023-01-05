@@ -1,4 +1,4 @@
-package com.example.redpandabank.buttons.schedule;
+package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.model.Command;
 
@@ -7,7 +7,9 @@ public enum ScheduleButtonEnum {
     CREATE_EVENT(Command.ADD_SCHEDULE_EVENT.getName()),
     ADD_EVENT_NAME(Command.ADD_SCHEDULE_EVENT.getName()),
     BACK_TO_MAIN_MENU(Command.BACK_TO_MAIN_MENU.getName()),
-    SHOW_EVENT_MONDAY(Command.CHOOSE_EVENT_BY_DAY.getName());
+    CHOOSE_EVENT_BY_DAY(Command.CHOOSE_EVENT_BY_DAY.getName()),
+    DELETE_EVENT(Command.DELETE_EVENT.getName()),
+    DELETE_EVENT_BY_ID(Command.DELETE_EVENT_BY_ID.getName());
 
     private String name;
 

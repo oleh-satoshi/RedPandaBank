@@ -12,10 +12,13 @@ import java.util.stream.Collectors;
 @Service
 public class LessonServiceImpl implements LessonService {
     private final LessonRepository lessonRepository;
-    private final static String NEXT_LINE = "%0A";
+    private final MessageSender messageSender;
+    public final static String NEXT_LINE = "%0A";
 
-    public LessonServiceImpl(LessonRepository lessonRepository) {
+    public LessonServiceImpl(LessonRepository lessonRepository,
+                             MessageSender messageSender) {
         this.lessonRepository = lessonRepository;
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -51,17 +54,16 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public String getLessonsByDayAndChildId(Long childId, String day) {
         List<Lesson> lessonByDay = findLessonByChildIdAndWeekDay(childId, day);
-        MessageSender messageSender = new MessageSenderImpl();
-        messageSender.sendMessageToTelegram(childId,  EmojiParser.parseToUnicode(":calendar: " + "<b>" + day + "</b>"));
+        new MessageSenderImpl().sendMessageToTelegram(childId,  EmojiParser.parseToUnicode(":calendar: " + "<b>" + day + "</b>"));
         for (Lesson lesson : lessonByDay) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(":school_satchel: " + "<b>" + lesson.getTitle() + "</b>" + NEXT_LINE)
-                            .append(":mortar_board: " + "<i>" + lesson.getTeacher() + "</i>" + NEXT_LINE)
+                            .append(":mortar_board: Учитель: " + "<i>" + lesson.getTeacher() + "</i>" + NEXT_LINE)
                             .append(":bell: " + "Начинается в " + getStartTime(lesson))
-                            .append(":clock8: " + "Идет " + "<b>" + lesson.getDuration() + "</b>" + getDuration(lesson.getDuration()) + NEXT_LINE)
-                            .append(":checkered_flag: " + "Конец в " + getFinishTime(lesson));
+                            .append(":checkered_flag: " + "Закончится в  " + getFinishTime(lesson))
+                            .append(":clock8: " + "Идет " + "<b>" + lesson.getDuration() + "</b>" + getDuration(lesson.getDuration()) + NEXT_LINE);
 
-            messageSender.sendMessageToTelegram(childId, EmojiParser.parseToUnicode(stringBuilder.toString() ));
+            new MessageSenderImpl().sendMessageToTelegram(childId, EmojiParser.parseToUnicode(stringBuilder.toString() ));
         }
 
         return day;
@@ -74,20 +76,28 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public Boolean findAllByTitle(String title, Long childId) {
-        return lessonRepository.findAllByTitleAndChildId(title, childId).contains(title);
+    public Boolean  findAllByTitle(String title, Long childId) {
+        return lessonRepository.findAllByTitleAndChildId(title, childId).isEmpty();
+    }
+
+    @Override
+    public Lesson findLessonByTitleAndChildId(Long childId, String title) {
+        return lessonRepository.findLessonByTitleAndChildId(childId, title);
     }
 
 //    @Override
-//    public List<Lesson> getByUserId(Long userId) {
-//        return lessonRepository.findAllByChildId(userId);
+//    public List<Lesson> findAllByTitle(Long childId, String title) {
+//        return lessonRepository.findAllByChildIdAndTitle(childId, title);
 //    }
 
-    private String getDuration(Integer duration) {
+    @Override
+    public String getDuration(Integer duration) {
         return duration > 60 ? " часа" : " минут";
     }
 
-    private String getStartTime(Lesson lesson) {
+    @Override
+
+    public String getStartTime(Lesson lesson) {
         StringBuilder stringBuilder = new StringBuilder();
         List<String> stringList = lesson.getLessonSchedules().stream()
                 .map(lessonSchedule -> "<b>" + lessonSchedule.getLessonStartTime() + "</b>")
@@ -96,7 +106,8 @@ public class LessonServiceImpl implements LessonService {
         return string.substring(1, string.length() - 1) + NEXT_LINE;
     }
 
-    private String getFinishTime(Lesson lesson) {
+    @Override
+    public String getFinishTime(Lesson lesson) {
         StringBuilder stringBuilder = new StringBuilder();
         List<String> stringList = lesson.getLessonSchedules().stream()
                 .map(lessonSchedule -> "<b>" + lessonSchedule.getLessonStartTime().plusMinutes(lesson.getDuration()) + "</b>")

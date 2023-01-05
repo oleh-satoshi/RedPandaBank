@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.commandStrategy.handler;
 
-import com.example.redpandabank.buttons.main.BackToMainMenuButton;
-import com.example.redpandabank.buttons.main.MainMenuButton;
+import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
+import com.example.redpandabank.keyboard.main.MainMenuButton;
 import com.example.redpandabank.service.ChildService;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Service;

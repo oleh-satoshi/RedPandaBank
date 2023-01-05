@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
-import com.example.redpandabank.buttons.schedule.InlineAddEventByWeekday;
-import com.example.redpandabank.buttons.main.BackToMainMenuButton;
+import com.example.redpandabank.keyboard.schedule.InlineAddEventByWeekday;
+import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
 import com.example.redpandabank.model.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
@@ -69,7 +69,7 @@ public class AddScheduleEventCommandHandler implements CommandHandler<Update> {
             } else {
                 title = text.substring(Command.SAVE_EVENT_NAME.getName().length()).trim();
 
-                if (!lessonService.findAllByTitle(title, userId)) {
+                if (lessonService.findAllByTitle(title, userId)) {
                     Lesson lesson = new Lesson();
                     lesson.setChildId(userId);
                     lessonService.create(lesson);
