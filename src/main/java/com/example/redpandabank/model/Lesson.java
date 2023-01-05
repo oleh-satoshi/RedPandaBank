@@ -2,10 +2,13 @@ package com.example.redpandabank.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "lessons")
 public class Lesson {
@@ -19,4 +22,15 @@ public class Lesson {
     @OneToMany
     @JoinColumn(name = "lesson_id", nullable = false)
     private List<LessonSchedule> lessonSchedules;
+
+    @Override
+    public String toString() {
+        return "Lesson{" +
+                "lessonId=" + lessonId +
+                ", title='" + title + '\'' +
+                ", teacher='" + teacher + '\'' +
+                ", duration=" + duration +
+                ", childId=" + childId +
+                '}';
+    }
 }
