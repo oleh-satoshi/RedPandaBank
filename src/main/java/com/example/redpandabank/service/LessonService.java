@@ -29,4 +29,6 @@ public interface LessonService {
     String getStartTime(Lesson lesson);
 
     String getFinishTime(Lesson lesson);
+
+    String getInfoLessonbyId(Long id);
 }

@@ -9,7 +9,8 @@ public enum ScheduleButtonEnum {
     BACK_TO_MAIN_MENU(Command.BACK_TO_MAIN_MENU.getName()),
     CHOOSE_EVENT_BY_DAY(Command.CHOOSE_EVENT_BY_DAY.getName()),
     DELETE_EVENT(Command.DELETE_EVENT.getName()),
-    DELETE_EVENT_BY_ID(Command.DELETE_EVENT_BY_ID.getName());
+    DELETE_EVENT_BY_ID(Command.DELETE_EVENT_BY_ID.getName()),
+    EDIT_EVENT(Command.EDIT_EVENT.getName());
 
     private String name;
 

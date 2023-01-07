@@ -1,10 +1,11 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilder;
+import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
 import com.example.redpandabank.model.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -29,12 +30,15 @@ public class DeleteEventCommandHandler implements CommandHandler<Update> {
         Long childId = update.getMessage().getChatId();
         List<Lesson> allByTitle = lessonService.findAllByChildId(childId);
 
-        InlineKeyboardMarkupBuilder inlineKeyboardMarkupBuilder = InlineKeyboardMarkupBuilder.create(childId)
-                .setText("Внимательно посмотри на название урока и выбери тот который ты хочешь удалить..")
+        InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilderImpl = InlineKeyboardMarkupBuilderImpl.create()
                 .row();
         for (Lesson lesson : allByTitle) {
-            inlineKeyboardMarkupBuilder.button(lesson.getTitle(), Command.DELETE_EVENT_BY_ID.getName() + ":" + lesson.getLessonId()).endRow();
+            inlineKeyboardMarkupBuilderImpl.button(lesson.getTitle(),
+                    Command.DELETE_EVENT_BY_ID.getName() + ":" + lesson.getLessonId()).endRow();
         }
-         return inlineKeyboardMarkupBuilder.build();
+        SendMessage sendMessage = new MessageSenderImpl().sendMessageWithInline(childId,
+                "Внимательно посмотри на название урока и выбери тот который ты хочешь удалить..",
+                inlineKeyboardMarkupBuilderImpl.build());
+        return sendMessage;
     }
 }

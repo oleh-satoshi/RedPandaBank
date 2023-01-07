@@ -1,17 +1,19 @@
 package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
 
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilder;
+import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Command;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSender;
+import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,6 +25,7 @@ public class InlineDeleteEvent implements InlineHandler<Update> {
     final MessageSender messageSender;
     final static String YES = "yes";
     final static String SEPARATOR = ":";
+    private SendMessage sendMessage;
     Long childId;
 
     public InlineDeleteEvent(LessonScheduleService lessonScheduleService,
@@ -41,17 +44,17 @@ public class InlineDeleteEvent implements InlineHandler<Update> {
         String[] split = title.split(SEPARATOR);
         if (split[1].equals(YES)) {
             lesson = lessonService.getById(Long.valueOf(split[2]));
-            List<LessonSchedule> allByLessonId = lessonScheduleService.findAllByLessonId(Long.valueOf(split[2]));
-            for (LessonSchedule schedule : allByLessonId) {
-                lessonScheduleService.delete(schedule);
+            if (!lesson.getIsDeleted()) {
+                lesson.setIsDeleted(true);
+                lessonService.create(lesson);
+                new MessageSenderImpl().sendMessageViaURL(childId, "Урок " + lesson.getTitle() + " удален!");
+                new MessageSenderImpl().sendMessageViaURL(childId, "<strike>" + lessonService.getInfoLessonbyId(lesson.getLessonId()) + "</strike>");
+            } else {
+                new MessageSenderImpl().sendMessageViaURL(childId, "Урок " + lesson.getTitle() + " уже был удален!");
             }
-            lessonService.deleteById(lesson.getLessonId());
-            messageSender.sendMessageToTelegram(childId, "<strike>" + getLessonInfo(lesson) + "</strike>");
-            messageSender.sendMessageToTelegram(childId, "Урок" + lesson.getTitle() + " удален!");
-        } else if (split[0].equals(Command.DELETE_EVENT_BY_ID.getName()) && split[1] != YES ) {
+        } else if (split[0].equals(Command.DELETE_EVENT_BY_ID.getName())) {
             lesson = lessonService.getById(Long.valueOf(split[1]));
-            return InlineKeyboardMarkupBuilder.create(childId)
-                    .setText("Ты точно хочешь удалить этот урок?\n\n" + getLessonInfo(lesson))
+            InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                     .row()
                     .button("Да, я хочу удалить " + lesson.getTitle(), Command.DELETE_EVENT_BY_ID.getName()
                             + SEPARATOR + YES + SEPARATOR + lesson.getLessonId())
@@ -60,8 +63,11 @@ public class InlineDeleteEvent implements InlineHandler<Update> {
                     .button("Нет, верника меня к списку уроков", Command.DELETE_EVENT.getName())
                     .endRow()
                     .build();
+            return new MessageSenderImpl().sendMessageWithInline(childId,
+                    "Ты точно хочешь удалить этот урок?\n\n" + getLessonInfo(lesson),
+                            inlineKeyboardMarkup);
         }
-        return null;
+        return sendMessage;
     }
 
     private String getLessonInfo(Lesson lesson) {
@@ -73,9 +79,6 @@ public class InlineDeleteEvent implements InlineHandler<Update> {
                 .append(":clock8: " + "Идет " + "<b>" + lesson.getDuration() + "</b>" +
                         lessonService.getDuration(lesson.getDuration()) + "\n");
 
-/*
-        messageSender.sendMessageToTelegram(childId, EmojiParser.parseToUnicode(stringBuilder.toString()));
-*/
         return EmojiParser.parseToUnicode(stringBuilder.toString());
     }
 

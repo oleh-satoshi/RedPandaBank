@@ -5,14 +5,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 public interface KeyboardMarkupBuilder {
 
-    void setChatId(Long chatId);
-
-    KeyboardMarkupBuilder setText(String text);
-
     KeyboardMarkupBuilder row();
 
     KeyboardMarkupBuilder endRow();
-
-    SendMessage build();
 
 }

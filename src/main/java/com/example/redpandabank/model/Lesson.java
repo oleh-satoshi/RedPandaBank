@@ -22,6 +22,7 @@ public class Lesson {
     @OneToMany
     @JoinColumn(name = "lesson_id", nullable = false)
     private List<LessonSchedule> lessonSchedules;
+    private Boolean isDeleted;
 
     @Override
     public String toString() {

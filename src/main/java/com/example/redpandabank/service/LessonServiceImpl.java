@@ -54,16 +54,9 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public String getLessonsByDayAndChildId(Long childId, String day) {
         List<Lesson> lessonByDay = findLessonByChildIdAndWeekDay(childId, day);
-        new MessageSenderImpl().sendMessageToTelegram(childId,  EmojiParser.parseToUnicode(":calendar: " + "<b>" + day + "</b>"));
+        new MessageSenderImpl().sendMessageViaURL(childId,  EmojiParser.parseToUnicode(":calendar: " + "<b>" + day + "</b>"));
         for (Lesson lesson : lessonByDay) {
-            StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append(":school_satchel: " + "<b>" + lesson.getTitle() + "</b>" + NEXT_LINE)
-                            .append(":mortar_board: Учитель: " + "<i>" + lesson.getTeacher() + "</i>" + NEXT_LINE)
-                            .append(":bell: " + "Начинается в " + getStartTime(lesson))
-                            .append(":checkered_flag: " + "Закончится в  " + getFinishTime(lesson))
-                            .append(":clock8: " + "Идет " + "<b>" + lesson.getDuration() + "</b>" + getDuration(lesson.getDuration()) + NEXT_LINE);
-
-            new MessageSenderImpl().sendMessageToTelegram(childId, EmojiParser.parseToUnicode(stringBuilder.toString() ));
+            new MessageSenderImpl().sendMessageViaURL(childId, parseLessonForUrl(lesson));
         }
 
         return day;
@@ -84,11 +77,6 @@ public class LessonServiceImpl implements LessonService {
     public Lesson findLessonByTitleAndChildId(Long childId, String title) {
         return lessonRepository.findLessonByTitleAndChildId(childId, title);
     }
-
-//    @Override
-//    public List<Lesson> findAllByTitle(Long childId, String title) {
-//        return lessonRepository.findAllByChildIdAndTitle(childId, title);
-//    }
 
     @Override
     public String getDuration(Integer duration) {
@@ -114,6 +102,21 @@ public class LessonServiceImpl implements LessonService {
                 .collect(Collectors.toList());
         String string = stringBuilder.append(stringList).toString();
         return string.substring(1, string.length() - 1) + NEXT_LINE;
+    }
+
+    @Override
+    public String getInfoLessonbyId(Long id) {
+        return parseLessonForUrl(getById(id));
+    }
+
+    private String parseLessonForUrl(Lesson lesson) {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(":school_satchel: " + "<b>" + lesson.getTitle() + "</b>" + NEXT_LINE)
+                .append(":mortar_board: Учитель: " + "<i>" + lesson.getTeacher() + "</i>" + NEXT_LINE)
+                .append(":bell: " + "Начинается в " + getStartTime(lesson))
+                .append(":checkered_flag: " + "Закончится в  " + getFinishTime(lesson))
+                .append(":clock8: " + "Идет " + "<b>" + lesson.getDuration() + "</b>" + getDuration(lesson.getDuration()) + NEXT_LINE);
+        return EmojiParser.parseToUnicode( stringBuilder.toString());
     }
 
 

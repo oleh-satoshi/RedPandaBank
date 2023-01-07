@@ -4,8 +4,9 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 public interface MessageSender {
-    void sendMessageToTelegram(Long chatId, String content);
+    void sendMessageViaURL(Long chatId, String content);
 
-    SendMessage sendMessageToTelegramWithInline(Long chatId, String content, InlineKeyboardMarkup keyboardMarkup);
+    SendMessage sendMessageWithInline(Long chatId, String content, InlineKeyboardMarkup keyboardMarkup);
 
+    SendMessage sendMessageViaMessageSender(Long chatId, String content);
 }

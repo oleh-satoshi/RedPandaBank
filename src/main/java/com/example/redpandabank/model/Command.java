@@ -20,9 +20,10 @@ public enum Command {
     SAVE_EVENT_FRIDAY("/scheduleFriday"),
     SAVE_EVENT_SATURDAY("/scheduleSaturday"),
     SAVE_EVENT_SUNDAY("/scheduleSunday"),
-    CHOOSE_EVENT_BY_DAY("Выбрать день"),
+    CHOOSE_EVENT_BY_DAY("Покажи расписание на.."),
     DELETE_EVENT("Удалить урок"),
-    DELETE_EVENT_BY_ID("/deleteEventById");
+    DELETE_EVENT_BY_ID("/deleteEventById"),
+    EDIT_EVENT("Редактировать уже сохраненный урок");
     private final String name;
 
     Command(String name) {

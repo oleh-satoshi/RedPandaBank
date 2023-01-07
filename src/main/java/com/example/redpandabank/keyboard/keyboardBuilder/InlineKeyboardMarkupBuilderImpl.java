@@ -10,47 +10,27 @@ import java.util.List;
 
 import static java.lang.Math.toIntExact;
 
-public class InlineKeyboardMarkupBuilder implements KeyboardMarkupBuilder {
-
-    private Long chatId;
-    private String text;
+public class InlineKeyboardMarkupBuilderImpl extends InlineKeyboardMarkupBuilder implements KeyboardMarkupBuilder {
 
     private List<InlineKeyboardButton> row;
     private final List<List<InlineKeyboardButton>> keyboard;
 
-    private InlineKeyboardMarkupBuilder() {
+    private InlineKeyboardMarkupBuilderImpl() {
         row = new ArrayList<>();
         keyboard = new ArrayList<>();
     }
 
-    @Override
-    public void setChatId(Long chatId) {
-        this.chatId = chatId;
+    public static InlineKeyboardMarkupBuilderImpl create() {
+        return new InlineKeyboardMarkupBuilderImpl();
     }
 
     @Override
-    public InlineKeyboardMarkupBuilder setText(String text) {
-        this.text = text;
-        return this;
-    }
-
-    public static InlineKeyboardMarkupBuilder create() {
-        return new InlineKeyboardMarkupBuilder();
-    }
-
-    public static InlineKeyboardMarkupBuilder create(Long chatId) {
-        InlineKeyboardMarkupBuilder builder = new InlineKeyboardMarkupBuilder();
-        builder.setChatId(chatId);
-        return builder;
-    }
-
-    @Override
-    public InlineKeyboardMarkupBuilder row() {
+    public InlineKeyboardMarkupBuilderImpl row() {
         this.row = new ArrayList<>();
         return this;
     }
 
-    public InlineKeyboardMarkupBuilder button(String text, String callbackData) {
+    public InlineKeyboardMarkupBuilderImpl button(String text, String callbackData) {
         InlineKeyboardButton keyboardButton = new InlineKeyboardButton();
         keyboardButton.setCallbackData(callbackData);
         keyboardButton.setText(text);
@@ -67,29 +47,23 @@ public class InlineKeyboardMarkupBuilder implements KeyboardMarkupBuilder {
 //    }
 
     @Override
-    public InlineKeyboardMarkupBuilder endRow() {
+    public InlineKeyboardMarkupBuilderImpl endRow() {
         this.keyboard.add(this.row);
         this.row = null;
         return this;
     }
 
     @Override
-    public SendMessage build() {
+    public InlineKeyboardMarkup build() {
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         keyboardMarkup.setKeyboard(keyboard);
-        return new SendMessage().builder()
-                .chatId(chatId)
-                .text(text)
-                .parseMode("HTML")
-                .replyMarkup(keyboardMarkup)
-                .build();
+        return keyboardMarkup;
     }
 
     public EditMessageText rebuild(Long messageId) {
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         keyboardMarkup.setKeyboard(keyboard);
         EditMessageText editMessageText = new EditMessageText();
-        editMessageText.setChatId(chatId);
         editMessageText.setMessageId(toIntExact(messageId));
         editMessageText.setReplyMarkup(keyboardMarkup);
         return editMessageText;

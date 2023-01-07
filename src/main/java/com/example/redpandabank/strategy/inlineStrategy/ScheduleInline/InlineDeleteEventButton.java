@@ -1,10 +1,12 @@
 
 package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
 
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilder;
+import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
+import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
@@ -27,12 +29,13 @@ public class InlineDeleteEventButton implements InlineHandler<Update> {
         Long childId = update.getCallbackQuery().getFrom().getId();
         List<Lesson> allByTitle = lessonService.findAllByChildId(childId);
 
-        InlineKeyboardMarkupBuilder inlineKeyboardMarkupBuilder = InlineKeyboardMarkupBuilder.create(childId)
-                .setText("Внимательно посмотри на название урока и выбери тот который ты хочешь удалить..")
+        InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilderImpl = InlineKeyboardMarkupBuilderImpl.create()
                 .row();
         for (Lesson lesson : allByTitle) {
-            inlineKeyboardMarkupBuilder.button(lesson.getTitle(), Command.DELETE_EVENT_BY_ID.getName() + ":" + lesson.getLessonId()).endRow();
+            inlineKeyboardMarkupBuilderImpl.button(lesson.getTitle(), Command.DELETE_EVENT_BY_ID.getName() + ":" + lesson.getLessonId()).endRow();
         }
-        return inlineKeyboardMarkupBuilder.build();
+        return new MessageSenderImpl().sendMessageWithInline(childId,
+                "Внимательно посмотри на название урока и выбери тот который ты хочешь удалить..",
+                inlineKeyboardMarkupBuilderImpl.build());
     }
 }

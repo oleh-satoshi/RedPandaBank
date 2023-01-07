@@ -20,18 +20,29 @@ public class MessageSenderImpl implements MessageSender {
     final static String PARSE_MODE = "HTML";
 
     @Override
-    public void sendMessageToTelegram(Long chatId, String content) {
+    public void sendMessageViaURL(Long chatId, String content) {
         urlString = String.format(urlString, API_TOKEN, chatId, content, PARSE_MODE);
         sendUrl(urlString);
     }
 
+
+
     @Override
-    public SendMessage sendMessageToTelegramWithInline(Long chatId, String content, InlineKeyboardMarkup keyboardMarkup) {
+    public SendMessage sendMessageWithInline(Long chatId, String content, InlineKeyboardMarkup keyboardMarkup) {
         return new SendMessage().builder()
                 .chatId(chatId)
                 .text(content)
                 .parseMode(PARSE_MODE)
                 .replyMarkup(keyboardMarkup)
+                .build();
+    }
+
+    @Override
+    public SendMessage sendMessageViaMessageSender(Long chatId, String content) {
+        return SendMessage.builder()
+                .chatId(chatId)
+                .text(content)
+                .parseMode(PARSE_MODE)
                 .build();
     }
 
