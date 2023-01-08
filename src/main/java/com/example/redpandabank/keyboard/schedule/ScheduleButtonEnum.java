@@ -1,6 +1,6 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.model.Command;
+import com.example.redpandabank.enums.Command;
 
 public enum ScheduleButtonEnum {
     EDIT(Command.EDIT_SCHEDULE.getName()),
@@ -10,7 +10,7 @@ public enum ScheduleButtonEnum {
     CHOOSE_EVENT_BY_DAY(Command.CHOOSE_EVENT_BY_DAY.getName()),
     DELETE_EVENT(Command.DELETE_EVENT.getName()),
     DELETE_EVENT_BY_ID(Command.DELETE_EVENT_BY_ID.getName()),
-    EDIT_EVENT(Command.EDIT_EVENT.getName());
+    EDIT_EVENT(Command.EDIT_SCHEDULE_EVENT.getName());
 
     private String name;
 

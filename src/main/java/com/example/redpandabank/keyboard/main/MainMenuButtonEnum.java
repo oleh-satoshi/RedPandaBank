@@ -1,6 +1,6 @@
 package com.example.redpandabank.keyboard.main;
 
-import com.example.redpandabank.model.Command;
+import com.example.redpandabank.enums.Command;
 
 public enum MainMenuButtonEnum {
     SCHEDULE(Command.SCHEDULE.getName());

@@ -21,5 +21,5 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
     HashSet<Lesson> findAllByTitleAndChildId(String title, Long childId);
 
-    Lesson findLessonByTitleAndChildId(Long childId, String title);
+    Lesson findLessonByChildIdAndTitle(Long childId, String title);
 }

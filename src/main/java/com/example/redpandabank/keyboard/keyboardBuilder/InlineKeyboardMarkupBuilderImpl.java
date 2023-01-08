@@ -1,5 +1,7 @@
 package com.example.redpandabank.keyboard.keyboardBuilder;
 
+import lombok.experimental.PackagePrivate;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -10,10 +12,12 @@ import java.util.List;
 
 import static java.lang.Math.toIntExact;
 
+@PackagePrivate
+@Component
 public class InlineKeyboardMarkupBuilderImpl extends InlineKeyboardMarkupBuilder implements KeyboardMarkupBuilder {
 
-    private List<InlineKeyboardButton> row;
-    private final List<List<InlineKeyboardButton>> keyboard;
+    List<InlineKeyboardButton> row;
+    final List<List<InlineKeyboardButton>> keyboard;
 
     private InlineKeyboardMarkupBuilderImpl() {
         row = new ArrayList<>();
@@ -39,6 +43,14 @@ public class InlineKeyboardMarkupBuilderImpl extends InlineKeyboardMarkupBuilder
         return this;
     }
 
+    public InlineKeyboardMarkupBuilderImpl extraButton(String text, String callbackData) {
+        InlineKeyboardButton keyboardButton = new InlineKeyboardButton();
+        keyboardButton.setCallbackData(callbackData);
+        keyboardButton.setText(text);
+        row.add(keyboardButton);
+        return this;
+    }
+
 //    public InlineKeyboardMarkupBuilder buttonWithURL(String text, String URL) {
 //        row.add(new InlineKeyboardButton()
 //                .setText(text)
@@ -60,12 +72,13 @@ public class InlineKeyboardMarkupBuilderImpl extends InlineKeyboardMarkupBuilder
         return keyboardMarkup;
     }
 
-    public EditMessageText rebuild(Long messageId) {
+    public EditMessageText rebuild(Long messageId, String text) {
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         keyboardMarkup.setKeyboard(keyboard);
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setMessageId(toIntExact(messageId));
         editMessageText.setReplyMarkup(keyboardMarkup);
+        editMessageText.setText(text);
         return editMessageText;
     }
 

@@ -6,6 +6,7 @@ import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -52,14 +53,18 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public String getLessonsByDayAndChildId(Long childId, String day) {
+    public Optional<String> getLessonsByDayAndChildId(Long childId, String day) {
         List<Lesson> lessonByDay = findLessonByChildIdAndWeekDay(childId, day);
+        if (lessonByDay.isEmpty()) {
+            new MessageSenderImpl().sendMessageViaURL(childId, "На этот день еще уроков нет!");
+            return Optional.empty();
+        }
         new MessageSenderImpl().sendMessageViaURL(childId,  EmojiParser.parseToUnicode(":calendar: " + "<b>" + day + "</b>"));
         for (Lesson lesson : lessonByDay) {
             new MessageSenderImpl().sendMessageViaURL(childId, parseLessonForUrl(lesson));
         }
 
-        return day;
+        return Optional.empty();
     }
 
     @Override
@@ -74,8 +79,8 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public Lesson findLessonByTitleAndChildId(Long childId, String title) {
-        return lessonRepository.findLessonByTitleAndChildId(childId, title);
+    public Lesson findLessonByTitle(Long childId, String title) {
+        return lessonRepository.findLessonByChildIdAndTitle(childId, title);
     }
 
     @Override

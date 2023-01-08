@@ -1,4 +1,4 @@
-package com.example.redpandabank.model;
+package com.example.redpandabank.enums;
 
 import lombok.Getter;
 
@@ -23,7 +23,13 @@ public enum Command {
     CHOOSE_EVENT_BY_DAY("Покажи расписание на.."),
     DELETE_EVENT("Удалить урок"),
     DELETE_EVENT_BY_ID("/deleteEventById"),
-    EDIT_EVENT("Редактировать уже сохраненный урок");
+    RECOVER_EVENT_BY_ID("/recoverData"),
+    EDIT_SCHEDULE_EVENT("Редактировать уже сохраненный урок"),
+    EDIT_SCHEDULE_EVENT_FIELD("/editScheduleEventField"),
+    EDIT_SCHEDULE_EVENT_TEACHER("/editScheduleEventTeacher"),
+    EDIT_SCHEDULE_EVENT_START_TIME("/editScheduleEventStartTime"),
+    EDIT_SCHEDULE_EVENT_DURATION("/editScheduleEventDuration"),
+    ;
     private final String name;
 
     Command(String name) {

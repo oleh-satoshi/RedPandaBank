@@ -1,10 +1,10 @@
 package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
 
 import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
-import com.example.redpandabank.model.Command;
+import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
-import com.example.redpandabank.model.WeekDay;
+import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;

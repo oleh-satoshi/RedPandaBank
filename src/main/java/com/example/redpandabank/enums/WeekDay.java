@@ -1,4 +1,4 @@
-package com.example.redpandabank.model;
+package com.example.redpandabank.enums;
 
 public enum WeekDay{
         SUNDAY("Вс"),

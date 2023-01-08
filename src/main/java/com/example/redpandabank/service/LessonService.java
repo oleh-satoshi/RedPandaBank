@@ -3,6 +3,7 @@ package com.example.redpandabank.service;
 import com.example.redpandabank.model.Lesson;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LessonService {
     Lesson create(Lesson category);
@@ -16,13 +17,13 @@ public interface LessonService {
 
     List<Lesson> findAllByChildId(Long childId);
 
-    String getLessonsByDayAndChildId(Long userId, String day);
+    Optional<String> getLessonsByDayAndChildId(Long userId, String day);
 
     Lesson getById(Long id);
 
     Boolean findAllByTitle(String title, Long childId);
 
-    Lesson findLessonByTitleAndChildId(Long childId, String title);
+    Lesson findLessonByTitle(Long childId, String title);
 
     String getDuration(Integer duration);
 

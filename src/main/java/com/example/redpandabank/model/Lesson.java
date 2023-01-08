@@ -4,21 +4,22 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.PackagePrivate;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
+@PackagePrivate
 @Entity
 @Table(name = "lessons")
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long lessonId;
-    private String title;
-    private String teacher;
-    private Integer duration;
-    private Long childId;
+    Long lessonId;
+    String title;
+    String teacher;
+    Integer duration;
+    Long childId;
     @OneToMany
     @JoinColumn(name = "lesson_id", nullable = false)
     private List<LessonSchedule> lessonSchedules;

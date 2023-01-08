@@ -1,9 +1,9 @@
 package com.example.redpandabank.service;
 
-import com.example.redpandabank.keyboard.schedule.InlineAddEventByWeekday;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 import java.io.BufferedInputStream;
@@ -38,7 +38,7 @@ public class MessageSenderImpl implements MessageSender {
     }
 
     @Override
-    public SendMessage sendMessageViaMessageSender(Long chatId, String content) {
+    public SendMessage sendMessageViaSendMessage(Long chatId, String content) {
         return SendMessage.builder()
                 .chatId(chatId)
                 .text(content)
@@ -54,5 +54,24 @@ public class MessageSenderImpl implements MessageSender {
         } catch (IOException e) {
             throw new RuntimeException("Can't send message! ", e);
         }
+    }
+
+    public EditMessageText sendMessageViaEditMessageTextWithInline(Long userId, Integer messageId, InlineKeyboardMarkup keyboardMarkup, String content) {
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setChatId(userId);
+        editMessageText.setMessageId(messageId);
+        editMessageText.setReplyMarkup(keyboardMarkup);
+        editMessageText.setText(content);
+        editMessageText.setParseMode(PARSE_MODE);
+        return editMessageText;
+    }
+
+    public EditMessageText sendMessageViaEditMessageText(Long userId, Integer messageId, String content) {
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setChatId(userId);
+        editMessageText.setMessageId(messageId);
+        editMessageText.setText(content);
+        editMessageText.setParseMode(PARSE_MODE);
+        return editMessageText;
     }
 }

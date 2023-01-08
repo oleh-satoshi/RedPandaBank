@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
 
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
-import com.example.redpandabank.model.Command;
+import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
@@ -39,6 +39,7 @@ public class InlineDeleteEvent implements InlineHandler<Update> {
     @Override
     public BotApiMethod<?> handle(Update update) {
         childId = update.getCallbackQuery().getMessage().getChatId();
+        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         Lesson lesson;
         String title = update.getCallbackQuery().getData();
         String[] split = title.split(SEPARATOR);
@@ -47,8 +48,14 @@ public class InlineDeleteEvent implements InlineHandler<Update> {
             if (!lesson.getIsDeleted()) {
                 lesson.setIsDeleted(true);
                 lessonService.create(lesson);
-                new MessageSenderImpl().sendMessageViaURL(childId, "Урок " + lesson.getTitle() + " удален!");
-                new MessageSenderImpl().sendMessageViaURL(childId, "<strike>" + lessonService.getInfoLessonbyId(lesson.getLessonId()) + "</strike>");
+                InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
+                        .row()
+                        .button("Восстановить", "/recoverData" + SEPARATOR + lesson.getLessonId())
+                        .endRow()
+                        .build();
+                new MessageSenderImpl().sendMessageViaURL(childId, "Урок " + lesson.getTitle() + " удален! Если ты ошибся и удалил не тот урок ты можешь нажать кнопочку Восстановить и я верну урок обратно");
+                return new MessageSenderImpl().sendMessageViaEditMessageTextWithInline(childId, messageId,
+                        inlineKeyboardMarkup, "<strike>" + getLessonInfo(lesson) + "</strike>");
             } else {
                 new MessageSenderImpl().sendMessageViaURL(childId, "Урок " + lesson.getTitle() + " уже был удален!");
             }
@@ -56,16 +63,18 @@ public class InlineDeleteEvent implements InlineHandler<Update> {
             lesson = lessonService.getById(Long.valueOf(split[1]));
             InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                     .row()
-                    .button("Да, я хочу удалить " + lesson.getTitle(), Command.DELETE_EVENT_BY_ID.getName()
-                            + SEPARATOR + YES + SEPARATOR + lesson.getLessonId())
+                    .button("Да, я хочу удалить " + lesson.getTitle(),
+                            Command.DELETE_EVENT_BY_ID.getName() + SEPARATOR + YES + SEPARATOR + lesson.getLessonId())
                     .endRow()
                     .row()
                     .button("Нет, верника меня к списку уроков", Command.DELETE_EVENT.getName())
                     .endRow()
                     .build();
-            return new MessageSenderImpl().sendMessageWithInline(childId,
-                    "Ты точно хочешь удалить этот урок?\n\n" + getLessonInfo(lesson),
-                            inlineKeyboardMarkup);
+            String content = "Ты точно хочешь удалить этот урок?\n\n" + getLessonInfo(lesson);
+            return new MessageSenderImpl().sendMessageViaEditMessageTextWithInline(childId, messageId, inlineKeyboardMarkup, content);
+//            return new MessageSenderImpl().sendMessageWithInline(childId,
+//                    "Ты точно хочешь удалить этот урок?\n\n" + getLessonInfo(lesson),
+//                            inlineKeyboardMarkup);
         }
         return sendMessage;
     }

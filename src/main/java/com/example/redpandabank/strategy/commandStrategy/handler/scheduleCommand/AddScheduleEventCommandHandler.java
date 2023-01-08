@@ -2,7 +2,7 @@ package com.example.redpandabank.strategy.commandStrategy.handler.scheduleComman
 
 import com.example.redpandabank.keyboard.schedule.InlineAddEventByWeekday;
 import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
-import com.example.redpandabank.model.Command;
+import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.LessonScheduleService;

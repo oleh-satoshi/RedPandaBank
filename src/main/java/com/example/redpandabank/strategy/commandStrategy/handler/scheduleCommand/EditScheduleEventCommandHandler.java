@@ -1,8 +1,7 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
-import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
 import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
@@ -15,33 +14,31 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
+import static com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.DeleteEventCommandHandler.SEPARATOR;
+
 @PackagePrivate
 @Component
-public class DeleteEventCommandHandler implements CommandHandler<Update> {
-    final static String SEPARATOR = ":";
-    final BackToMainMenuButton backToMainMenuButton;
+public class EditScheduleEventCommandHandler implements CommandHandler<Update> {
     final LessonService lessonService;
 
-    public DeleteEventCommandHandler(BackToMainMenuButton backToMainMenuButton,
-                                     LessonService lessonService) {
-        this.backToMainMenuButton = backToMainMenuButton;
+    public EditScheduleEventCommandHandler(LessonService lessonService) {
         this.lessonService = lessonService;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
         Long childId = update.getMessage().getChatId();
-        List<Lesson> allByTitle = lessonService.findAllByChildId(childId);
+        List<Lesson> lessons = lessonService.findAllByChildId(childId);
 
         InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilderImpl =
                 InlineKeyboardMarkupBuilderImpl.create()
-                .row();
-        for (Lesson lesson : allByTitle) {
+                        .row();
+        for (Lesson lesson : lessons) {
             inlineKeyboardMarkupBuilderImpl.button(lesson.getTitle(),
-                    Command.DELETE_EVENT_BY_ID.getName() + SEPARATOR + lesson.getLessonId()).endRow();
+                    Command.EDIT_SCHEDULE_EVENT_FIELD.getName() + SEPARATOR + lesson.getTitle()).endRow();
         }
         SendMessage sendMessage = new MessageSenderImpl().sendMessageWithInline(childId,
-                "Внимательно посмотри на название урока и выбери тот который ты хочешь удалить..",
+                "Какой урок ты хочешь редактировать?",
                 inlineKeyboardMarkupBuilderImpl.build());
         return sendMessage;
     }

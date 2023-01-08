@@ -8,5 +8,5 @@ public interface MessageSender {
 
     SendMessage sendMessageWithInline(Long chatId, String content, InlineKeyboardMarkup keyboardMarkup);
 
-    SendMessage sendMessageViaMessageSender(Long chatId, String content);
+    SendMessage sendMessageViaSendMessage(Long chatId, String content);
 }

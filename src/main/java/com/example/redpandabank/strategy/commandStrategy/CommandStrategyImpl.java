@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.commandStrategy;
 
 import com.example.redpandabank.keyboard.schedule.*;
-import com.example.redpandabank.model.Command;
+import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
 import com.example.redpandabank.keyboard.main.MainMenuButton;
 import com.example.redpandabank.service.ChildService;
@@ -69,6 +69,8 @@ public class CommandStrategyImpl implements CommandStrategy {
         strategyMap.put(Command.BACK_TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.mainMenuButton));
         strategyMap.put(Command.CHOOSE_EVENT_BY_DAY.getName(), new ChooseEventByDayCommandHandler(this.lessonService, this.inlineShowAllDays));
         strategyMap.put(Command.DELETE_EVENT.getName(), new DeleteEventCommandHandler(backToMainMenuButton, lessonService));
+        strategyMap.put(Command.EDIT_SCHEDULE_EVENT.getName(), new EditScheduleEventCommandHandler(lessonService));
+
     }
 
     @Override
