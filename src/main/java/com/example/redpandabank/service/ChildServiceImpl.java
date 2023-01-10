@@ -9,7 +9,9 @@ import java.util.Optional;
 
 @Service
 public class ChildServiceImpl implements ChildService {
-    private final Integer ZERO = 0;
+    private final static Integer ZERO = 0;
+    private final static String SEPARATOR = ":";
+
     private ChildRepository childRepository;
 
     public ChildServiceImpl(ChildRepository childRepository) {
@@ -44,7 +46,22 @@ public class ChildServiceImpl implements ChildService {
         child.setRating(ZERO);
         child.setCompleteTask(ZERO);
         child.setIncompleteTask(ZERO);
+        child.setState(NO_STATE);
         childRepository.save(child);
         return child;
+    }
+
+    @Override
+    public Child findByUserId(Long userId) {
+        return childRepository.findByUserId(userId);
+    }
+
+    @Override
+    public Long parseId(String command) {
+        String[] split = command.split(SEPARATOR);
+        if (split.length > 1) {
+            return Long.valueOf(split[1]);
+        }
+        return null;
     }
 }
