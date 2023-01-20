@@ -1,14 +1,13 @@
 package com.example.redpandabank.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.PackagePrivate;
 
 import java.util.List;
 
 @Data
+@EqualsAndHashCode
 @PackagePrivate
 @Entity
 @Table(name = "lessons")
@@ -22,8 +21,8 @@ public class Lesson {
     Long childId;
     @OneToMany
     @JoinColumn(name = "lesson_id", nullable = false)
-    private List<LessonSchedule> lessonSchedules;
-    private Boolean isDeleted;
+    List<LessonSchedule> lessonSchedules;
+    Boolean isDeleted;
 
     @Override
     public String toString() {

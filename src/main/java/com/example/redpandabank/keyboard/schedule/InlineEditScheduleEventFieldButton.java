@@ -14,25 +14,28 @@ import java.util.stream.Collectors;
 @PackagePrivate
 @Component
 public class InlineEditScheduleEventFieldButton {
-    final static String SEPARATOR = ":";
 
     public InlineKeyboardMarkup getInline(Lesson lesson) {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button("Название урока: " + lesson.getTitle(),
-                        Command.EDIT_SCHEDULE_EVENT_FIELD.getName() + SEPARATOR + lesson.getTitle())
+                        Command.EDIT_SPECIFIC_EVENT_FIELD.getName()
+                                + LessonService.COLON_SEPARATOR + lesson.getTitle())
                 .endRow()
                 .row()
                 .button("Имя учителя: " + lesson.getTeacher(),
-                        Command.EDIT_SCHEDULE_EVENT_TEACHER.getName() + SEPARATOR + lesson.getTitle())
+                        Command.EDIT_SCHEDULE_EVENT_TEACHER.getName()
+                                + LessonService.COLON_SEPARATOR + lesson.getTitle())
                 .endRow()
                 .row()
                 .button("Время начала урока: " + getStartTime(lesson),
-                        Command.EDIT_SCHEDULE_EVENT_START_TIME.getName() + SEPARATOR + lesson.getTitle())
+                        Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
+                                + LessonService.COLON_SEPARATOR + lesson.getTitle())
                 .endRow()
                 .row()
                 .button("Длительность урока: " + lesson.getDuration(),
-                        Command.EDIT_SCHEDULE_EVENT_DURATION.getName() + SEPARATOR + lesson.getTitle())
+                        Command.EDIT_SCHEDULE_EVENT_DURATION.getName()
+                                + LessonService.COLON_SEPARATOR + lesson.getTitle())
                 .endRow()
                 .build();
     }

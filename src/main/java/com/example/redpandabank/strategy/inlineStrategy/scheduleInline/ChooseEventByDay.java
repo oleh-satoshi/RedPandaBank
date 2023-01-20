@@ -1,4 +1,4 @@
-package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
+package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.keyboard.schedule.InlineShowAllDays;
 import com.example.redpandabank.service.LessonService;
@@ -23,6 +23,6 @@ public class ChooseEventByDay implements InlineHandler<Update> {
         String content = "На какой день недели тебе интересно посмотреть уроки?";
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         InlineKeyboardMarkup inline = inlineShowAllDays.getInline();
-        return new MessageSenderImpl().sendMessageViaEditMessageTextWithInline(childId, messageId, inline, content);
+        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, content);
     }
 }

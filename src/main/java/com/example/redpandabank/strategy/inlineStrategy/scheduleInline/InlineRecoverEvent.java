@@ -1,14 +1,12 @@
-package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
+package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @PackagePrivate
@@ -34,7 +32,6 @@ public class InlineRecoverEvent implements InlineHandler<Update> {
         } else {
             new MessageSenderImpl().sendMessageViaURL(childId,"Я уже добавил этот урок в твое расписание, не переживай");
         }
-//        DeleteMessage deleteMessage = new DeleteMessage(childId.toString(), messageId);
         return null;
     }
 

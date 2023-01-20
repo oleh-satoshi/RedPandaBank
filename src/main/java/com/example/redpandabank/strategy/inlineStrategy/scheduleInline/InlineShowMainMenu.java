@@ -1,4 +1,4 @@
-package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
+package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.keyboard.schedule.MenuButton;
 import com.example.redpandabank.service.MessageSenderImpl;
@@ -24,6 +24,6 @@ public class InlineShowMainMenu implements InlineHandler<Update> {
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         String response = "Что тебе интересно?";
         InlineKeyboardMarkup inline = menuButton.getScheduleMenuButton();
-        return new MessageSenderImpl().sendMessageViaEditMessageTextWithInline(userId, messageId, inline, response);
+        return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, inline, response);
     }
 }

@@ -7,9 +7,8 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 
+@Data
 @Entity
-@Getter
-@Setter
 @Table(name = "children")
 public class Child {
     @Id
@@ -20,4 +19,5 @@ public class Child {
     private Integer completeTask;
     private Integer incompleteTask;
     String state;
+    Boolean isSkip;
 }

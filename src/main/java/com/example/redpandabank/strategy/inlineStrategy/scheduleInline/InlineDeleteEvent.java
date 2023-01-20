@@ -1,4 +1,4 @@
-package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
+package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.enums.Command;
@@ -54,7 +54,7 @@ public class InlineDeleteEvent implements InlineHandler<Update> {
                         .endRow()
                         .build();
                 new MessageSenderImpl().sendMessageViaURL(childId, "Урок " + lesson.getTitle() + " удален! Если ты ошибся и удалил не тот урок ты можешь нажать кнопочку Восстановить и я верну урок обратно");
-                return new MessageSenderImpl().sendMessageViaEditMessageTextWithInline(childId, messageId,
+                return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId,
                         inlineKeyboardMarkup, "<strike>" + getLessonInfo(lesson) + "</strike>");
             } else {
                 new MessageSenderImpl().sendMessageViaURL(childId, "Урок " + lesson.getTitle() + " уже был удален!");
@@ -71,7 +71,7 @@ public class InlineDeleteEvent implements InlineHandler<Update> {
                     .endRow()
                     .build();
             String content = "Ты точно хочешь удалить этот урок?\n\n" + getLessonInfo(lesson);
-            return new MessageSenderImpl().sendMessageViaEditMessageTextWithInline(childId, messageId, inlineKeyboardMarkup, content);
+            return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inlineKeyboardMarkup, content);
 //            return new MessageSenderImpl().sendMessageWithInline(childId,
 //                    "Ты точно хочешь удалить этот урок?\n\n" + getLessonInfo(lesson),
 //                            inlineKeyboardMarkup);

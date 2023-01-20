@@ -9,7 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 public class InlineEditScheduleMenuButton {
     public InlineKeyboardMarkup getInline() {
         String addScheduleEvent = Command.ADD_SCHEDULE_EVENT.getName();
-        String editScheduleEvent = Command.EDIT_SCHEDULE_EVENT.getName();
+        String editScheduleEvent = Command.EDIT_SCHEDULE_EXISTING_EVENT.getName();
         String deleteScheduleEvent = Command.DELETE_EVENT.getName();
 
         return InlineKeyboardMarkupBuilderImpl.create()
@@ -17,13 +17,13 @@ public class InlineEditScheduleMenuButton {
                 .button(addScheduleEvent, addScheduleEvent)
                 .endRow()
                 .row()
-                .button(editScheduleEvent, editScheduleEvent.substring(0, editScheduleEvent.length() - 1))
+                .button(editScheduleEvent, editScheduleEvent)
                 .endRow()
                 .row()
                 .button(deleteScheduleEvent, deleteScheduleEvent)
                 .endRow()
                 .row()
-                .button("Назад", Command.SCHEDULE.getName())
+                .button("Back", Command.SCHEDULE.getName())
                 .endRow()
                 .build();
     }

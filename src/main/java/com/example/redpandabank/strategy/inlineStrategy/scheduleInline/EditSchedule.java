@@ -1,6 +1,5 @@
-package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
+package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.keyboard.schedule.EditScheduleMenuButton;
 import com.example.redpandabank.keyboard.schedule.InlineEditScheduleMenuButton;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
@@ -12,11 +11,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 @Component
 public class EditSchedule implements InlineHandler<Update> {
-    private final EditScheduleMenuButton editScheduleMenuButton;
     final InlineEditScheduleMenuButton inlineEditScheduleMenuButton;
 
-    public EditSchedule(EditScheduleMenuButton editScheduleMenuButton, InlineEditScheduleMenuButton inlineEditScheduleMenuButton) {
-        this.editScheduleMenuButton = editScheduleMenuButton;
+    public EditSchedule(InlineEditScheduleMenuButton inlineEditScheduleMenuButton) {
         this.inlineEditScheduleMenuButton = inlineEditScheduleMenuButton;
     }
 
@@ -27,7 +24,7 @@ public class EditSchedule implements InlineHandler<Update> {
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         String content = "Это меню редактирования";
         InlineKeyboardMarkup inline = inlineEditScheduleMenuButton.getInline();
-        EditMessageText editMessageText = new MessageSenderImpl().sendMessageViaEditMessageTextWithInline(childId, messageId, inline, content);
+        EditMessageText editMessageText = new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, content);
         return editMessageText;
     }
 }

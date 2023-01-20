@@ -1,5 +1,5 @@
 
-package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
+package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.enums.Command;
@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-import java.util.List;
+import java.util.HashSet;
 
 @PackagePrivate
 @Component
@@ -28,7 +28,7 @@ public class InlineDeleteEventButton implements InlineHandler<Update> {
     public BotApiMethod<?> handle(Update update) {
         Long childId = update.getCallbackQuery().getFrom().getId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        List<Lesson> allByTitle = lessonService.findAllByChildId(childId);
+        HashSet<Lesson> allByTitle = lessonService.findAllByChildId(childId);
 
         InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                 .row();
@@ -37,8 +37,6 @@ public class InlineDeleteEventButton implements InlineHandler<Update> {
         }
         InlineKeyboardMarkup keyboardMarkup = inlineKeyboardMarkup.build();
         String content = "Внимательно посмотри на название урока и выбери тот который ты хочешь удалить..";
-        return new MessageSenderImpl().sendMessageViaEditMessageTextWithInline(childId, messageId, keyboardMarkup, content);
-//        return new MessageSenderImpl().sendMessageWithInline(childId,
-//                "Внимательно посмотри на название урока и выбери тот который ты хочешь удалить..",
+        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboardMarkup, content);
     }
 }

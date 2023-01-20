@@ -39,12 +39,41 @@ public class MessageSenderImpl implements MessageSender {
     }
 
     @Override
-    public SendMessage sendMessageViaSendMessage(Long chatId, String content) {
+    public SendMessage sendMessageWithReply(Long chatId, String content, ReplyKeyboardMarkup keyboardMarkup) {
+        return new SendMessage().builder()
+                .chatId(chatId)
+                .text(content)
+                .parseMode(PARSE_MODE)
+                .replyMarkup(keyboardMarkup)
+                .build();
+    }
+
+    @Override
+    public SendMessage sendMessage(Long chatId, String content) {
         return SendMessage.builder()
                 .chatId(chatId)
                 .text(content)
                 .parseMode(PARSE_MODE)
                 .build();
+    }
+
+    public EditMessageText sendEditMessageWithInline(Long userId, Integer messageId, InlineKeyboardMarkup keyboardMarkup, String content) {
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setChatId(userId);
+        editMessageText.setMessageId(messageId);
+        editMessageText.setReplyMarkup(keyboardMarkup);
+        editMessageText.setText(content);
+        editMessageText.setParseMode(PARSE_MODE);
+        return editMessageText;
+    }
+
+    public EditMessageText sendEditMessage(Long userId, Integer messageId, String content) {
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setChatId(userId);
+        editMessageText.setMessageId(messageId);
+        editMessageText.setText(content);
+        editMessageText.setParseMode(PARSE_MODE);
+        return editMessageText;
     }
 
     private void sendUrl(String urlString) {
@@ -57,22 +86,5 @@ public class MessageSenderImpl implements MessageSender {
         }
     }
 
-    public EditMessageText sendMessageViaEditMessageTextWithInline(Long userId, Integer messageId, InlineKeyboardMarkup keyboardMarkup, String content) {
-        EditMessageText editMessageText = new EditMessageText();
-        editMessageText.setChatId(userId);
-        editMessageText.setMessageId(messageId);
-        editMessageText.setReplyMarkup(keyboardMarkup);
-        editMessageText.setText(content);
-        editMessageText.setParseMode(PARSE_MODE);
-        return editMessageText;
-    }
 
-    public EditMessageText sendMessageViaEditMessageText(Long userId, Integer messageId, String content) {
-        EditMessageText editMessageText = new EditMessageText();
-        editMessageText.setChatId(userId);
-        editMessageText.setMessageId(messageId);
-        editMessageText.setText(content);
-        editMessageText.setParseMode(PARSE_MODE);
-        return editMessageText;
-    }
 }

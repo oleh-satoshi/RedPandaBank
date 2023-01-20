@@ -1,7 +1,6 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
-import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
@@ -13,25 +12,23 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.HashSet;
 import java.util.List;
 
 @PackagePrivate
 @Component
 public class DeleteEventCommandHandler implements CommandHandler<Update> {
     final static String SEPARATOR = ":";
-    final BackToMainMenuButton backToMainMenuButton;
     final LessonService lessonService;
 
-    public DeleteEventCommandHandler(BackToMainMenuButton backToMainMenuButton,
-                                     LessonService lessonService) {
-        this.backToMainMenuButton = backToMainMenuButton;
+    public DeleteEventCommandHandler(LessonService lessonService) {
         this.lessonService = lessonService;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
         Long childId = update.getMessage().getChatId();
-        List<Lesson> allByTitle = lessonService.findAllByChildId(childId);
+        HashSet<Lesson> allByTitle = lessonService.findAllByChildId(childId);
 
         InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilderImpl =
                 InlineKeyboardMarkupBuilderImpl.create()

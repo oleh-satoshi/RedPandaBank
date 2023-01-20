@@ -4,9 +4,12 @@ import com.example.redpandabank.repository.LessonRepository;
 import com.example.redpandabank.model.Lesson;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -48,7 +51,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public List<Lesson> findAllByChildId(Long childId) {
+    public HashSet<Lesson> findAllByChildId(Long childId) {
         return lessonRepository.findAllByChildId(childId);
     }
 
@@ -74,7 +77,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public Boolean  findAllByTitle(String title, Long childId) {
+    public Boolean findAllByTitle(String title, Long childId) {
         return lessonRepository.findAllByTitleAndChildId(title, childId).isEmpty();
     }
 
@@ -112,6 +115,17 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public String getInfoLessonbyId(Long id) {
         return parseLessonForUrl(getById(id));
+    }
+
+    @Transactional
+    @Override
+    public void deleteLessonByTitleAndChildId(String title, Long id) {
+        lessonRepository.deleteLessonByTitleAndChildId(title, id);
+    }
+
+    @Override
+    public List<Lesson> findAllByChildIdWithoutLessonSchedule(Long childId) {
+        return lessonRepository.findAllByChildIdWithoutLessonSchedule(childId);
     }
 
     private String parseLessonForUrl(Lesson lesson) {

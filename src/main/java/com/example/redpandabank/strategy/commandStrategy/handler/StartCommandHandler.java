@@ -1,7 +1,6 @@
 package com.example.redpandabank.strategy.commandStrategy.handler;
 
-import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
-import com.example.redpandabank.keyboard.main.MainMenuButton;
+import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.service.ChildService;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Service;
@@ -10,17 +9,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Service
 public class StartCommandHandler implements CommandHandler<Update> {
-    private final MainMenuButton mainMenuButton;
+    private final ReplyMainMenuButton replyMainMenuButton;
     private final ChildService childService;
     private boolean isInitialize;
-    private final BackToMainMenuButton backToMainMenuButton;
 
-    public StartCommandHandler(MainMenuButton mainMenuButton,
-                               ChildService childService,
-                               BackToMainMenuButton backToMainMenuButton) {
-        this.mainMenuButton = mainMenuButton;
+    public StartCommandHandler(ReplyMainMenuButton replyMainMenuButton,
+                               ChildService childService) {
+        this.replyMainMenuButton = replyMainMenuButton;
         this.childService = childService;
-        this.backToMainMenuButton = backToMainMenuButton;
     }
 
     @Override
@@ -54,14 +50,13 @@ public class StartCommandHandler implements CommandHandler<Update> {
             SendMessage sendMessage =  SendMessage.builder()
                     .text(response)
                     .chatId(userId)
-                    .replyMarkup(mainMenuButton.getMainMenuButton())
+                    .replyMarkup(replyMainMenuButton.getMainMenuButton())
                     .build();
             return sendMessage;
         } else {
             response = EmojiParser.parseToUnicode("Эй! Мы же с тобой познакомились уже! Ты что забыл? :sweat_smile:");
             return SendMessage.builder()
                     .text(response)
-                    .replyMarkup(backToMainMenuButton.getBackToMainMenuButton())
                     .parseMode("HTML")
                     .chatId(userId)
                     .build();

@@ -1,6 +1,5 @@
-package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
+package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import org.springframework.stereotype.Component;
@@ -9,14 +8,11 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 public class InlineScheduleFindLessonByDay implements InlineHandler<Update> {
-    private final BackToMainMenuButton backToMainMenuButton;
     private final LessonService lessonService;
 
-    public InlineScheduleFindLessonByDay(BackToMainMenuButton backToMainMenuButton, LessonService lessonService) {
-        this.backToMainMenuButton = backToMainMenuButton;
+    public InlineScheduleFindLessonByDay(LessonService lessonService) {
         this.lessonService = lessonService;
     }
-
 
     @Override
     public BotApiMethod<?> handle(Update update) {

@@ -1,16 +1,16 @@
 package com.example.redpandabank.strategy.commandStrategy.handler;
 
-import com.example.redpandabank.keyboard.main.MainMenuButton;
+import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @Component
 public class BackToMainMenuCommandHandler implements CommandHandler<Update> {
-    private final MainMenuButton mainMenuButton;
+    private final ReplyMainMenuButton replyMainMenuButton;
 
-    public BackToMainMenuCommandHandler(MainMenuButton mainMenuButton) {
-        this.mainMenuButton = mainMenuButton;
+    public BackToMainMenuCommandHandler(ReplyMainMenuButton replyMainMenuButton) {
+        this.replyMainMenuButton = replyMainMenuButton;
     }
 
     @Override
@@ -21,7 +21,7 @@ public class BackToMainMenuCommandHandler implements CommandHandler<Update> {
         SendMessage sendMessage =  SendMessage.builder()
                 .text(response)
                 .chatId(userId)
-                .replyMarkup(mainMenuButton.getMainMenuButton())
+                .replyMarkup(replyMainMenuButton.getMainMenuButton())
                 .build();
         return sendMessage;
     }

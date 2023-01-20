@@ -1,6 +1,5 @@
-package com.example.redpandabank.strategy.inlineStrategy.ScheduleInline;
+package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.keyboard.main.BackToMainMenuButton;
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
@@ -14,19 +13,17 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
 public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
-    private final BackToMainMenuButton backToMainMenuButton;
     private final LessonService lessonService;
     private final LessonScheduleService lessonScheduleService;
 
 
-    public InlineScheduleWeekdayButton(BackToMainMenuButton backToMainMenuButton,
-                                       LessonService lessonService,
+    public InlineScheduleWeekdayButton(LessonService lessonService,
                                        LessonScheduleService lessonScheduleService) {
-        this.backToMainMenuButton = backToMainMenuButton;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
     }
@@ -68,7 +65,6 @@ public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
         return new SendMessage().builder()
                         .chatId(update.getCallbackQuery().getMessage().getChatId())
                         .text(response)
-                        .replyMarkup(backToMainMenuButton.getBackToMainMenuButton())
                         .build();
     }
 
@@ -77,7 +73,8 @@ public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
         LessonSchedule lessonSchedule = allByChildId.size() == 1 ? allByChildId.get(0) : allByChildId.get(allByChildId.size() - 1);
         lessonSchedule.setDay(day);
         lessonScheduleService.create(lessonSchedule);
-        List<Lesson> lessons = lessonService.findAllByChildId(userId);
+        HashSet<Lesson> lessonsSet = lessonService.findAllByChildId(userId);
+        List<Lesson> lessons = new ArrayList<>(lessonsSet);
         Lesson  lesson = (lessons.size() == 1) ? lessons.get(0) : lessons.get(lessons.size() - 1);
         List<LessonSchedule> lessonSchedules = new ArrayList<>();
         lessonSchedules.add(lessonSchedule);

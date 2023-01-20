@@ -2,10 +2,13 @@ package com.example.redpandabank.service;
 
 import com.example.redpandabank.model.Lesson;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 public interface LessonService {
+    String COLON_SEPARATOR = ":";
+    String QUOTE_SEPARATOR = "\"";
     Lesson create(Lesson category);
 
     void deleteById(Long id);
@@ -15,7 +18,7 @@ public interface LessonService {
 
     List<Lesson> findLessonByChildIdAndWeekDay(Long userId, String day);
 
-    List<Lesson> findAllByChildId(Long childId);
+    HashSet<Lesson> findAllByChildId(Long childId);
 
     Optional<String> getLessonsByDayAndChildId(Long userId, String day);
 
@@ -32,4 +35,9 @@ public interface LessonService {
     String getFinishTime(Lesson lesson);
 
     String getInfoLessonbyId(Long id);
+
+    void deleteLessonByTitleAndChildId(String title, Long id);
+
+    List<Lesson> findAllByChildIdWithoutLessonSchedule(Long childId);
+
 }
