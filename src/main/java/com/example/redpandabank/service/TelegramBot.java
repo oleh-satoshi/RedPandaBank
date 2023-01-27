@@ -13,7 +13,6 @@ import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import java.time.LocalTime;
 
 @PackagePrivate
 @Component
@@ -32,9 +31,10 @@ public class TelegramBot {
     }
 
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        Boolean hasReply = update.hasMessage() && update.getMessage().hasText();
-        Boolean hasCallback = update.hasCallbackQuery();
+        Boolean hasReply = UpdateInfo.hasReply(update);
+        Boolean hasCallback = UpdateInfo.hasCallBack(update);
         String replyCommand;
+
             if (hasReply || hasCallback) {
             Long userId = UpdateInfo.getUserId(update);
             Child child = childService.getById(userId);

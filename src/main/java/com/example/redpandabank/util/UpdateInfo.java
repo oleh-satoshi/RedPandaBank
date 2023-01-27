@@ -28,4 +28,8 @@ public class UpdateInfo {
                 ? update.getCallbackQuery().getMessage().getMessageId()
                 : update.getMessage().getMessageId();
     }
+
+    public static boolean hasCallBack(Update update) {
+        return update.hasCallbackQuery();
+    }
 }
