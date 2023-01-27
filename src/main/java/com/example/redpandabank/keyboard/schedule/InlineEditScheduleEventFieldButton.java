@@ -35,7 +35,7 @@ public class InlineEditScheduleEventFieldButton {
                 .row()
                 .button("Длительность урока: " + lesson.getDuration(),
                         Command.EDIT_SCHEDULE_EVENT_DURATION.getName()
-                                + LessonService.COLON_SEPARATOR + lesson.getTitle())
+                                + LessonService.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()
                 .build();
     }

@@ -34,7 +34,7 @@ public interface LessonService {
 
     String getFinishTime(Lesson lesson);
 
-    String getInfoLessonbyId(Long id);
+    String getInfoLessonbyIdAndSendByUrl(Long id);
 
     void deleteLessonByTitleAndChildId(String title, Long id);
 

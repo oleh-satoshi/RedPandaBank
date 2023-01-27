@@ -33,15 +33,15 @@ public class InlineDeleteSpecificEventStartTime2 implements InlineHandler<Update
     public BotApiMethod<?> handle(Update update) {
         Long childId = update.getCallbackQuery().getMessage().getChatId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        String title = parseTitle(update.getCallbackQuery().getData());
+        Long lessonId = parseTitle(update.getCallbackQuery().getData());
         LocalTime localTime = parseTime(update.getCallbackQuery().getData());
-        Lesson lesson = lessonService.findLessonByTitle(childId, title);
+        Lesson lesson = lessonService.getById(lessonId);
         LessonSchedule lessonSchedule = lesson.getLessonSchedules().stream()
                 .filter(lessonSchedul -> lessonSchedul.getLessonStartTime().equals(localTime))
                 .findFirst()
                 .get();
         lessonScheduleService.delete(lessonSchedule);
-        Lesson lessonByTitle = lessonService.findLessonByTitle(childId, title);
+        //Lesson lessonById = lessonService.getById(lessonId);
 //        String infoLesson = lessonService.getInfoLessonbyId(lesson.getLessonId());
 //        new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
         InlineKeyboardMarkup inline = specificEventStartTime2Button.getInline();
@@ -51,8 +51,8 @@ public class InlineDeleteSpecificEventStartTime2 implements InlineHandler<Update
 
     }
 
-    private String parseTitle(String data) {
-        return data.split(LessonService.COLON_SEPARATOR)[3];
+    private Long parseTitle(String data) {
+        return Long.parseLong(data.split(LessonService.COLON_SEPARATOR)[3]);
     }
 
     private LocalTime parseTime(String data) {

@@ -113,7 +113,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public String getInfoLessonbyId(Long id) {
+    public String getInfoLessonbyIdAndSendByUrl(Long id) {
         return parseLessonForUrl(getById(id));
     }
 

@@ -22,7 +22,7 @@ public class CommandStrategyImpl implements CommandStrategy {
     private Map<String, CommandHandler> commandStrategyMap;
     private final ReplyMainMenuButton replyMainMenuButton;
     private final MenuButton menuButton;
-    private final AddLessonNameButton addLessonNameButton;
+    private final ReplyAddLessonNameButton replyAddLessonNameButton;
     private final MessageSender messageSender;
     private final LessonService lessonService;
     private final InlineAddEventByWeekday inlineAddEventByWeekday;
@@ -32,7 +32,7 @@ public class CommandStrategyImpl implements CommandStrategy {
 
     public CommandStrategyImpl(ReplyMainMenuButton replyMainMenuButton,
                                MenuButton menuButton,
-                               AddLessonNameButton addLessonNameButton,
+                               ReplyAddLessonNameButton replyAddLessonNameButton,
                                MessageSender messageSender,
                                LessonService lessonService,
                                InlineAddEventByWeekday inlineAddEventByWeekday,
@@ -41,7 +41,7 @@ public class CommandStrategyImpl implements CommandStrategy {
                                LessonScheduleService lessonScheduleService) {
         this.replyMainMenuButton = replyMainMenuButton;
         this.menuButton = menuButton;
-        this.addLessonNameButton = addLessonNameButton;
+        this.replyAddLessonNameButton = replyAddLessonNameButton;
         this.messageSender = messageSender;
         this.childService = childService;
         this.lessonService = lessonService;

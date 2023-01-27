@@ -52,7 +52,7 @@ public class InlineSetExtraDaySpecificStartTime implements InlineHandler<Update>
         lessonService.create(lesson);
         InlineKeyboardMarkup inline = inlineAddDaySpecificEventStartTimeButton.getInline(lesson);
         String response = "Может что то еще интересно для урока <i>\"" + lesson.getTitle() + "\"</i>?";
-        String infoLesson = lessonService.getInfoLessonbyId(lesson.getLessonId());
+        String infoLesson = lessonService.getInfoLessonbyIdAndSendByUrl(lesson.getLessonId());
         new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, response);
     }

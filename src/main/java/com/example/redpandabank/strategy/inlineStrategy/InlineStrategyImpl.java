@@ -81,16 +81,16 @@ public class InlineStrategyImpl implements InlineStrategy {
         strategyMap.put("/scheduleFriday", new InlineScheduleWeekdayButton(lessonService, this.lessonScheduleService));
         strategyMap.put("/scheduleSaturday", new InlineScheduleWeekdayButton(lessonService, this.lessonScheduleService));
         strategyMap.put("/scheduleSunday", new InlineScheduleWeekdayButton(lessonService, this.lessonScheduleService));
-        strategyMap.put(WeekDay.MONDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService));
-        strategyMap.put(WeekDay.TUESDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService));
-        strategyMap.put(WeekDay.WEDNESDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService));
-        strategyMap.put(WeekDay.THURSDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService));
-        strategyMap.put(WeekDay.FRIDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService));
-        strategyMap.put(WeekDay.SATURDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService));
-        strategyMap.put(WeekDay.SUNDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService));
-        strategyMap.put(WeekDay.ALL_WEEK.getDay(), new InlineScheduleFindLessonByDay(lessonService));
-        strategyMap.put(Command.DELETE_EVENT.getName(), new InlineDeleteEventButton(lessonService));
-        strategyMap.put(Command.DELETE_EVENT_BY_ID.getName(), new InlineDeleteEvent(lessonScheduleService, lessonService, this.messageSender));
+        strategyMap.put(WeekDay.MONDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService, mainMenuButton));
+        strategyMap.put(WeekDay.TUESDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService, mainMenuButton));
+        strategyMap.put(WeekDay.WEDNESDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService, mainMenuButton));
+        strategyMap.put(WeekDay.THURSDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService, mainMenuButton));
+        strategyMap.put(WeekDay.FRIDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService, mainMenuButton));
+        strategyMap.put(WeekDay.SATURDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService, mainMenuButton));
+        strategyMap.put(WeekDay.SUNDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService, mainMenuButton));
+        strategyMap.put(WeekDay.ALL_WEEK.getDay(), new InlineScheduleFindLessonByDay(lessonService, mainMenuButton));
+        strategyMap.put(Command.DELETE_EVENT.getName(), new InlineDeleteEvent(lessonService));
+        strategyMap.put(Command.DELETE_EVENT_BY_ID.getName(), new InlineDeleteEventStep2(lessonScheduleService, lessonService, this.messageSender));
         strategyMap.put(Command.RECOVER_EVENT_BY_ID.getName(), new InlineRecoverEvent(lessonService));
         strategyMap.put(Command.CHOOSE_EVENT_BY_DAY.getName(), new ChooseEventByDay(this.lessonService, this.inlineShowAllDays));
         strategyMap.put(Command.EDIT_SCHEDULE.getName(), new EditSchedule(inlineEditScheduleMenuButton));
@@ -118,6 +118,7 @@ public class InlineStrategyImpl implements InlineStrategy {
         strategyMap.put(Command.SET_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineSetExtraDaySpecificStartTime(lessonService, lessonScheduleService, childService, inlineAddDaySpecificEventStartTimeButton));
         strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME.getName(), new InlineDeleteSpecificEventStartTime(lessonService));
         strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName(), new InlineDeleteSpecificEventStartTime2(lessonService, lessonScheduleService, specificEventStartTime2Button));
+        strategyMap.put(Command.EDIT_SCHEDULE_EVENT_DURATION.getName(), new InlineEditSpecificEventDuration(lessonService, childService));
     }
 
     @Override
@@ -138,6 +139,7 @@ public class InlineStrategyImpl implements InlineStrategy {
         command = checkAddDaySpecificStartTime(command);
         command = checkSetExtraDaySpecificStartTime(command);
         command = checkDeleteSpecificEventStartTime2(command);
+        command = checkInlineEditSpecificEventDuration(command);
         InlineHandler inlineHandler = strategyMap.get(command);
         if (inlineHandler == null) {
             inlineHandler = new InlinePlug();
@@ -268,6 +270,14 @@ public class InlineStrategyImpl implements InlineStrategy {
 
     private String checkDeleteSpecificEventStartTime2(String command) {
         String name = Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName();
+        if (command.contains(name)) {
+            return command.split(LessonService.COLON_SEPARATOR)[0];
+        }
+        return command;
+    }
+
+    private String checkInlineEditSpecificEventDuration(String command) {
+        String name = Command.EDIT_SCHEDULE_EVENT_DURATION.getName();
         if (command.contains(name)) {
             return command.split(LessonService.COLON_SEPARATOR)[0];
         }

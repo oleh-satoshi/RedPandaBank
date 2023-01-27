@@ -42,10 +42,6 @@ public class InlineAddScheduleEvent implements InlineHandler<Update> {
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        String title;
-        String teacher;
-        LocalTime startTime;
-        Integer duration;
         String response;
         Long userId = update.getCallbackQuery().getMessage().getChatId();
         String text = update.getCallbackQuery().getData();

@@ -10,6 +10,7 @@ import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.UpdateInfo;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -37,10 +38,9 @@ public class InlineAddDaySpecificEventStartTime implements InlineHandler<Update>
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        Long childId = update.getCallbackQuery().getFrom().getId();
-        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        String day = parseData(update.getCallbackQuery().getData());
-        String title = parseTitle(update.getCallbackQuery().getMessage().getText());
+        Long childId = UpdateInfo.getUserId(update);
+        String day = parseData(UpdateInfo.getData(update));
+        String title = parseTitle(UpdateInfo.getText(update));
         Lesson lesson = lessonService.findLessonByTitle(childId, title);
         List<LessonSchedule> lessonSchedules = lesson.getLessonSchedules();
         lessonSchedules.sort((lessonSchedule1, lessonSchedule2) -> comparator.compare(lessonSchedule1, lessonSchedule2));
@@ -53,9 +53,9 @@ public class InlineAddDaySpecificEventStartTime implements InlineHandler<Update>
         childService.create(child);
         InlineKeyboardMarkup inline = inlineAddDaySpecificEventStartTimeButton.getInline(lesson);
         String response = "День добавили для урока <i>\"" + lesson.getTitle() + "\"</i> , может чтото еще интересно?";
-        String infoLesson = lessonService.getInfoLessonbyId(lesson.getLessonId());
+        String infoLesson = lessonService.getInfoLessonbyIdAndSendByUrl(lesson.getLessonId());
         new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
-        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, response);
+        return new MessageSenderImpl().sendMessageWithInline(childId, response, inline);
     }
 
     Comparator<LessonSchedule> comparator = new Comparator<LessonSchedule>() {

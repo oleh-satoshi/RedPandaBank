@@ -1,6 +1,11 @@
 package com.example.redpandabank.enums;
 
 import lombok.Getter;
+import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.Update;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 public enum Command {
@@ -50,9 +55,9 @@ public enum Command {
     DELETE_SPECIFIC_EVENT_START_TIME_2("/deleteTimeToLessonSchedule2"),
     ADD_DAY_SPECIFIC_EVENT_START_TIME("/addDaySpecificStartTime"),
     ADD_EXTRA_DAY_SPECIFIC_EVENT_START_TIME("/addExtraDaySpecificStartTime"),
-    SET_EXTRA_DAY_SPECIFIC_EVENT_START_TIME("/setExtraDaySpecificStartTime")
+    SET_EXTRA_DAY_SPECIFIC_EVENT_START_TIME("/setExtraDaySpecificStartTime"),
+    EDIT_SPECIFIC_SCHEDULE_EVENT_DURATION("/editSpecificScheduleEventDuration");
 
-    ;
     private final String name;
 
     Command(String name) {
@@ -61,5 +66,13 @@ public enum Command {
 
     public String getName() {
         return name;
+    }
+
+    public static Set<String> getGeneralCommands() {
+        Set generalCommands = new HashSet();
+        for (int i = 0; i < Command.values().length; i++) {
+            generalCommands.add(Command.values()[i].getName());
+        }
+        return generalCommands;
     }
 }
