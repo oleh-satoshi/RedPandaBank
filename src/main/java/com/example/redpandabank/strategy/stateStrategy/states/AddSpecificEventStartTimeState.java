@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
 import com.example.redpandabank.enums.State;
-import com.example.redpandabank.keyboard.schedule.InlineAddSpecificEventStartTimeButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddSpecificEventStartTimeButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
@@ -26,11 +26,11 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update>, Com
     final ChildService childService;
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
-    final InlineAddSpecificEventStartTimeButton startTimeButton;
+    final InlineScheduleAddSpecificEventStartTimeButton startTimeButton;
 
     public AddSpecificEventStartTimeState(ChildService childService, LessonService lessonService,
                                           LessonScheduleService lessonScheduleService,
-                                          InlineAddSpecificEventStartTimeButton startTimeButton) {
+                                          InlineScheduleAddSpecificEventStartTimeButton startTimeButton) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;

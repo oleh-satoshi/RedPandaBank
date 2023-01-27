@@ -21,7 +21,7 @@ public class BackToMainMenuCommandHandler implements CommandHandler<Update> {
         SendMessage sendMessage =  SendMessage.builder()
                 .text(response)
                 .chatId(userId)
-                .replyMarkup(replyMainMenuButton.getMainMenuButton())
+                .replyMarkup(replyMainMenuButton.getKeyboard())
                 .build();
         return sendMessage;
     }

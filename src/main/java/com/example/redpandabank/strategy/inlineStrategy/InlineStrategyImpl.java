@@ -10,9 +10,9 @@ import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.strategy.inlineStrategy.mainMenu.InlineToMainMenu;
-import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineAddScheduleEvent;
-import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.EditSchedule;
-import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.ChooseEventByDay;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleAddEvent;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEdit;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleChooseEventByDay;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.*;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
@@ -27,49 +27,49 @@ public class InlineStrategyImpl implements InlineStrategy {
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
     final MessageSender messageSender;
-    final InlineAddEventByWeekday inlineAddEventByWeekday;
-    final InlineEditScheduleEventFieldButton inlineEditScheduleEventFieldButton;
+    final InlineScheduleAddEventByWeekday inlineScheduleAddEventByWeekday;
+    final InlineScheduleEditEventFieldButton inlineScheduleEditEventFieldButton;
     final InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilder;
-    final InlineShowAllDays inlineShowAllDays;
-    final MenuButton menuButton;
-    final InlineEditScheduleMenuButton inlineEditScheduleMenuButton;
+    final InlineScheduleShowAllDaysButton inlineScheduleShowAllDaysButton;
+    final InlineScheduleMenuButton inlineScheduleMenuButton;
+    final InlineScheduleEditMenuButton inlineScheduleEditMenuButton;
     final ChildService childService;
-    final InlineAddEventDay inlineAddEventDay;
-    final InlineEditSpecificEventStartTimeChooseOperationButton chooseOperationButton;
-    final InlineAddDaySpecificEventStartTimeButton inlineAddDaySpecificEventStartTimeButton;
-    final InlineAddExtraDaySpecificStartTimeButton inlineAddExtraDaySpecificStartTimeButton;
+    final InlineScheduleAddEventDay inlineScheduleAddEventDay;
+    final InlineScheduleEditSpecificEventStartTimeChooseOperationButton chooseOperationButton;
+    final InlineScheduleAddDaySpecificEventStartTimeButton inlineScheduleAddDaySpecificEventStartTimeButton;
+    final InlineScheduleAddExtraDaySpecificStartTimeButton inlineScheduleAddExtraDaySpecificStartTimeButton;
     final ReplyMainMenuButton mainMenuButton;
-    final InlineDeleteSpecificEventStartTime2Button specificEventStartTime2Button;
+    final InlineScheduleDeleteSpecificEventStartTime2Button specificEventStartTime2Button;
 
 
     public InlineStrategyImpl(LessonService lessonService,
                               LessonScheduleService lessonScheduleService,
                               MessageSender messageSender,
-                              InlineAddEventByWeekday inlineAddEventByWeekday,
-                              InlineEditScheduleEventFieldButton inlineEditScheduleEventFieldButton,
+                              InlineScheduleAddEventByWeekday inlineScheduleAddEventByWeekday,
+                              InlineScheduleEditEventFieldButton inlineScheduleEditEventFieldButton,
                               InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilder,
-                              InlineShowAllDays inlineShowAllDays, MenuButton menuButton,
-                              InlineEditScheduleMenuButton inlineEditScheduleMenuButton,
-                              ChildService childService, InlineAddEventDay inlineAddEventDay,
-                              InlineEditSpecificEventStartTimeChooseOperationButton chooseOperationButton,
-                              InlineAddDaySpecificEventStartTimeButton inlineAddDaySpecificEventStartTimeButton,
-                              InlineAddExtraDaySpecificStartTimeButton inlineAddExtraDaySpecificStartTimeButton,
+                              InlineScheduleShowAllDaysButton inlineScheduleShowAllDaysButton, InlineScheduleMenuButton inlineScheduleMenuButton,
+                              InlineScheduleEditMenuButton inlineScheduleEditMenuButton,
+                              ChildService childService, InlineScheduleAddEventDay inlineScheduleAddEventDay,
+                              InlineScheduleEditSpecificEventStartTimeChooseOperationButton chooseOperationButton,
+                              InlineScheduleAddDaySpecificEventStartTimeButton inlineScheduleAddDaySpecificEventStartTimeButton,
+                              InlineScheduleAddExtraDaySpecificStartTimeButton inlineScheduleAddExtraDaySpecificStartTimeButton,
                               ReplyMainMenuButton mainMenuButton,
-                              InlineDeleteSpecificEventStartTime2Button specificEventStartTime2Button) {
+                              InlineScheduleDeleteSpecificEventStartTime2Button specificEventStartTime2Button) {
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.messageSender = messageSender;
-        this.inlineAddEventByWeekday = inlineAddEventByWeekday;
-        this.inlineEditScheduleEventFieldButton = inlineEditScheduleEventFieldButton;
+        this.inlineScheduleAddEventByWeekday = inlineScheduleAddEventByWeekday;
+        this.inlineScheduleEditEventFieldButton = inlineScheduleEditEventFieldButton;
         this.inlineKeyboardMarkupBuilder = inlineKeyboardMarkupBuilder;
-        this.inlineShowAllDays = inlineShowAllDays;
-        this.menuButton = menuButton;
-        this.inlineEditScheduleMenuButton = inlineEditScheduleMenuButton;
+        this.inlineScheduleShowAllDaysButton = inlineScheduleShowAllDaysButton;
+        this.inlineScheduleMenuButton = inlineScheduleMenuButton;
+        this.inlineScheduleEditMenuButton = inlineScheduleEditMenuButton;
         this.childService = childService;
-        this.inlineAddEventDay = inlineAddEventDay;
+        this.inlineScheduleAddEventDay = inlineScheduleAddEventDay;
         this.chooseOperationButton = chooseOperationButton;
-        this.inlineAddDaySpecificEventStartTimeButton = inlineAddDaySpecificEventStartTimeButton;
-        this.inlineAddExtraDaySpecificStartTimeButton = inlineAddExtraDaySpecificStartTimeButton;
+        this.inlineScheduleAddDaySpecificEventStartTimeButton = inlineScheduleAddDaySpecificEventStartTimeButton;
+        this.inlineScheduleAddExtraDaySpecificStartTimeButton = inlineScheduleAddExtraDaySpecificStartTimeButton;
         this.mainMenuButton = mainMenuButton;
         this.specificEventStartTime2Button = specificEventStartTime2Button;
         strategyMap = new HashMap<>();
@@ -89,36 +89,36 @@ public class InlineStrategyImpl implements InlineStrategy {
         strategyMap.put(WeekDay.SATURDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService, mainMenuButton));
         strategyMap.put(WeekDay.SUNDAY.getDay(), new InlineScheduleFindLessonByDay(lessonService, mainMenuButton));
         strategyMap.put(WeekDay.ALL_WEEK.getDay(), new InlineScheduleFindLessonByDay(lessonService, mainMenuButton));
-        strategyMap.put(Command.DELETE_EVENT.getName(), new InlineDeleteEvent(lessonService));
-        strategyMap.put(Command.DELETE_EVENT_BY_ID.getName(), new InlineDeleteEventStep2(lessonScheduleService, lessonService, this.messageSender));
-        strategyMap.put(Command.RECOVER_EVENT_BY_ID.getName(), new InlineRecoverEvent(lessonService));
-        strategyMap.put(Command.CHOOSE_EVENT_BY_DAY.getName(), new ChooseEventByDay(this.lessonService, this.inlineShowAllDays));
-        strategyMap.put(Command.EDIT_SCHEDULE.getName(), new EditSchedule(inlineEditScheduleMenuButton));
-        strategyMap.put(Command.SCHEDULE.getName(), new InlineShowMainMenu(this.menuButton));
-        strategyMap.put(Command.SAVE_EVENT_NAME.getName(), new InlineAddScheduleEvent(this.lessonService, this.messageSender, this.childService, this.inlineAddEventByWeekday, this.lessonScheduleService, this.inlineAddEventDay));
-        strategyMap.put(Command.SAVE_EVENT_TIME.getName(), new InlineAddScheduleEvent(this.lessonService, this.messageSender, this.childService, this.inlineAddEventByWeekday, this.lessonScheduleService, this.inlineAddEventDay));
-        strategyMap.put(Command.SAVE_EVENT_TEACHER_NAME.getName(), new InlineAddScheduleEvent(this.lessonService, this.messageSender, this.childService, this.inlineAddEventByWeekday, this.lessonScheduleService, this.inlineAddEventDay));
-        strategyMap.put(Command.ADD_SCHEDULE_EVENT.getName(), new InlineAddScheduleEvent(this.lessonService, this.messageSender, this.childService, this.inlineAddEventByWeekday, this.lessonScheduleService, this.inlineAddEventDay));
-        strategyMap.put(Command.SAVE_EVENT_DURATION.getName(), new InlineAddScheduleEvent(this.lessonService, this.messageSender, this.childService, this.inlineAddEventByWeekday, this.lessonScheduleService, this.inlineAddEventDay));
-        strategyMap.put(Command.SAVE_EVENT_MONDAY.getName(), new InlineAddScheduleEvent(this.lessonService, this.messageSender, this.childService, this.inlineAddEventByWeekday, this.lessonScheduleService, this.inlineAddEventDay));
-        strategyMap.put(Command.EDIT_SCHEDULE_EVENT_TITLE.getName(), new InlineChangeEventTitle(this.lessonService, this.childService));
-        strategyMap.put(Command.EDIT_EVENT_TEACHER_NAME.getName(), new InlineChangeTeacher(lessonService, childService));
-        strategyMap.put(Command.EDIT_EVENT_DURATION.getName(), new InlineChangeDuration(lessonService, childService));
-        strategyMap.put(Command.SAVE_EVENT_DAY.getName(), new InlineAddScheduleEvent(this.lessonService, this.messageSender, this.childService, this.inlineAddEventByWeekday, this.lessonScheduleService, this.inlineAddEventDay));
-        strategyMap.put(Command.EDIT_SCHEDULE_EXISTING_EVENT.getName(), new InlineEditScheduleEvent(lessonService));
-        strategyMap.put(Command.EDIT_SPECIFIC_EXISTING_EVENT.getName(), new InlineEditSpecificExistingEvent(lessonService, lessonScheduleService, inlineEditScheduleEventFieldButton, inlineKeyboardMarkupBuilder));
-        strategyMap.put(Command.EDIT_SCHEDULE_EVENT_FIELD.getName(), new InlineEditScheduleEventField(lessonService, childService));
-        strategyMap.put(Command.EDIT_SCHEDULE_EVENT_TEACHER.getName(), new InlineEditScheduleEvenTeacherName(lessonService, childService));
-        strategyMap.put(Command.SHOW_SPECIFIC_EVENT_START_TIME.getName(), new InlineEditScheduleEventLessonStartTime(lessonService, childService, chooseOperationButton));
-        strategyMap.put(Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName(), new InlineEditSpecificEventStartTimeChooseOperation(chooseOperationButton, lessonService));
-        strategyMap.put(Command.EDIT_SCHEDULE_EVENT_START_TIME.getName(), new InlineEditScheduleEventLessonStartTime(lessonService, childService, chooseOperationButton));
-        strategyMap.put(Command.ADD_SPECIFIC_EVENT_START_TIME.getName(), new InlineAddTimeToLessonSchedule(lessonService, childService));
-        strategyMap.put(Command.ADD_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineAddDaySpecificEventStartTime(lessonScheduleService, lessonService, childService, inlineAddDaySpecificEventStartTimeButton));
-        strategyMap.put(Command.ADD_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineAddExtraDaySpecificStartTime(lessonService, lessonScheduleService, childService, inlineAddExtraDaySpecificStartTimeButton));
-        strategyMap.put(Command.SET_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineSetExtraDaySpecificStartTime(lessonService, lessonScheduleService, childService, inlineAddDaySpecificEventStartTimeButton));
-        strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME.getName(), new InlineDeleteSpecificEventStartTime(lessonService));
-        strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName(), new InlineDeleteSpecificEventStartTime2(lessonService, lessonScheduleService, specificEventStartTime2Button));
-        strategyMap.put(Command.EDIT_SCHEDULE_EVENT_DURATION.getName(), new InlineEditSpecificEventDuration(lessonService, childService));
+        strategyMap.put(Command.DELETE_EVENT.getName(), new InlineScheduleDeleteEvent(lessonService));
+        strategyMap.put(Command.DELETE_EVENT_BY_ID.getName(), new InlineScheduleDeleteEventStep2(lessonScheduleService, lessonService, this.messageSender));
+        strategyMap.put(Command.RECOVER_EVENT_BY_ID.getName(), new InlineScheduleRecoverEvent(lessonService));
+        strategyMap.put(Command.CHOOSE_EVENT_BY_DAY.getName(), new InlineScheduleChooseEventByDay(this.inlineScheduleShowAllDaysButton));
+        strategyMap.put(Command.EDIT_SCHEDULE.getName(), new InlineScheduleEdit(inlineScheduleEditMenuButton));
+        strategyMap.put(Command.SCHEDULE.getName(), new InlineShowMainMenu(this.inlineScheduleMenuButton));
+        strategyMap.put(Command.SAVE_EVENT_NAME.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
+        strategyMap.put(Command.SAVE_EVENT_TIME.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
+        strategyMap.put(Command.SAVE_EVENT_TEACHER_NAME.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
+        strategyMap.put(Command.ADD_SCHEDULE_EVENT.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
+        strategyMap.put(Command.SAVE_EVENT_DURATION.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
+        strategyMap.put(Command.SAVE_EVENT_MONDAY.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
+        strategyMap.put(Command.EDIT_SCHEDULE_EVENT_TITLE.getName(), new InlineScheduleChangeEventTitle(this.lessonService, this.childService));
+        strategyMap.put(Command.EDIT_EVENT_TEACHER_NAME.getName(), new InlineScheduleChangeTeacher(lessonService, childService));
+        strategyMap.put(Command.EDIT_EVENT_DURATION.getName(), new InlineScheduleChangeDuration(lessonService, childService));
+        strategyMap.put(Command.SAVE_EVENT_DAY.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
+        strategyMap.put(Command.EDIT_SCHEDULE_EXISTING_EVENT.getName(), new InlineScheduleEditEvent(lessonService));
+        strategyMap.put(Command.EDIT_SPECIFIC_EXISTING_EVENT.getName(), new InlineScheduleEditSpecificExistingEvent(lessonService, lessonScheduleService, inlineScheduleEditEventFieldButton, inlineKeyboardMarkupBuilder));
+        strategyMap.put(Command.EDIT_SCHEDULE_EVENT_FIELD.getName(), new InlineScheduleEditEventField(lessonService, childService));
+        strategyMap.put(Command.EDIT_SCHEDULE_EVENT_TEACHER.getName(), new InlineScheduleEditEvenTeacherName(lessonService, childService));
+        strategyMap.put(Command.SHOW_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleEditEventLessonStartTime(lessonService, childService, chooseOperationButton));
+        strategyMap.put(Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName(), new InlineScheduleEditSpecificEventStartTimeChooseOperation(chooseOperationButton, lessonService));
+        strategyMap.put(Command.EDIT_SCHEDULE_EVENT_START_TIME.getName(), new InlineScheduleEditEventLessonStartTime(lessonService, childService, chooseOperationButton));
+        strategyMap.put(Command.ADD_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleAddTimeToLesson(lessonService, childService));
+        strategyMap.put(Command.ADD_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleAddDaySpecificEventStartTime(lessonScheduleService, lessonService, childService, inlineScheduleAddDaySpecificEventStartTimeButton));
+        strategyMap.put(Command.ADD_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleAddExtraDaySpecificStartTime(lessonService, lessonScheduleService, childService, inlineScheduleAddExtraDaySpecificStartTimeButton));
+        strategyMap.put(Command.SET_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineSetExtraDaySpecificStartTime(lessonService, lessonScheduleService, childService, inlineScheduleAddDaySpecificEventStartTimeButton));
+        strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleDeleteSpecificEventStartTime(lessonService));
+        strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName(), new InlineScheduleDeleteSpecificEventStartTime2(lessonService, lessonScheduleService, specificEventStartTime2Button));
+        strategyMap.put(Command.EDIT_SCHEDULE_EVENT_DURATION.getName(), new InlineScheduleEditSpecificEventDuration(lessonService, childService));
     }
 
     @Override

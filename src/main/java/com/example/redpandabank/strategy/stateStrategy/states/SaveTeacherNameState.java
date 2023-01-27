@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
 import com.example.redpandabank.enums.State;
-import com.example.redpandabank.keyboard.schedule.InlineAddTeacherName;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddTeacherNameButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
@@ -26,13 +26,13 @@ public class SaveTeacherNameState implements StateHandler<Update>, CommandChecka
     String teacherName;
     final ChildService childService;
     final LessonService lessonService;
-    final InlineAddTeacherName inlineAddTeacherName;
+    final InlineScheduleAddTeacherNameButton inlineScheduleAddTeacherNameButton;
 
     public SaveTeacherNameState(ChildService childService,
-                                LessonService lessonService, InlineAddTeacherName inlineAddTeacherName) {
+                                LessonService lessonService, InlineScheduleAddTeacherNameButton inlineScheduleAddTeacherNameButton) {
         this.childService = childService;
         this.lessonService = lessonService;
-        this.inlineAddTeacherName = inlineAddTeacherName;
+        this.inlineScheduleAddTeacherNameButton = inlineScheduleAddTeacherNameButton;
     }
 
 
@@ -48,7 +48,7 @@ public class SaveTeacherNameState implements StateHandler<Update>, CommandChecka
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
-            InlineKeyboardMarkup inline = inlineAddTeacherName.getInline(lesson);
+            InlineKeyboardMarkup inline = inlineScheduleAddTeacherNameButton.getInline(lesson);
             String response = "Учитель\"<i>" + lesson.getTeacher()
                     + "\"</i> добавлен! \n\nЕсли ты написал без ошибок то жми кнопку <b>Дальше</b>";
             return new MessageSenderImpl().sendMessageWithInline(userId, response, inline);

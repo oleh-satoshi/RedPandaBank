@@ -10,8 +10,8 @@ import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.strategy.commandStrategy.handler.BackToMainMenuCommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.*;
-import com.example.redpandabank.strategy.commandStrategy.handler.PlugCommandHandler;
-import com.example.redpandabank.strategy.commandStrategy.handler.StartCommandHandler;
+import com.example.redpandabank.strategy.commandStrategy.handler.SchedulePlugCommandHandler;
+import com.example.redpandabank.strategy.commandStrategy.handler.ScheduleStartCommandHandler;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -21,41 +21,41 @@ import java.util.Map;
 public class CommandStrategyImpl implements CommandStrategy {
     private Map<String, CommandHandler> commandStrategyMap;
     private final ReplyMainMenuButton replyMainMenuButton;
-    private final MenuButton menuButton;
-    private final ReplyAddLessonNameButton replyAddLessonNameButton;
+    private final InlineScheduleMenuButton inlineScheduleMenuButton;
+    private final ReplyScheduleAddLessonNameButton replyScheduleAddLessonNameButton;
     private final MessageSender messageSender;
     private final LessonService lessonService;
-    private final InlineAddEventByWeekday inlineAddEventByWeekday;
+    private final InlineScheduleAddEventByWeekday inlineScheduleAddEventByWeekday;
     private final ChildService childService;
-    private final InlineShowAllDays inlineShowAllDays;
+    private final InlineScheduleShowAllDaysButton inlineScheduleShowAllDaysButton;
     private final LessonScheduleService lessonScheduleService;
 
     public CommandStrategyImpl(ReplyMainMenuButton replyMainMenuButton,
-                               MenuButton menuButton,
-                               ReplyAddLessonNameButton replyAddLessonNameButton,
+                               InlineScheduleMenuButton inlineScheduleMenuButton,
+                               ReplyScheduleAddLessonNameButton replyScheduleAddLessonNameButton,
                                MessageSender messageSender,
                                LessonService lessonService,
-                               InlineAddEventByWeekday inlineAddEventByWeekday,
+                               InlineScheduleAddEventByWeekday inlineScheduleAddEventByWeekday,
                                ChildService childService,
-                               InlineShowAllDays inlineShowAllDays,
+                               InlineScheduleShowAllDaysButton inlineScheduleShowAllDaysButton,
                                LessonScheduleService lessonScheduleService) {
         this.replyMainMenuButton = replyMainMenuButton;
-        this.menuButton = menuButton;
-        this.replyAddLessonNameButton = replyAddLessonNameButton;
+        this.inlineScheduleMenuButton = inlineScheduleMenuButton;
+        this.replyScheduleAddLessonNameButton = replyScheduleAddLessonNameButton;
         this.messageSender = messageSender;
         this.childService = childService;
         this.lessonService = lessonService;
-        this.inlineAddEventByWeekday = inlineAddEventByWeekday;
-        this.inlineShowAllDays = inlineShowAllDays;
+        this.inlineScheduleAddEventByWeekday = inlineScheduleAddEventByWeekday;
+        this.inlineScheduleShowAllDaysButton = inlineScheduleShowAllDaysButton;
         this.lessonScheduleService = lessonScheduleService;
 
         commandStrategyMap = new HashMap<>();
-        commandStrategyMap.put(Command.START.getName(), new StartCommandHandler(this.replyMainMenuButton, childService));
-        commandStrategyMap.put(Command.SCHEDULE.getName(), new ShowScheduleMenuCommandHandler(menuButton));
+        commandStrategyMap.put(Command.START.getName(), new ScheduleStartCommandHandler(this.replyMainMenuButton, childService));
+        commandStrategyMap.put(Command.SCHEDULE.getName(), new ScheduleMenuShowCommandHandler(inlineScheduleMenuButton));
         commandStrategyMap.put(Command.BACK_TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.replyMainMenuButton));
-        commandStrategyMap.put(Command.DELETE_EVENT.getName(), new DeleteEventCommandHandler(lessonService));
+        commandStrategyMap.put(Command.DELETE_EVENT.getName(), new ScheduleDeleteEventCommandHandler(lessonService));
         commandStrategyMap.put(Command.EDIT_SCHEDULE_EXISTING_EVENT.getName(), new EditScheduleEventCommandHandler(lessonService));
-        commandStrategyMap.put(Command.SCHEDULE_2.getName(), new ShowScheduleMenuCommandHandler(menuButton));
+        commandStrategyMap.put(Command.SCHEDULE_2.getName(), new ScheduleMenuShowCommandHandler(inlineScheduleMenuButton));
     }
 
     @Override
@@ -65,7 +65,7 @@ public class CommandStrategyImpl implements CommandStrategy {
         command = checkSaveEventDuration(command);
         CommandHandler commandHandler = commandStrategyMap.get(command);
         if (commandHandler == null) {
-            commandHandler = new PlugCommandHandler();
+            commandHandler = new SchedulePlugCommandHandler();
         }
         return commandHandler;
     }

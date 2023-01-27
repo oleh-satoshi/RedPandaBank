@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
 import com.example.redpandabank.enums.State;
-import com.example.redpandabank.keyboard.schedule.InlineAddEventDuration;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventDuration;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
@@ -28,14 +28,14 @@ public class SaveDurationEventState implements StateHandler<Update>, CommandChec
     String duration;
     final ChildService childService;
     final LessonService lessonService;
-    final InlineAddEventDuration inlineAddEventDuration;
+    final InlineScheduleAddEventDuration inlineScheduleAddEventDuration;
 
     public SaveDurationEventState(ChildService childService, LessonService lessonService,
-                                  InlineAddEventDuration inlineAddEventDuration) {
+                                  InlineScheduleAddEventDuration inlineScheduleAddEventDuration) {
 
         this.childService = childService;
         this.lessonService = lessonService;
-        this.inlineAddEventDuration = inlineAddEventDuration;
+        this.inlineScheduleAddEventDuration = inlineScheduleAddEventDuration;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class SaveDurationEventState implements StateHandler<Update>, CommandChec
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
-            InlineKeyboardMarkup inline = inlineAddEventDuration.getInline();
+            InlineKeyboardMarkup inline = inlineScheduleAddEventDuration.getInline();
             String response = "Длительность для урока \"<i>" + lesson.getTitle()
                     + "\"</i> установили!\n\nЕсли ты написал без ошибок то жми кнопку <b>Дальше</b>";
             return new MessageSenderImpl().sendMessageWithInline(userId, response, inline);

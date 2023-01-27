@@ -2,7 +2,7 @@ package com.example.redpandabank.strategy.stateStrategy.states;
 
 import com.example.redpandabank.enums.State;
 import com.example.redpandabank.enums.WeekDay;
-import com.example.redpandabank.keyboard.schedule.InlineAddExtraDay;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddExtraDayButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
@@ -23,15 +23,15 @@ public class SaveEventDayState implements StateHandler<Update>, CommandCheckable
     final ChildService childService;
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
-    final InlineAddExtraDay inlineAddExtraDay;
+    final InlineScheduleAddExtraDayButton inlineScheduleAddExtraDayButton;
 
     public SaveEventDayState(ChildService childService, LessonService lessonService,
                              LessonScheduleService lessonScheduleService,
-                             InlineAddExtraDay inlineAddExtraDay) {
+                             InlineScheduleAddExtraDayButton inlineScheduleAddExtraDayButton) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
-        this.inlineAddExtraDay = inlineAddExtraDay;
+        this.inlineScheduleAddExtraDayButton = inlineScheduleAddExtraDayButton;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class SaveEventDayState implements StateHandler<Update>, CommandCheckable
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
-            InlineKeyboardMarkup inline = inlineAddExtraDay.getInline();
+            InlineKeyboardMarkup inline = inlineScheduleAddExtraDayButton.getInline();
             String response = "Давай добавим время начала урока";
             return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, inline, response);
         } else {

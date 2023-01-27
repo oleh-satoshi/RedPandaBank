@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
-import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
+import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
@@ -14,31 +14,30 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.HashSet;
 
-import static com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.ScheduleDeleteEventCommandHandler.SEPARATOR;
-
 @PackagePrivate
 @Component
-public class EditScheduleEventCommandHandler implements CommandHandler<Update> {
+public class ScheduleDeleteEventCommandHandler implements CommandHandler<Update> {
+    final static String SEPARATOR = ":";
     final LessonService lessonService;
 
-    public EditScheduleEventCommandHandler(LessonService lessonService) {
+    public ScheduleDeleteEventCommandHandler(LessonService lessonService) {
         this.lessonService = lessonService;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
         Long childId = update.getMessage().getChatId();
-        HashSet<Lesson> lessons = lessonService.findAllByChildId(childId);
+        HashSet<Lesson> allByTitle = lessonService.findAllByChildId(childId);
 
         InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilderImpl =
                 InlineKeyboardMarkupBuilderImpl.create()
-                        .row();
-        for (Lesson lesson : lessons) {
+                .row();
+        for (Lesson lesson : allByTitle) {
             inlineKeyboardMarkupBuilderImpl.button(lesson.getTitle(),
-                    Command.EDIT_SPECIFIC_EVENT_FIELD.getName() + SEPARATOR + lesson.getTitle()).endRow();
+                    Command.DELETE_EVENT_BY_ID.getName() + SEPARATOR + lesson.getLessonId()).endRow();
         }
         SendMessage sendMessage = new MessageSenderImpl().sendMessageWithInline(childId,
-                "Какой урок ты хочешь редактировать?",
+                "Внимательно посмотри на название урока и выбери тот который ты хочешь удалить..",
                 inlineKeyboardMarkupBuilderImpl.build());
         return sendMessage;
     }

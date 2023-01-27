@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
 import com.example.redpandabank.enums.State;
-import com.example.redpandabank.keyboard.schedule.InlineAddEventTime;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventTimeButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
@@ -23,15 +23,15 @@ public class SaveEventTimeState implements StateHandler<Update>, CommandCheckabl
     final ChildService childService;
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
-    final InlineAddEventTime inlineAddEventTime;
+    final InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton;
 
     public SaveEventTimeState(ChildService childService,
                               LessonService lessonService,
-                              LessonScheduleService lessonScheduleService, InlineAddEventTime inlineAddEventTime) {
+                              LessonScheduleService lessonScheduleService, InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
-        this.inlineAddEventTime = inlineAddEventTime;
+        this.inlineScheduleAddEventTimeButton = inlineScheduleAddEventTimeButton;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class SaveEventTimeState implements StateHandler<Update>, CommandCheckabl
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
-            InlineKeyboardMarkup inline = inlineAddEventTime.getInline();
+            InlineKeyboardMarkup inline = inlineScheduleAddEventTimeButton.getInline();
             String response = "Готово! Урок добавлен в твое расписание!";
             return new MessageSenderImpl().sendMessageWithInline(userId, response, inline);
         } else {

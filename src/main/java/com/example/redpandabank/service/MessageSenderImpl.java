@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
 import java.io.BufferedInputStream;
@@ -29,22 +30,22 @@ public class MessageSenderImpl implements MessageSender {
 
 
     @Override
-    public SendMessage sendMessageWithInline(Long chatId, String content, InlineKeyboardMarkup keyboardMarkup) {
+    public SendMessage sendMessageWithInline(Long chatId, String content, ReplyKeyboard keyboard) {
         return new SendMessage().builder()
                 .chatId(chatId)
                 .text(content)
                 .parseMode(PARSE_MODE)
-                .replyMarkup(keyboardMarkup)
+                .replyMarkup(keyboard)
                 .build();
     }
 
     @Override
-    public SendMessage sendMessageWithReply(Long chatId, String content, ReplyKeyboardMarkup keyboardMarkup) {
+    public SendMessage sendMessageWithReply(Long chatId, String content, ReplyKeyboard keyboard) {
         return new SendMessage().builder()
                 .chatId(chatId)
                 .text(content)
                 .parseMode(PARSE_MODE)
-                .replyMarkup(keyboardMarkup)
+                .replyMarkup(keyboard)
                 .build();
     }
 
@@ -57,11 +58,11 @@ public class MessageSenderImpl implements MessageSender {
                 .build();
     }
 
-    public EditMessageText sendEditMessageWithInline(Long userId, Integer messageId, InlineKeyboardMarkup keyboardMarkup, String content) {
+    public EditMessageText sendEditMessageWithInline(Long userId, Integer messageId, InlineKeyboardMarkup keyboard, String content) {
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setChatId(userId);
         editMessageText.setMessageId(messageId);
-        editMessageText.setReplyMarkup(keyboardMarkup);
+        editMessageText.setReplyMarkup(keyboard);
         editMessageText.setText(content);
         editMessageText.setParseMode(PARSE_MODE);
         return editMessageText;

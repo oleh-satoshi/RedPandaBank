@@ -7,6 +7,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
-public interface Pressable {
-    ReplyKeyboard getKeyboard();
+public interface Pressable<T> {
+    T getKeyboard();
 }

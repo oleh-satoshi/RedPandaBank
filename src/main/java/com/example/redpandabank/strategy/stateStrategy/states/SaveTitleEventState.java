@@ -1,8 +1,8 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
 import com.example.redpandabank.enums.State;
-import com.example.redpandabank.keyboard.schedule.InlineCheckCorrectTitle;
-import com.example.redpandabank.keyboard.schedule.InlineRepeatAddLesson;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleCheckCorrectTitleButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleRepeatAddLessonButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
@@ -25,15 +25,15 @@ public class SaveTitleEventState implements StateHandler<Update>, CommandCheckab
     String lessonTitle;
     final ChildService childService;
     final LessonService lessonService;
-    final InlineCheckCorrectTitle inlineCheckCorrectTitle;
-    final InlineRepeatAddLesson inlineRepeatAddLesson;
+    final InlineScheduleCheckCorrectTitleButton inlineScheduleCheckCorrectTitleButton;
+    final InlineScheduleRepeatAddLessonButton inlineScheduleRepeatAddLessonButton;
 
     public SaveTitleEventState(ChildService childService, LessonService lessonService,
-                               InlineCheckCorrectTitle inlineCheckCorrectTitle,
-                               InlineRepeatAddLesson inlineRepeatAddLesson) {
+                               InlineScheduleCheckCorrectTitleButton inlineScheduleCheckCorrectTitleButton,
+                               InlineScheduleRepeatAddLessonButton inlineScheduleRepeatAddLessonButton) {
         this.lessonService = lessonService;
-        this.inlineCheckCorrectTitle = inlineCheckCorrectTitle;
-        this.inlineRepeatAddLesson = inlineRepeatAddLesson;
+        this.inlineScheduleCheckCorrectTitleButton = inlineScheduleCheckCorrectTitleButton;
+        this.inlineScheduleRepeatAddLessonButton = inlineScheduleRepeatAddLessonButton;
         this.childService = childService;
     }
 
@@ -51,14 +51,14 @@ public class SaveTitleEventState implements StateHandler<Update>, CommandCheckab
                 lessonService.create(lesson);
                 child.setState(State.NO_STATE.getState());
                 childService.create(child);
-                InlineKeyboardMarkup inline = inlineCheckCorrectTitle.getInline(lesson);
+                InlineKeyboardMarkup inline = inlineScheduleCheckCorrectTitleButton.getInline(lesson);
                 String response = "Урок \"<i>" + lesson.getTitle()
                         + "\"</i> сохранили!\n\nЕсли ты написал без ошибок то жми кнопку <b>Дальше</b>";
                 return new MessageSenderImpl().sendMessageWithInline(userId, response, inline);
             } else {
                 child.setState(State.NO_STATE.getState());
                 childService.create(child);
-                InlineKeyboardMarkup inline = inlineRepeatAddLesson.getInline();
+                InlineKeyboardMarkup inline = inlineScheduleRepeatAddLessonButton.getInline();
                 return new MessageSenderImpl().sendMessageWithInline(userId,
                         "Такой урок уже сохраняли!", inline);
             }
