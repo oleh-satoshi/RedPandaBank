@@ -1,17 +1,19 @@
 package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @Component
-public class InlineEditScheduleMenuButton {
-    public InlineKeyboardMarkup getInline() {
-        String addScheduleEvent = Command.ADD_SCHEDULE_EVENT.getName();
-        String editScheduleEvent = Command.EDIT_SCHEDULE_EXISTING_EVENT.getName();
-        String deleteScheduleEvent = Command.DELETE_EVENT.getName();
+public class InlineEditScheduleMenuButton implements Pressable {
+    String addScheduleEvent = Command.ADD_SCHEDULE_EVENT.getName();
+    String editScheduleEvent = Command.EDIT_SCHEDULE_EXISTING_EVENT.getName();
+    String deleteScheduleEvent = Command.DELETE_EVENT.getName();
 
+    public ReplyKeyboard getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(addScheduleEvent, addScheduleEvent)

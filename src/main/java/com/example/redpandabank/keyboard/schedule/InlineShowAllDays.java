@@ -1,14 +1,17 @@
 package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.enums.WeekDay;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @Component
-public class InlineShowAllDays {
-    public InlineKeyboardMarkup getInline() {
+public class InlineShowAllDays  implements Pressable {
+    @Override
+    public ReplyKeyboard getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button("Monday", WeekDay.MONDAY.getDay())
@@ -23,6 +26,5 @@ public class InlineShowAllDays {
                 .row()
                 .button("Back", Command.SCHEDULE.getName())
                 .endRow()
-                .build();
-    }
+                .build();    }
 }
