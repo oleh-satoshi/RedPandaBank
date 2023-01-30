@@ -12,6 +12,8 @@ import com.example.redpandabank.service.TelegramBot;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -19,7 +21,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
-@PackagePrivate
+@FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
 public class SaveTitleEventState implements StateHandler<Update>, CommandCheckable {
     Long userId;

@@ -15,13 +15,15 @@ import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineSch
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleChooseEventByDay;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.*;
 import com.example.redpandabank.util.Separator;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@PackagePrivate
+@FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
 public class InlineStrategyImpl implements InlineStrategy {
     Map<String, InlineHandler> strategyMap;

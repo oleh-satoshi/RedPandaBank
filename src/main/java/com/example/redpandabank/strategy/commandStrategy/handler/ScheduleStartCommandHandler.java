@@ -62,5 +62,4 @@ public class ScheduleStartCommandHandler implements CommandHandler<Update> {
                     .build();
         }
     }
-
 }

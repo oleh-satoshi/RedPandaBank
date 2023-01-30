@@ -7,6 +7,9 @@ import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -16,7 +19,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-@Service
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Component
 public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
     private final LessonService lessonService;
     private final LessonScheduleService lessonScheduleService;

@@ -41,11 +41,6 @@ public class LessonServiceImpl implements LessonService {
         return lessonRepository.getLessonsQuantity(userId);
     }
 
-//    @Override
-//    public List<Lesson> getLessonsByDay(Long userId, String day) {
-//        return lessonRepository.findLessonByChildIdAndWeekDay(userId, day);
-//    }
-
     @Override
     public List<Lesson> findLessonByChildIdAndWeekDay(Long userId, String day) {
         return lessonRepository.findLessonByChildIdAndDay(userId, day);
@@ -143,6 +138,4 @@ public class LessonServiceImpl implements LessonService {
                 .append(":clock8: " + "Идет " + "<b>" + lesson.getDuration() + "</b>" + getDuration(lesson.getDuration()) + NEXT_LINE);
         return EmojiParser.parseToUnicode( stringBuilder.toString());
     }
-
-
 }

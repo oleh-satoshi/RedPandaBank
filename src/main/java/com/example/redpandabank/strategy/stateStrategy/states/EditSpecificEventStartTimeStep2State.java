@@ -10,12 +10,17 @@ import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
 import java.time.LocalTime;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Component
 public class EditSpecificEventStartTimeStep2State implements StateHandler<Update>, CommandCheckable {
     Long userId;
     String lessonTitle;
@@ -33,7 +38,6 @@ public class EditSpecificEventStartTimeStep2State implements StateHandler<Update
         this.lessonScheduleService = lessonScheduleService;
         this.mainMenuButton = mainMenuButton;
     }
-
 
     @Override
     public BotApiMethod<?> handle(Update update, TelegramBot telegramBot) {

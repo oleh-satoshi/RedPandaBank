@@ -26,8 +26,6 @@ public class MessageSenderImpl implements MessageSender {
         sendUrl(urlString);
     }
 
-
-
     @Override
     public SendMessage sendMessageWithInline(Long chatId, String content, ReplyKeyboard keyboard) {
         return new SendMessage().builder()
@@ -85,6 +83,4 @@ public class MessageSenderImpl implements MessageSender {
             throw new RuntimeException("Can't send message! ", e);
         }
     }
-
-
 }

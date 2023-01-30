@@ -12,6 +12,8 @@ import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -22,7 +24,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@PackagePrivate
+@FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Update> {
     final LessonService lessonService;
@@ -53,6 +55,7 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
                             + Separator.COLON_SEPARATOR + localTime.toString())
                     .endRow();
         }
+
         InlineKeyboardMarkup inline = builder.build();
         Child child = childService.findByUserId(childId);
         child.setState(State.EDIT_SPECIFIC_EVENT_START_TIME.getState());
@@ -60,8 +63,6 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
         childService.create(child);
         String content = "Какое время для урока <i>\"" + lesson.getTitle() + "\"</i> ты хочешь изменить?";
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, content);
-
-
     }
 
     private String parseData(String command) {

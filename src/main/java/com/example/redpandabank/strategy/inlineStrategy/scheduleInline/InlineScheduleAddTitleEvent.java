@@ -6,12 +6,14 @@ import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.UpdateInfo;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@PackagePrivate
+@FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleAddTitleEvent implements InlineHandler<Update> {
     final ChildService childService;

@@ -2,14 +2,14 @@ package com.example.redpandabank.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.PackagePrivate;
 
 import java.util.List;
 
 @Data
 @EqualsAndHashCode
-@PackagePrivate
-@Entity
+@FieldDefaults(level=AccessLevel.PRIVATE)@Entity
 @Table(name = "lessons")
 public class Lesson {
     @Id

@@ -1,5 +1,7 @@
 package com.example.redpandabank.keyboard.keyboardBuilder;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -12,7 +14,7 @@ import java.util.List;
 
 import static java.lang.Math.toIntExact;
 
-@PackagePrivate
+@FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
 public class InlineKeyboardMarkupBuilderImpl extends InlineKeyboardMarkupBuilder implements KeyboardMarkupBuilder {
 

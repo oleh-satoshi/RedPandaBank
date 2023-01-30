@@ -6,6 +6,8 @@ import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBui
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.util.Separator;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -14,8 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@PackagePrivate
-@Component
+@FieldDefaults(level= AccessLevel.PRIVATE)@Component
 public class InlineScheduleEditEventFieldButton implements
         PressableWithArgument<ReplyKeyboard, Lesson> {
     @Override

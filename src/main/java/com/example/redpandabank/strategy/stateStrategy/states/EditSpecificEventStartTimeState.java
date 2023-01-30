@@ -9,12 +9,17 @@ import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalTime;
 import java.util.List;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Component
 public class EditSpecificEventStartTimeState implements StateHandler<Update>, CommandCheckable {
     Long userId;
     String lessonTitle;
@@ -68,9 +73,7 @@ public class EditSpecificEventStartTimeState implements StateHandler<Update>, Co
         }
 
     private LocalTime parseTimeWithTitle(String text) {
-        //TODO пропусти регексом, что бы проходили только цифры
         String[] response = text.split(":");
         return LocalTime.of(Integer.parseInt(response[1]), Integer.parseInt(response[2]));
     }
-
-    }
+}

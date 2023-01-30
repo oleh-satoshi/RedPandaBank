@@ -12,14 +12,18 @@ import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Component
 public class EditSpecificScheduleEventDurationState implements StateHandler<Update>, CommandCheckable {
     Long userId;
     String duration;
-    String title;
     final ChildService childService;
     final LessonService lessonService;
     final ReplyScheduleEditSpecificEventDurationStateButton eventDurationStateButton;

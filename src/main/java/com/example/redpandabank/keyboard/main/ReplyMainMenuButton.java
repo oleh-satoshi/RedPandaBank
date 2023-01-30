@@ -16,5 +16,6 @@ public class ReplyMainMenuButton  implements Pressable {
                 .button(Command.SCHEDULE.getName())
                 .button("тут будут еще кнопки")
                 .endRow()
-                .build();    }
+                .build();
+    }
 }

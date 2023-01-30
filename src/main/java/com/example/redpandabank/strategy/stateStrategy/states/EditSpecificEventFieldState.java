@@ -12,10 +12,15 @@ import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Component
 public class EditSpecificEventFieldState implements StateHandler<Update>, CommandCheckable {
     Long userId;
     String duration;
@@ -61,6 +66,5 @@ public class EditSpecificEventFieldState implements StateHandler<Update>, Comman
     private Long parseId(String text) {
         return Long.parseLong(text.split(Separator.COLON_SEPARATOR)[1]);
     }
-
 
 }

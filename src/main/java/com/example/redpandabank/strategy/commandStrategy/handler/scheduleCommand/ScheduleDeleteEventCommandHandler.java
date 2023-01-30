@@ -6,6 +6,8 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -14,8 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.HashSet;
 
-@PackagePrivate
-@Component
+@FieldDefaults(level= AccessLevel.PRIVATE)@Component
 public class ScheduleDeleteEventCommandHandler implements CommandHandler<Update> {
     final static String SEPARATOR = ":";
     final LessonService lessonService;

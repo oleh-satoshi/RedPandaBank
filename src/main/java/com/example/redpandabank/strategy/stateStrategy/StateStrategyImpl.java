@@ -9,13 +9,15 @@ import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.strategy.stateStrategy.states.*;
 import com.example.redpandabank.util.Separator;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@PackagePrivate
+@FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
 public class StateStrategyImpl implements StateStrategy {
     Map<String, StateHandler> stateStrategyMap;
