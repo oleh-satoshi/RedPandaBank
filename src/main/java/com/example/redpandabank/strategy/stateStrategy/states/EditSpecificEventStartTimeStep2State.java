@@ -8,6 +8,7 @@ import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
+import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -54,10 +55,10 @@ public class EditSpecificEventStartTimeStep2State implements StateHandler<Update
             child.setState(State.NO_STATE.getState());
             childService.create(child);
             String response = "Время начала урока изменили!";
-            ReplyKeyboardMarkup menuButton = mainMenuButton.getMainMenuButton();
+            ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
             String infoLesson = lessonService.getInfoLessonbyIdAndSendByUrl(lesson.getLessonId());
             new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
-            return new MessageSenderImpl().sendMessageWithReply(userId, response, menuButton);
+            return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
         } else {
             return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
@@ -69,11 +70,11 @@ public class EditSpecificEventStartTimeStep2State implements StateHandler<Update
     }
 
     private String parseEventTitle (String name){
-        return name.split(LessonService.QUOTE_SEPARATOR)[1];
+        return name.split(Separator.QUOTE_SEPARATOR)[1];
     }
 
     private String parseTitleFromState(String name) {
-        return name.split(LessonService.COLON_SEPARATOR)[1];
+        return name.split(Separator.COLON_SEPARATOR)[1];
     }
 
     private LocalTime parseTime(String text) {

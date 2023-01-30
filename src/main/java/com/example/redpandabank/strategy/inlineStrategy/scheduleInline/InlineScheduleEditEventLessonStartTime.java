@@ -11,6 +11,7 @@ import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -49,7 +50,7 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
         for (LocalTime localTime : timeList) {
             builder.row()
                     .button(localTime.toString(), Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
-                            + LessonService.COLON_SEPARATOR + localTime.toString())
+                            + Separator.COLON_SEPARATOR + localTime.toString())
                     .endRow();
         }
         InlineKeyboardMarkup inline = builder.build();
@@ -64,6 +65,6 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
     }
 
     private String parseData(String command) {
-        return command.split(LessonService.COLON_SEPARATOR)[1];
+        return command.split(Separator.COLON_SEPARATOR)[1];
     }
 }

@@ -10,6 +10,7 @@ import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.service.TelegramBot;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
+import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -35,9 +36,9 @@ public class EditSpecificEventFieldState implements StateHandler<Update>, Comman
         duration = UpdateInfo.getText(update);
         Child child = childService.findByUserId(userId);
         if (checkCommand(duration, child)) {
-            String oldTitle = parseTitleFromText(child.getState());
-            Lesson lesson = lessonService.findLessonByTitle(userId, oldTitle);
-            String newTitle = update.getMessage().getText();
+            Long lessonId = parseId(child.getState());
+            Lesson lesson = lessonService.getById(lessonId);
+            String newTitle = UpdateInfo.getText(update);
             lesson.setTitle(newTitle);
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
@@ -45,8 +46,8 @@ public class EditSpecificEventFieldState implements StateHandler<Update>, Comman
             String infoLesson = lessonService.getInfoLessonbyIdAndSendByUrl(lesson.getLessonId());
             new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
             String response = "Название урока успешно сохранили! Пойду поем!";
-            ReplyKeyboardMarkup menuButton = mainMenuButton.getMainMenuButton();
-            return new MessageSenderImpl().sendMessageWithReply(userId, response, menuButton);
+            ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
+            return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
         } else {
             return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
@@ -57,8 +58,8 @@ public class EditSpecificEventFieldState implements StateHandler<Update>, Comman
         return CommandCheckable.super.checkCommand(command, child);
     }
 
-    private String parseTitleFromText(String name) {
-        return name.split(LessonService.COLON_SEPARATOR)[1];
+    private Long parseId(String text) {
+        return Long.parseLong(text.split(Separator.COLON_SEPARATOR)[1]);
     }
 
 

@@ -52,9 +52,9 @@ public class SaveEventTimeState implements StateHandler<Update>, CommandCheckabl
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
-            InlineKeyboardMarkup inline = inlineScheduleAddEventTimeButton.getInline();
+            InlineKeyboardMarkup keyboard = inlineScheduleAddEventTimeButton.getKeyboard();
             String response = "Готово! Урок добавлен в твое расписание!";
-            return new MessageSenderImpl().sendMessageWithInline(userId, response, inline);
+            return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
         } else {
             return  goBackToTelegramBot(child, childService, telegramBot, update);
         }

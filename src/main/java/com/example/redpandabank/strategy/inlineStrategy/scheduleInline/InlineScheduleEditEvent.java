@@ -6,6 +6,7 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -30,15 +31,16 @@ public class InlineScheduleEditEvent implements InlineHandler<Update> {
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         List<Lesson> lessonsSet = lessonService.findAllByChildIdWithoutLessonSchedule(childId);
         List<Lesson> lessons = new ArrayList<>(lessonsSet);
+        String lessonTitle;
         InlineKeyboardMarkupBuilderImpl builder = InlineKeyboardMarkupBuilderImpl.create();
         for (Lesson lesson : lessons) {
             builder.row();
             builder.button(lesson.getTitle(), Command.EDIT_SPECIFIC_EXISTING_EVENT.getName()
-                    + LessonService.COLON_SEPARATOR + lesson.getTitle());
+                    + Separator.COLON_SEPARATOR + lesson.getLessonId());
             builder.endRow();
         }
-        InlineKeyboardMarkup inline = builder.build();
+        InlineKeyboardMarkup keyboard = builder.build();
         String response = "Какой урок ты хочешь изменить?";
-        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, response);
+        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
     }
 }

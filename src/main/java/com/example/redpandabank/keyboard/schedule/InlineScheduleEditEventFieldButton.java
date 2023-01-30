@@ -5,8 +5,10 @@ import com.example.redpandabank.keyboard.PressableWithArgument;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.util.Separator;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 import java.util.List;
@@ -17,27 +19,27 @@ import java.util.stream.Collectors;
 public class InlineScheduleEditEventFieldButton implements
         PressableWithArgument<ReplyKeyboard, Lesson> {
     @Override
-    public ReplyKeyboard getKeyboard(Lesson lesson) {
+    public InlineKeyboardMarkup getKeyboard(Lesson lesson) {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button("Название урока: " + lesson.getTitle(),
                         Command.EDIT_SPECIFIC_EVENT_FIELD.getName()
-                                + LessonService.COLON_SEPARATOR + lesson.getTitle())
+                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()
                 .row()
                 .button("Имя учителя: " + lesson.getTeacher(),
                         Command.EDIT_SCHEDULE_EVENT_TEACHER.getName()
-                                + LessonService.COLON_SEPARATOR + lesson.getTitle())
+                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()
                 .row()
                 .button("Время начала урока: " + getStartTime(lesson),
                         Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
-                                + LessonService.COLON_SEPARATOR + lesson.getTitle())
+                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()
                 .row()
                 .button("Длительность урока: " + lesson.getDuration(),
                         Command.EDIT_SCHEDULE_EVENT_DURATION.getName()
-                                + LessonService.COLON_SEPARATOR + lesson.getLessonId())
+                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()
                 .build();
     }

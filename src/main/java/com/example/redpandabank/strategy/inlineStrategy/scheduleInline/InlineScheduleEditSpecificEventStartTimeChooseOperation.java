@@ -5,6 +5,8 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
+import com.example.redpandabank.util.UpdateInfo;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -28,14 +30,13 @@ public class InlineScheduleEditSpecificEventStartTimeChooseOperation implements 
     public BotApiMethod<?> handle(Update update) {
         Long childId = update.getCallbackQuery().getFrom().getId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        String title = parseTitle(update.getCallbackQuery().getData());
-        Lesson lesson = lessonService.findLessonByTitle(childId, title);
+        Long lessonId = parseId(UpdateInfo.getData(update));
+        Lesson lesson = lessonService.getById(lessonId);
         String response = "Что ты хочешь сделать со временем начала урока <i>\"" + lesson.getTitle() + "\"</i> !";
-        InlineKeyboardMarkup inline = chooseOperationButton.getInline(lesson);
+        InlineKeyboardMarkup inline = chooseOperationButton.getKeyboard(lesson);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, response);
     }
 
-    private String parseTitle(String command) {
-        return command.split(LessonService.COLON_SEPARATOR)[1];
-    }
-}
+    private Long parseId(String text) {
+        return Long.parseLong(text.split(Separator.COLON_SEPARATOR)[1]);
+    }}

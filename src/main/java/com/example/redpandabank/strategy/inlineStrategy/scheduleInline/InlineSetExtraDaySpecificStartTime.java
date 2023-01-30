@@ -8,6 +8,7 @@ import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -50,18 +51,18 @@ public class InlineSetExtraDaySpecificStartTime implements InlineHandler<Update>
         lesson.setLessonSchedules(lessonSchedules);
         lessonScheduleService.create(newLessonSchedule);
         lessonService.create(lesson);
-        InlineKeyboardMarkup inline = inlineScheduleAddDaySpecificEventStartTimeButton.getInline(lesson);
+        InlineKeyboardMarkup keyboard = inlineScheduleAddDaySpecificEventStartTimeButton.getKeyboard(lesson);
         String response = "Может что то еще интересно для урока <i>\"" + lesson.getTitle() + "\"</i>?";
         String infoLesson = lessonService.getInfoLessonbyIdAndSendByUrl(lesson.getLessonId());
         new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
-        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, response);
+        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
     }
 
     private String parseTitle(String text) {
-        return text.split(LessonService.QUOTE_SEPARATOR)[1];
+        return text.split(Separator.QUOTE_SEPARATOR)[1];
     }
 
     private String parseDay(String data) {
-        return data.split(LessonService.COLON_SEPARATOR)[1];
+        return data.split(Separator.COLON_SEPARATOR)[1];
     }
 }

@@ -28,7 +28,7 @@ public class InlineScheduleFindLessonByDay implements InlineHandler<Update> {
         String day = UpdateInfo.getData(update);
         Long childId = UpdateInfo.getUserId(update);
         lessonService.getLessonsByDayAndChildId(childId, day);
-        ReplyKeyboardMarkup menuButton = mainMenuButton.getMainMenuButton();
-        return new MessageSenderImpl().sendMessageWithReply(childId, "", menuButton);
+        ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
+        return new MessageSenderImpl().sendMessageWithReply(childId, "", keyboard);
     }
 }

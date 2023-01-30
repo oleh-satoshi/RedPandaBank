@@ -10,12 +10,14 @@ import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 import java.util.Comparator;
 import java.util.List;
@@ -51,11 +53,11 @@ public class InlineScheduleAddDaySpecificEventStartTime implements InlineHandler
         child.setState(State.NO_STATE.getState());
         child.setIsSkip(false);
         childService.create(child);
-        InlineKeyboardMarkup inline = inlineScheduleAddDaySpecificEventStartTimeButton.getInline(lesson);
+        ReplyKeyboard keyboard = inlineScheduleAddDaySpecificEventStartTimeButton.getKeyboard(lesson);
         String response = "День добавили для урока <i>\"" + lesson.getTitle() + "\"</i> , может чтото еще интересно?";
         String infoLesson = lessonService.getInfoLessonbyIdAndSendByUrl(lesson.getLessonId());
         new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
-        return new MessageSenderImpl().sendMessageWithInline(childId, response, inline);
+        return new MessageSenderImpl().sendMessageWithInline(childId, response, keyboard);
     }
 
     Comparator<LessonSchedule> comparator = new Comparator<LessonSchedule>() {
@@ -66,11 +68,11 @@ public class InlineScheduleAddDaySpecificEventStartTime implements InlineHandler
     };
 
     private String parseData(String data) {
-        return data.split(LessonService.COLON_SEPARATOR)[1];
+        return data.split(Separator.COLON_SEPARATOR)[1];
     }
 
     private String parseTitle(String text) {
-        return text.split(LessonService.QUOTE_SEPARATOR)[1];
+        return text.split(Separator.QUOTE_SEPARATOR)[1];
     }
 
 }

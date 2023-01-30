@@ -7,6 +7,7 @@ import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -34,16 +35,15 @@ public class InlineScheduleEditSpecificExistingEvent implements InlineHandler<Up
     @Override
     public BotApiMethod<?> handle(Update update) {
         Long childId = update.getCallbackQuery().getFrom().getId();
-        String title = parseTitle(update.getCallbackQuery().getData());
-        Lesson lesson = lessonService.findLessonByTitle(childId, title);
+        Long lessonId = parseId(update.getCallbackQuery().getData());
+        Lesson lesson = lessonService.getById(lessonId);
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        InlineKeyboardMarkup inline = inlineScheduleEditEventFieldButton.getInline(lesson);
+        InlineKeyboardMarkup inline = inlineScheduleEditEventFieldButton.getKeyboard(lesson);
         String content = "Какое поле в уроке <i>\"" + lesson.getTitle() + "\"</i> ты хочешь исправить?";
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, content);
     }
 
-    private String parseTitle(String command) {
-        String[] split = command.split(LessonService.COLON_SEPARATOR);
-        return split[1];
+    private Long parseId(String text) {
+        return Long.parseLong(text.split(Separator.COLON_SEPARATOR)[1]);
     }
 }

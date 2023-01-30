@@ -11,9 +11,11 @@ import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.strategy.inlineStrategy.mainMenu.InlineToMainMenu;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleAddEvent;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleAddEventDuration;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEdit;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleChooseEventByDay;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.*;
+import com.example.redpandabank.util.Separator;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 
@@ -97,9 +99,9 @@ public class InlineStrategyImpl implements InlineStrategy {
         strategyMap.put(Command.SCHEDULE.getName(), new InlineShowMainMenu(this.inlineScheduleMenuButton));
         strategyMap.put(Command.SAVE_EVENT_NAME.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
         strategyMap.put(Command.SAVE_EVENT_TIME.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
-        strategyMap.put(Command.SAVE_EVENT_TEACHER_NAME.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
-        strategyMap.put(Command.ADD_SCHEDULE_EVENT.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
-        strategyMap.put(Command.SAVE_EVENT_DURATION.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
+        strategyMap.put(Command.SAVE_EVENT_TEACHER_NAME.getName(), new InlineScheduleAddTeacherName(childService, lessonService));
+        strategyMap.put(Command.ADD_SCHEDULE_EVENT.getName(), new InlineScheduleAddTitleEvent(this.childService));
+        strategyMap.put(Command.SAVE_EVENT_DURATION.getName(), new InlineScheduleAddEventDuration(lessonService, childService));
         strategyMap.put(Command.SAVE_EVENT_MONDAY.getName(), new InlineScheduleAddEvent(this.lessonService, this.messageSender, this.childService, this.inlineScheduleAddEventByWeekday, this.lessonScheduleService, this.inlineScheduleAddEventDay));
         strategyMap.put(Command.EDIT_SCHEDULE_EVENT_TITLE.getName(), new InlineScheduleChangeEventTitle(this.lessonService, this.childService));
         strategyMap.put(Command.EDIT_EVENT_TEACHER_NAME.getName(), new InlineScheduleChangeTeacher(lessonService, childService));
@@ -206,7 +208,7 @@ public class InlineStrategyImpl implements InlineStrategy {
     private String checkEditSpecificEventField(String command) {
         String name = Command.EDIT_SCHEDULE_EVENT_FIELD.getName();
         if (command.contains(name)) {
-            return command.split(LessonService.COLON_SEPARATOR)[0];
+            return command.split(Separator.COLON_SEPARATOR)[0];
         }
         return command;
     }
@@ -214,7 +216,7 @@ public class InlineStrategyImpl implements InlineStrategy {
     private String checkEditSpecificEventTeacherName(String command) {
         String name = Command.EDIT_SCHEDULE_EVENT_TEACHER.getName();
         if (command.contains(name)) {
-            return command.split(LessonService.COLON_SEPARATOR)[0];
+            return command.split(Separator.COLON_SEPARATOR)[0];
         }
         return command;
     }
@@ -223,7 +225,7 @@ public class InlineStrategyImpl implements InlineStrategy {
     private String checkEditSpecificEventLessonStartTime(String command) {
         String name = Command.SHOW_SPECIFIC_EVENT_START_TIME.getName();
         if (command.contains(name)) {
-            return command.split(LessonService.COLON_SEPARATOR)[0];
+            return command.split(Separator.COLON_SEPARATOR)[0];
         }
         return command;
     }
@@ -231,7 +233,7 @@ public class InlineStrategyImpl implements InlineStrategy {
     private String checkSpecificEventChooseOperation(String command) {
         String name = Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName();
         if (command.contains(name)) {
-            return command.split(LessonService.COLON_SEPARATOR)[0];
+            return command.split(Separator.COLON_SEPARATOR)[0];
         }
         return command;
     }
@@ -239,7 +241,7 @@ public class InlineStrategyImpl implements InlineStrategy {
     private String checkEditScheduleEventStartTime(String command) {
         String name = Command.EDIT_SCHEDULE_EVENT_START_TIME.getName();
         if (command.contains(name)) {
-            return command.split(LessonService.COLON_SEPARATOR)[0];
+            return command.split(Separator.COLON_SEPARATOR)[0];
         }
         return command;
     }
@@ -247,7 +249,7 @@ public class InlineStrategyImpl implements InlineStrategy {
     private String checkAddTimeToLessonSchedule(String command) {
         String name = Command.ADD_SPECIFIC_EVENT_START_TIME.getName();
         if (command.contains(name)) {
-            return command.split(LessonService.COLON_SEPARATOR)[0];
+            return command.split(Separator.COLON_SEPARATOR)[0];
         }
         return command;
     }
@@ -255,7 +257,7 @@ public class InlineStrategyImpl implements InlineStrategy {
     private String checkAddDaySpecificStartTime(String command) {
         String name = Command.ADD_DAY_SPECIFIC_EVENT_START_TIME.getName();
         if (command.contains(name)) {
-            return command.split(LessonService.COLON_SEPARATOR)[0];
+            return command.split(Separator.COLON_SEPARATOR)[0];
         }
         return command;
     }
@@ -263,7 +265,7 @@ public class InlineStrategyImpl implements InlineStrategy {
     private String checkSetExtraDaySpecificStartTime(String command) {
         String name = Command.SET_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName();
         if (command.contains(name)) {
-            return command.split(LessonService.COLON_SEPARATOR)[0];
+            return command.split(Separator.COLON_SEPARATOR)[0];
         }
         return command;
     }
@@ -271,7 +273,7 @@ public class InlineStrategyImpl implements InlineStrategy {
     private String checkDeleteSpecificEventStartTime2(String command) {
         String name = Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName();
         if (command.contains(name)) {
-            return command.split(LessonService.COLON_SEPARATOR)[0];
+            return command.split(Separator.COLON_SEPARATOR)[0];
         }
         return command;
     }
@@ -279,7 +281,7 @@ public class InlineStrategyImpl implements InlineStrategy {
     private String checkInlineEditSpecificEventDuration(String command) {
         String name = Command.EDIT_SCHEDULE_EVENT_DURATION.getName();
         if (command.contains(name)) {
-            return command.split(LessonService.COLON_SEPARATOR)[0];
+            return command.split(Separator.COLON_SEPARATOR)[0];
         }
         return command;
     }

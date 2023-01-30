@@ -10,6 +10,7 @@ import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.service.TelegramBot;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
+import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -37,17 +38,17 @@ public class EditSpecificEventTeacherNameState implements StateHandler<Update>, 
         teacherName = UpdateInfo.getText(update);
         Child child = childService.findByUserId(userId);
         if (checkCommand(teacherName, child)) {
-            String title = parseFieldTitle(child.getState());
-            Lesson lesson = lessonService.findLessonByTitle(userId, title);
+            Long lessonId = parseId(child.getState());
+            Lesson lesson = lessonService.getById(lessonId);
             lesson.setTeacher(teacherName);
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
             String response = "Учителя изменили!";
-            ReplyKeyboardMarkup menuButton = mainMenuButton.getMainMenuButton();
+            ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
             String infoLesson = lessonService.getInfoLessonbyIdAndSendByUrl(lesson.getLessonId());
             new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
-            return new MessageSenderImpl().sendMessageWithReply(userId, response, menuButton);
+            return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
         } else {
             return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
@@ -58,7 +59,7 @@ public class EditSpecificEventTeacherNameState implements StateHandler<Update>, 
         return CommandCheckable.super.checkCommand(command, child);
     }
 
-    private String parseFieldTitle(String name) {
-        return name.split(LessonService.COLON_SEPARATOR)[1];
+    private Long parseId(String text) {
+        return Long.parseLong(text.split(Separator.COLON_SEPARATOR)[1]);
     }
 }

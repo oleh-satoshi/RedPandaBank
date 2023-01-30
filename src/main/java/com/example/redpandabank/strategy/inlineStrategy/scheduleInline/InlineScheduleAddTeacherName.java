@@ -16,32 +16,34 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @PackagePrivate
 @Component
-public class InlineScheduleEditEventField implements InlineHandler<Update> {
-    final LessonService lessonService;
+public class InlineScheduleAddTeacherName implements InlineHandler<Update> {
     final ChildService childService;
+    final LessonService lessonService;
 
-    public InlineScheduleEditEventField(LessonService lessonService, ChildService childService) {
-        this.lessonService = lessonService;
+    public InlineScheduleAddTeacherName(ChildService childService, LessonService lessonService) {
         this.childService = childService;
+        this.lessonService = lessonService;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        Long childId = update.getCallbackQuery().getFrom().getId();
-        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        Long lessonId = parseId(UpdateInfo.getData(update));
-        Lesson lesson = lessonService.getById(lessonId);
-        Child child = childService.findByUserId(childId);
-        child.setState(State.EDIT_SPECIFIC_EVENT_FIELD.getState()
-                + Separator.COLON_SEPARATOR + lesson.getLessonId());
-        child.setIsSkip(false);
+        String response;
+        String text = UpdateInfo.getData(update);
+        Long userId = UpdateInfo.getUserId(update);
+        Integer messageId = UpdateInfo.getMessageId(update);
+        Child child = childService.getById(userId);
+        if (child.getIsSkip()) {
+            child.setIsSkip(false);
+        }
+        Lesson lesson = lessonService.getById(parseId(text));
+        response = "Кто преподаёт <i>\"" + lesson.getTitle() + "\"</i>?";
+        child.setState(State.SAVE_TEACHER_NAME.getState());
         childService.create(child);
-        String response = "Можешь ввести нужное название и заменить название <i>\""
-                + lesson.getTitle() + "\"</i> !";
-        return new MessageSenderImpl().sendEditMessage(childId, messageId, response);
+        return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
     }
 
     private Long parseId(String text) {
         return Long.parseLong(text.split(Separator.COLON_SEPARATOR)[1]);
     }
+
 }

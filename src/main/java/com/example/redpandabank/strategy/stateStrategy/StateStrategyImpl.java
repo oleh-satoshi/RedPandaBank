@@ -8,6 +8,7 @@ import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.strategy.stateStrategy.states.*;
+import com.example.redpandabank.util.Separator;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 
@@ -77,11 +78,11 @@ public class StateStrategyImpl implements StateStrategy {
     }
 
     private String checkEditSpecificEventFieldCommand(String state) {
-        return state.split(LessonService.COLON_SEPARATOR)[0];
+        return state.split(Separator.COLON_SEPARATOR)[0];
     }
 
     private String checkAddSpecificEventStartTimeState(String state) {
-        return state.split(LessonService.COLON_SEPARATOR)[0];
+        return state.split(Separator.COLON_SEPARATOR)[0];
     }
 
 }

@@ -24,7 +24,7 @@ public class InlineToMainMenu implements InlineHandler<Update> {
         Long chatId = update.getCallbackQuery().getMessage().getChatId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         String response = "Мы снова в главном меню!";
-        ReplyKeyboardMarkup menuButton = mainMenuButton.getMainMenuButton();
-        return new MessageSenderImpl().sendMessageWithReply(chatId, response, menuButton);
+        ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
+        return new MessageSenderImpl().sendMessageWithReply(chatId, response, keyboard);
     }
 }

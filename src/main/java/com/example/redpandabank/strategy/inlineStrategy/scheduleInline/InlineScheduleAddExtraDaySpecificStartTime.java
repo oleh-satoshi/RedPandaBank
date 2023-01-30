@@ -7,11 +7,13 @@ import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @PackagePrivate
 @Component
@@ -38,12 +40,12 @@ public class InlineScheduleAddExtraDaySpecificStartTime implements InlineHandler
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         String title = parseTitle(update.getCallbackQuery().getMessage().getText());
         Lesson lesson = lessonService.findLessonByTitle(childId, title);
-        InlineKeyboardMarkup inline = inlineScheduleAddExtraDaySpecificStartTimeButton.getInline();
+        InlineKeyboardMarkup keyboard = inlineScheduleAddExtraDaySpecificStartTimeButton.getKeyboard();
         String response = "Выбери в какой день урок <i>\"" + lesson.getTitle() + "\"</i> начинается в такое же время";
-        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, response);
+        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
     }
 
     private String parseTitle(String text) {
-        return text.split(LessonService.QUOTE_SEPARATOR)[1];
+        return text.split(Separator.QUOTE_SEPARATOR)[1];
     }
 }

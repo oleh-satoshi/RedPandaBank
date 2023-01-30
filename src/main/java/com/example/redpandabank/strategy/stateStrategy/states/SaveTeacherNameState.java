@@ -48,10 +48,10 @@ public class SaveTeacherNameState implements StateHandler<Update>, CommandChecka
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
-            InlineKeyboardMarkup inline = inlineScheduleAddTeacherNameButton.getInline(lesson);
+            InlineKeyboardMarkup keyboard = inlineScheduleAddTeacherNameButton.getKeyboard(lesson);
             String response = "Учитель\"<i>" + lesson.getTeacher()
                     + "\"</i> добавлен! \n\nЕсли ты написал без ошибок то жми кнопку <b>Дальше</b>";
-            return new MessageSenderImpl().sendMessageWithInline(userId, response, inline);
+            return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
         } else {
             return  goBackToTelegramBot(child, childService, telegramBot, update);
         }

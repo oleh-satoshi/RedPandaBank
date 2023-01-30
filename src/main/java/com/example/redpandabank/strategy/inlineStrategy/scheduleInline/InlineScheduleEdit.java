@@ -23,8 +23,7 @@ public class InlineScheduleEdit implements InlineHandler<Update> {
         Long childId = update.getCallbackQuery().getFrom().getId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         String content = "Это меню редактирования";
-        InlineKeyboardMarkup inline = inlineScheduleEditMenuButton.getInline();
-        EditMessageText editMessageText = new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, content);
-        return editMessageText;
+        InlineKeyboardMarkup keyboard = inlineScheduleEditMenuButton.getKeyboard();
+        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, content);
     }
 }

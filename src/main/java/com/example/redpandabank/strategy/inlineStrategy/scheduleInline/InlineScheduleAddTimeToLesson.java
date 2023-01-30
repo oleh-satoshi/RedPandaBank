@@ -7,6 +7,7 @@ import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -32,7 +33,7 @@ public class InlineScheduleAddTimeToLesson implements InlineHandler<Update> {
                 parseTitle(update.getCallbackQuery().getData()));
         Child child = childService.findByUserId(childId);
         child.setState(State.ADD_SPECIFIC_EVENT_START_TIME.getState()
-                + LessonService.COLON_SEPARATOR + lesson.getTitle());
+                + Separator.COLON_SEPARATOR + lesson.getTitle());
         child.setIsSkip(false);
         childService.create(child);
         String response = "Можешь написать новое время начала для урока <i>\"" + lesson.getTitle() + "\"</i>:";
@@ -40,6 +41,6 @@ public class InlineScheduleAddTimeToLesson implements InlineHandler<Update> {
     }
 
     private String parseTitle(String data) {
-        return data.split(LessonService.COLON_SEPARATOR)[1];
+        return data.split(Separator.COLON_SEPARATOR)[1];
     }
 }

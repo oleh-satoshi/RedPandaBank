@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @PackagePrivate
 @Component
@@ -51,16 +52,16 @@ public class SaveTitleEventState implements StateHandler<Update>, CommandCheckab
                 lessonService.create(lesson);
                 child.setState(State.NO_STATE.getState());
                 childService.create(child);
-                InlineKeyboardMarkup inline = inlineScheduleCheckCorrectTitleButton.getInline(lesson);
+                ReplyKeyboard keyboard = inlineScheduleCheckCorrectTitleButton.getKeyboard(lesson);
                 String response = "Урок \"<i>" + lesson.getTitle()
                         + "\"</i> сохранили!\n\nЕсли ты написал без ошибок то жми кнопку <b>Дальше</b>";
-                return new MessageSenderImpl().sendMessageWithInline(userId, response, inline);
+                return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
             } else {
                 child.setState(State.NO_STATE.getState());
                 childService.create(child);
-                InlineKeyboardMarkup inline = inlineScheduleRepeatAddLessonButton.getInline();
+                ReplyKeyboard keyboard = inlineScheduleRepeatAddLessonButton.getKeyboard();
                 return new MessageSenderImpl().sendMessageWithInline(userId,
-                        "Такой урок уже сохраняли!", inline);
+                        "Такой урок уже сохраняли!", keyboard);
             }
         } else {
           return  goBackToTelegramBot(child, childService, telegramBot, update);

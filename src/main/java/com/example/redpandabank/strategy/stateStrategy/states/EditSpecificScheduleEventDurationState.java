@@ -10,6 +10,7 @@ import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.service.TelegramBot;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
+import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -44,10 +45,10 @@ public class EditSpecificScheduleEventDurationState implements StateHandler<Upda
             child.setIsSkip(false);
             childService.create(child);
             String content = "Новая длительность для урока <i>\"" + lesson.getTitle() + "\"</i> установлена!";
-            InlineKeyboardMarkup inline = eventDurationStateButton.getInline();
+            InlineKeyboardMarkup keyboard = eventDurationStateButton.getKeyboard();
             String infoLesson = lessonService.getInfoLessonbyIdAndSendByUrl(lesson.getLessonId());
             new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
-            return new MessageSenderImpl().sendMessageWithInline(userId, content, inline);
+            return new MessageSenderImpl().sendMessageWithInline(userId, content, keyboard);
         } else {
             return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
@@ -59,7 +60,7 @@ public class EditSpecificScheduleEventDurationState implements StateHandler<Upda
     }
 
     private Long parseTitle(String name) {
-        return Long.parseLong(name.split(LessonService.COLON_SEPARATOR)[1]);
+        return Long.parseLong(name.split(Separator.COLON_SEPARATOR)[1]);
     }
 
 }

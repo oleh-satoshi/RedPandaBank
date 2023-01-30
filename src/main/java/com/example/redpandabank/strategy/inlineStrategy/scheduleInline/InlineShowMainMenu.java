@@ -23,7 +23,7 @@ public class InlineShowMainMenu implements InlineHandler<Update> {
         Long userId = update.getCallbackQuery().getMessage().getChatId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         String response = "Что тебе интересно?";
-        InlineKeyboardMarkup inline = inlineScheduleMenuButton.getScheduleMenuButton();
-        return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, inline, response);
+        InlineKeyboardMarkup keyboard = inlineScheduleMenuButton.getKeyboard();
+        return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, keyboard, response);
     }
 }

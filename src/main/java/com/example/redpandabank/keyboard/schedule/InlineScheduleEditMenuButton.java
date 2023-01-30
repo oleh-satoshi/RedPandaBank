@@ -4,6 +4,7 @@ import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @Component
@@ -12,7 +13,7 @@ public class InlineScheduleEditMenuButton implements Pressable {
     String editScheduleEvent = Command.EDIT_SCHEDULE_EXISTING_EVENT.getName();
     String deleteScheduleEvent = Command.DELETE_EVENT.getName();
 
-    public ReplyKeyboard getKeyboard() {
+    public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(addScheduleEvent, addScheduleEvent)

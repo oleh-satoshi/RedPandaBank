@@ -51,10 +51,10 @@ public class SaveDurationEventState implements StateHandler<Update>, CommandChec
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
-            InlineKeyboardMarkup inline = inlineScheduleAddEventDuration.getInline();
+            InlineKeyboardMarkup keyboard = inlineScheduleAddEventDuration.getKeyboard();
             String response = "Длительность для урока \"<i>" + lesson.getTitle()
                     + "\"</i> установили!\n\nЕсли ты написал без ошибок то жми кнопку <b>Дальше</b>";
-            return new MessageSenderImpl().sendMessageWithInline(userId, response, inline);
+            return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
         } else {
             return  goBackToTelegramBot(child, childService, telegramBot, update);
         }

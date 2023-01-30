@@ -10,7 +10,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 @Component
 public class ReplyMainMenuButton  implements Pressable {
     @Override
-    public ReplyKeyboard getKeyboard() {
+    public ReplyKeyboardMarkup getKeyboard() {
         return ReplyKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(Command.SCHEDULE.getName())

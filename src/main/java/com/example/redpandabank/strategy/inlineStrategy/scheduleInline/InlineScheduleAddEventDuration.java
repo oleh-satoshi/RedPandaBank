@@ -7,40 +7,40 @@ import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
-import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.List;
+
 @PackagePrivate
 @Component
-public class InlineScheduleEditSpecificEventDuration implements InlineHandler<Update> {
+public class InlineScheduleAddEventDuration implements InlineHandler<Update> {
     final LessonService lessonService;
     final ChildService childService;
 
-    public InlineScheduleEditSpecificEventDuration(LessonService lessonService, ChildService childService) {
+    public InlineScheduleAddEventDuration(LessonService lessonService,
+                                          ChildService childService) {
         this.lessonService = lessonService;
         this.childService = childService;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
+        String response;
         Long userId = UpdateInfo.getUserId(update);
-        String title = parseTitle(UpdateInfo.getText(update));
-        Lesson lesson = lessonService.findLessonByTitle(userId, title);
         Integer messageId = UpdateInfo.getMessageId(update);
-        Child child = childService.findByUserId(userId);
-        child.setState(State.EDIT_SPECIFIC_SCHEDULE_EVENT_DURATION.getState()
-                + Separator.COLON_SEPARATOR + lesson.getLessonId());
-        child.setIsSkip(false);
+        Child child = childService.getById(userId);
+        if (child.getIsSkip()) {
+            child.setIsSkip(false);
+        }
+        List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
+        Lesson lesson = lessons.get(lessons.size() - 1);
+        response = "Сколько минут идёт урок <i>\"" + lesson.getTitle() + "\"</i>?";
+        child.setState(State.SAVE_DURATION.getState());
         childService.create(child);
-        String content = "Введи новую длительность для этого урока <i>\"" + lesson.getTitle() + "\"</i> !";;
-        return new MessageSenderImpl().sendEditMessage(userId, messageId, content);
-    }
-
-    private String parseTitle(String text) {
-        return text.split(Separator.QUOTE_SEPARATOR)[1];
+        return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
     }
 }

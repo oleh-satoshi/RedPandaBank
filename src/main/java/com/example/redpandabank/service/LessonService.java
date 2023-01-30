@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface LessonService {
-    String COLON_SEPARATOR = ":";
-    String QUOTE_SEPARATOR = "\"";
+
     Lesson create(Lesson category);
 
     void deleteById(Long id);

@@ -66,9 +66,9 @@ public class SaveEventDayState implements StateHandler<Update>, CommandCheckable
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
-            InlineKeyboardMarkup inline = inlineScheduleAddExtraDayButton.getInline();
+            InlineKeyboardMarkup keyboard = inlineScheduleAddExtraDayButton.getKeyboard();
             String response = "Давай добавим время начала урока";
-            return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, inline, response);
+            return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, keyboard, response);
         } else {
             return  goBackToTelegramBot(child, childService, telegramBot, update);
         }

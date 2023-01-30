@@ -8,6 +8,7 @@ import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
+import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
@@ -58,8 +59,8 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update>, Com
             childService.create(child);
             String response = "Новое время уже добавили для урока <i>\"" + lesson.getTitle() + "\"</i>,"
                     + " а напомни мне для какого дня недели это время?";
-            InlineKeyboardMarkup inline = startTimeButton.getInline();
-            return new MessageSenderImpl().sendMessageWithInline(userId, response, inline);
+            InlineKeyboardMarkup keyboard = startTimeButton.getKeyboard();
+            return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
         } else {
             return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
@@ -77,7 +78,7 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update>, Com
     }
 
     private String parseTitleFromState(String name) {
-        return name.split(LessonService.COLON_SEPARATOR)[1];
+        return name.split(Separator.COLON_SEPARATOR)[1];
     }
 
 }

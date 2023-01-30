@@ -7,6 +7,7 @@ import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
+import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -48,7 +49,7 @@ public class EditSpecificEventStartTimeState implements StateHandler<Update>, Co
             lessonScheduleService.create(specificLessonSchedule);
             child.setIsSkip(false);
             child.setState(State.EDIT_SPECIFIC_EVENT_START_TIME_STEP2.getState()
-                    + LessonService.COLON_SEPARATOR + lesson.getTitle());
+                    + Separator.COLON_SEPARATOR + lesson.getTitle());
             childService.create(child);
             String response = "Можешь ввести новое время для урока <i>\"" + lesson.getTitle() + "\"</i>";
             return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
@@ -63,7 +64,7 @@ public class EditSpecificEventStartTimeState implements StateHandler<Update>, Co
         }
 
         private String parseEventTitle (String name){
-            return name.split(LessonService.QUOTE_SEPARATOR)[1];
+            return name.split(Separator.QUOTE_SEPARATOR)[1];
         }
 
     private LocalTime parseTimeWithTitle(String text) {

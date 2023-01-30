@@ -1,11 +1,13 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
 import com.example.redpandabank.keyboard.schedule.InlineScheduleMenuButton;
+import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @PackagePrivate
 @Component
@@ -19,13 +21,8 @@ public class ScheduleMenuShowCommandHandler implements CommandHandler<Update> {
     @Override
     public SendMessage handle(Update update) {
         Long userId = update.getMessage().getChatId();
-
+        ReplyKeyboard keyboard = inlineScheduleMenuButton.getKeyboard();
         String response = "Что тебе интересно?";
-        SendMessage sendMessage =  SendMessage.builder()
-                .text(response)
-                .chatId(userId)
-                .replyMarkup(inlineScheduleMenuButton.getScheduleMenuButton())
-                .build();
-        return sendMessage;
+        return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
     }
 }

@@ -8,11 +8,14 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
+import com.example.redpandabank.util.UpdateInfo;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 import java.util.List;
 
@@ -42,41 +45,43 @@ public class InlineScheduleAddEvent implements InlineHandler<Update> {
     @Override
     public BotApiMethod<?> handle(Update update) {
         String response;
-        Long userId = update.getCallbackQuery().getMessage().getChatId();
-        String text = update.getCallbackQuery().getData();
-        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+        Long userId = UpdateInfo.getUserId(update);
+        String text = UpdateInfo.getData(update);
+        Integer messageId = UpdateInfo.getMessageId(update);
         Child child = childService.getById(userId);
         if (child.getIsSkip()) {
             child.setIsSkip(false);
         }
-
-        if (text.contains(Command.ADD_SCHEDULE_EVENT.getName())) {
-            response = "Введи название урока:";
-            child.setState(State.SAVE_TITLE_EVENT.getState());
-            childService.create(child);
-            return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
-        } else if (text.contains(Command.SAVE_EVENT_TEACHER_NAME.getName())) {
-            text = update.getCallbackQuery().getMessage().getText();
-            Lesson lesson = lessonService.findLessonByTitle(userId, parseTitle(text));
-            response = "Кто преподаёт <i>\"" + lesson.getTitle() + "\"</i>?";
-            child.setState(State.SAVE_TEACHER_NAME.getState());
-            childService.create(child);
-            return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
-        } else if (text.contains(Command.SAVE_EVENT_DURATION.getName())) {
-            List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
-            Lesson lesson = lessons.get(lessons.size() - 1);
-            response = "Сколько минут идёт урок <i>\"" + lesson.getTitle() + "\"</i>?";
-            child.setState(State.SAVE_DURATION.getState());
-            childService.create(child);
-            return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
-        } else if (text.contains(Command.SAVE_EVENT_DAY.getName())) {
+//        if (text.contains(Command.ADD_SCHEDULE_EVENT.getName())) {
+//            response = "Введи название урока:";
+//            child.setState(State.SAVE_TITLE_EVENT.getState());
+//            childService.create(child);
+//            return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
+//        } else
+//            if (text.contains(Command.SAVE_EVENT_TEACHER_NAME.getName())) {
+//            text = UpdateInfo.getData(update);
+//            Lesson lesson = lessonService.getById(parseId(text));
+//            response = "Кто преподаёт <i>\"" + lesson.getTitle() + "\"</i>?";
+//            child.setState(State.SAVE_TEACHER_NAME.getState());
+//            childService.create(child);
+//            return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
+//        } else
+//            if (text.contains(Command.SAVE_EVENT_DURATION.getName())) {
+//            List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
+//            Lesson lesson = lessons.get(lessons.size() - 1);
+//            response = "Сколько минут идёт урок <i>\"" + lesson.getTitle() + "\"</i>?";
+//            child.setState(State.SAVE_DURATION.getState());
+//            childService.create(child);
+//            return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
+//        } else
+            if (text.contains(Command.SAVE_EVENT_DAY.getName())) {
             List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
             Lesson lesson = lessons.get(lessons.size() - 1);
             child.setState(State.SAVE_EVENT_DAY.getState());
             childService.create(child);
-            InlineKeyboardMarkup inline = inlineScheduleAddEventDay.getInline();
+            InlineKeyboardMarkup keyboard = inlineScheduleAddEventDay.getKeyboard();
             response = "Выбери день недели в который проходит урок <i>\"" + lesson.getTitle() + "\"</i>:    ";
-            return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, inline, response);
+            return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, keyboard, response);
         } else if (text.contains(Command.SAVE_EVENT_TIME.getName())) {
             child.setState(State.ADD_EVENT_TIME.getState());
             childService.create(child);
@@ -93,5 +98,9 @@ public class InlineScheduleAddEvent implements InlineHandler<Update> {
             return array[1];
         }
         return array[0];
+    }
+
+    private Long parseId(String text) {
+        return Long.parseLong(text.split(Separator.COLON_SEPARATOR)[1]);
     }
 }

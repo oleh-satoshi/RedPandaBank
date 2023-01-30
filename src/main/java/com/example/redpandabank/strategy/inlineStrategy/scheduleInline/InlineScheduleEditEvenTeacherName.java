@@ -7,6 +7,8 @@ import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
+import com.example.redpandabank.util.UpdateInfo;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -28,18 +30,18 @@ public class InlineScheduleEditEvenTeacherName implements InlineHandler<Update> 
     public BotApiMethod<?> handle(Update update) {
         Long childId = update.getCallbackQuery().getFrom().getId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        String title = parseData(update.getCallbackQuery().getData());
-        Lesson lesson = lessonService.findLessonByTitle(childId, title);
+        Long lessonId = parseId(UpdateInfo.getData(update));
+        Lesson lesson = lessonService.getById(lessonId);
         Child child = childService.findByUserId(childId);
         child.setState(State.EDIT_SPECIFIC_EVENT_TEACHER_NAME.getState()
-                + LessonService.COLON_SEPARATOR + lesson.getTitle());
+                + Separator.COLON_SEPARATOR + lesson.getLessonId());
         child.setIsSkip(false);
         childService.create(child);
         String response = "Можешь ввести новое имя учителя для урока <i>\"" + lesson.getTitle() + "\"</i> !";
         return new MessageSenderImpl().sendEditMessage(childId, messageId, response);
     }
 
-    private String parseData(String command) {
-        return command.split(LessonService.COLON_SEPARATOR)[1];
+    private Long parseId(String text) {
+        return Long.parseLong(text.split(Separator.COLON_SEPARATOR)[1]);
     }
 }

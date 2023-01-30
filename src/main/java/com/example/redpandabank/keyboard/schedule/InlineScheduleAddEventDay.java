@@ -5,12 +5,13 @@ import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @Component
 public class InlineScheduleAddEventDay implements Pressable {
     @Override
-    public ReplyKeyboard getKeyboard() {
+    public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button("Monday", Command.SAVE_EVENT_DAY.getName() + WeekDay.MONDAY.getDay())

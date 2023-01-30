@@ -7,6 +7,7 @@ import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -44,15 +45,15 @@ public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandle
         //Lesson lessonById = lessonService.getById(lessonId);
 //        String infoLesson = lessonService.getInfoLessonbyId(lesson.getLessonId());
 //        new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
-        InlineKeyboardMarkup inline = specificEventStartTime2Button.getInline();
+        InlineKeyboardMarkup keyboard = specificEventStartTime2Button.getKeyboard();
         String response = "Можешь удалить еще один старт для урока <i>\"" + lesson.getTitle() + "\"</i>, только будь внимателен!";
-        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, response);
+        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
 
 
     }
 
     private Long parseTitle(String data) {
-        return Long.parseLong(data.split(LessonService.COLON_SEPARATOR)[3]);
+        return Long.parseLong(data.split(Separator.COLON_SEPARATOR)[3]);
     }
 
     private LocalTime parseTime(String data) {
