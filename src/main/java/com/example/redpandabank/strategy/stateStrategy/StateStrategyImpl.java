@@ -24,7 +24,7 @@ public class StateStrategyImpl implements StateStrategy {
     final InlineScheduleCheckCorrectTitleButton checkCorrectTitle;
     final InlineScheduleRepeatAddLessonButton repeatAddLesson;
     final InlineScheduleAddTeacherNameButton inlineScheduleAddTeacherNameButton;
-    final InlineScheduleAddEventDuration inlineScheduleAddEventDuration;
+    final InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton;
     final LessonScheduleService lessonScheduleService;
     final InlineScheduleAddExtraDayButton inlineScheduleAddExtraDayButton;
     final InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton;
@@ -36,7 +36,7 @@ public class StateStrategyImpl implements StateStrategy {
                              InlineScheduleCheckCorrectTitleButton checkCorrectTitle,
                              InlineScheduleRepeatAddLessonButton repeatAddLesson,
                              InlineScheduleAddTeacherNameButton inlineScheduleAddTeacherNameButton,
-                             InlineScheduleAddEventDuration inlineScheduleAddEventDuration,
+                             InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton,
                              LessonScheduleService lessonScheduleService,
                              InlineScheduleAddExtraDayButton inlineScheduleAddExtraDayButton, InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton,
                              ReplyMainMenuButton mainMenuButton,
@@ -47,7 +47,7 @@ public class StateStrategyImpl implements StateStrategy {
         this.checkCorrectTitle = checkCorrectTitle;
         this.repeatAddLesson = repeatAddLesson;
         this.inlineScheduleAddTeacherNameButton = inlineScheduleAddTeacherNameButton;
-        this.inlineScheduleAddEventDuration = inlineScheduleAddEventDuration;
+        this.inlineScheduleAddEventDurationButton = inlineScheduleAddEventDurationButton;
         this.lessonScheduleService = lessonScheduleService;
         this.inlineScheduleAddExtraDayButton = inlineScheduleAddExtraDayButton;
         this.inlineScheduleAddEventTimeButton = inlineScheduleAddEventTimeButton;
@@ -57,7 +57,7 @@ public class StateStrategyImpl implements StateStrategy {
         stateStrategyMap = new HashMap<>();
         stateStrategyMap.put(State.SAVE_TITLE_EVENT.getState(), new SaveTitleEventState(childService, lessonService, checkCorrectTitle, repeatAddLesson));
         stateStrategyMap.put(State.SAVE_TEACHER_NAME.getState(), new SaveTeacherNameState(childService, lessonService, this.inlineScheduleAddTeacherNameButton));
-        stateStrategyMap.put(State.SAVE_DURATION.getState(), new SaveDurationEventState(childService, lessonService, inlineScheduleAddEventDuration));
+        stateStrategyMap.put(State.SAVE_DURATION.getState(), new SaveDurationEventState(childService, lessonService, inlineScheduleAddEventDurationButton));
         stateStrategyMap.put(State.SAVE_EVENT_DAY.getState(), new SaveEventDayState(childService, lessonService, this.lessonScheduleService, this.inlineScheduleAddExtraDayButton));
         stateStrategyMap.put(State.ADD_EVENT_TIME.getState(), new SaveEventTimeState(childService, lessonService, lessonScheduleService, inlineScheduleAddEventTimeButton));
         stateStrategyMap.put(State.EDIT_SPECIFIC_EVENT_FIELD.getState(), new EditSpecificEventFieldState(childService, lessonService, this.mainMenuButton));

@@ -16,7 +16,6 @@ import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 import java.util.Comparator;
@@ -55,7 +54,7 @@ public class InlineScheduleAddDaySpecificEventStartTime implements InlineHandler
         childService.create(child);
         ReplyKeyboard keyboard = inlineScheduleAddDaySpecificEventStartTimeButton.getKeyboard(lesson);
         String response = "День добавили для урока <i>\"" + lesson.getTitle() + "\"</i> , может чтото еще интересно?";
-        String infoLesson = lessonService.getInfoLessonbyIdAndSendByUrl(lesson.getLessonId());
+        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
         new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
         return new MessageSenderImpl().sendMessageWithInline(childId, response, keyboard);
     }

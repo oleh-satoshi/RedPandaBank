@@ -1,6 +1,7 @@
 package com.example.redpandabank.service;
 
 import com.example.redpandabank.model.Lesson;
+import com.example.redpandabank.model.LessonSchedule;
 
 import java.util.HashSet;
 import java.util.List;
@@ -33,10 +34,12 @@ public interface LessonService {
 
     String getFinishTime(Lesson lesson);
 
-    String getInfoLessonbyIdAndSendByUrl(Long id);
+    String getInfoLessonByIdAndSendByUrl(Long id);
 
     void deleteLessonByTitleAndChildId(String title, Long id);
 
     List<Lesson> findAllByChildIdWithoutLessonSchedule(Long childId);
+
+    Lesson findLessonByLessonSchedules(LessonSchedule lessonSchedule);
 
 }

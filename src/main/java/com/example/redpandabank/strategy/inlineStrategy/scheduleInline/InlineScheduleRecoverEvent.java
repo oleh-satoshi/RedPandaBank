@@ -29,7 +29,7 @@ public class InlineScheduleRecoverEvent implements InlineHandler<Update> {
             lesson.setIsDeleted(false);
             lessonService.create(lesson);
             new MessageSenderImpl().sendMessageViaURL(childId, "Урок " + lesson.getTitle() + " снова добавлен в твое расписание!%0A%0A");
-            new MessageSenderImpl().sendMessageViaURL(childId, lessonService.getInfoLessonbyIdAndSendByUrl(lesson.getLessonId()));
+            new MessageSenderImpl().sendMessageViaURL(childId, lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId()));
         } else {
             new MessageSenderImpl().sendMessageViaURL(childId,"Я уже добавил этот урок в твое расписание, не переживай");
         }

@@ -1,5 +1,6 @@
 package com.example.redpandabank.service;
 
+import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.repository.LessonRepository;
 import com.example.redpandabank.model.Lesson;
 import com.vdurmont.emoji.EmojiParser;
@@ -113,7 +114,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public String getInfoLessonbyIdAndSendByUrl(Long id) {
+    public String getInfoLessonByIdAndSendByUrl(Long id) {
         return parseLessonForUrl(getById(id));
     }
 
@@ -126,6 +127,11 @@ public class LessonServiceImpl implements LessonService {
     @Override
     public List<Lesson> findAllByChildIdWithoutLessonSchedule(Long childId) {
         return lessonRepository.findAllByChildIdWithoutLessonSchedule(childId);
+    }
+
+    @Override
+    public Lesson findLessonByLessonSchedules(LessonSchedule lessonSchedule) {
+        return lessonRepository.findLessonByLessonSchedules(lessonSchedule);
     }
 
     private String parseLessonForUrl(Lesson lesson) {

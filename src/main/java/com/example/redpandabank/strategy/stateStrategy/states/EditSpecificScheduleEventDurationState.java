@@ -46,7 +46,7 @@ public class EditSpecificScheduleEventDurationState implements StateHandler<Upda
             childService.create(child);
             String content = "Новая длительность для урока <i>\"" + lesson.getTitle() + "\"</i> установлена!";
             InlineKeyboardMarkup keyboard = eventDurationStateButton.getKeyboard();
-            String infoLesson = lessonService.getInfoLessonbyIdAndSendByUrl(lesson.getLessonId());
+            String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
             new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
             return new MessageSenderImpl().sendMessageWithInline(userId, content, keyboard);
         } else {

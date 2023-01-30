@@ -1,6 +1,7 @@
 package com.example.redpandabank.repository;
 
 import com.example.redpandabank.model.Lesson;
+import com.example.redpandabank.model.LessonSchedule;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -29,4 +30,6 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
     Lesson findLessonByChildIdAndTitle(Long childId, String title);
 
     void deleteLessonByTitleAndChildId(String title, Long id);
+
+    Lesson findLessonByLessonSchedules(LessonSchedule lessonSchedule);
 }

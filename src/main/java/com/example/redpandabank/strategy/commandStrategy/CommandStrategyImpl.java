@@ -50,9 +50,9 @@ public class CommandStrategyImpl implements CommandStrategy {
         this.lessonScheduleService = lessonScheduleService;
 
         commandStrategyMap = new HashMap<>();
-        commandStrategyMap.put(Command.START.getName(), new ScheduleStartCommandHandler(this.replyMainMenuButton, childService));
+        commandStrategyMap.put(Command.START.getName(), new ScheduleStartCommandHandler(replyMainMenuButton, childService));
         commandStrategyMap.put(Command.SCHEDULE.getName(), new ScheduleMenuShowCommandHandler(inlineScheduleMenuButton));
-        commandStrategyMap.put(Command.BACK_TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.replyMainMenuButton));
+        commandStrategyMap.put(Command.BACK_TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(replyMainMenuButton));
         commandStrategyMap.put(Command.DELETE_EVENT.getName(), new ScheduleDeleteEventCommandHandler(lessonService));
         commandStrategyMap.put(Command.EDIT_SCHEDULE_EXISTING_EVENT.getName(), new EditScheduleEventCommandHandler(lessonService));
         commandStrategyMap.put(Command.SCHEDULE_2.getName(), new ScheduleMenuShowCommandHandler(inlineScheduleMenuButton));

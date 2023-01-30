@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
 import com.example.redpandabank.enums.State;
-import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventDuration;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventDurationButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
@@ -28,14 +28,14 @@ public class SaveDurationEventState implements StateHandler<Update>, CommandChec
     String duration;
     final ChildService childService;
     final LessonService lessonService;
-    final InlineScheduleAddEventDuration inlineScheduleAddEventDuration;
+    final InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton;
 
     public SaveDurationEventState(ChildService childService, LessonService lessonService,
-                                  InlineScheduleAddEventDuration inlineScheduleAddEventDuration) {
+                                  InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton) {
 
         this.childService = childService;
         this.lessonService = lessonService;
-        this.inlineScheduleAddEventDuration = inlineScheduleAddEventDuration;
+        this.inlineScheduleAddEventDurationButton = inlineScheduleAddEventDurationButton;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class SaveDurationEventState implements StateHandler<Update>, CommandChec
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
-            InlineKeyboardMarkup keyboard = inlineScheduleAddEventDuration.getKeyboard();
+            InlineKeyboardMarkup keyboard = inlineScheduleAddEventDurationButton.getKeyboard();
             String response = "Длительность для урока \"<i>" + lesson.getTitle()
                     + "\"</i> установили!\n\nЕсли ты написал без ошибок то жми кнопку <b>Дальше</b>";
             return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);

@@ -8,6 +8,7 @@ import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
+import com.example.redpandabank.util.UpdateInfo;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -32,18 +33,20 @@ public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandle
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        Long childId = update.getCallbackQuery().getMessage().getChatId();
-        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        Long lessonId = parseTitle(update.getCallbackQuery().getData());
-        LocalTime localTime = parseTime(update.getCallbackQuery().getData());
+        Long childId = UpdateInfo.getUserId(update);
+        Integer messageId = UpdateInfo.getMessageId(update);
+        Long lessonId = parseTitle(UpdateInfo.getData(update));
+        LocalTime localTime = parseTime(UpdateInfo.getData(update));
         Lesson lesson = lessonService.getById(lessonId);
         LessonSchedule lessonSchedule = lesson.getLessonSchedules().stream()
                 .filter(lessonSchedul -> lessonSchedul.getLessonStartTime().equals(localTime))
                 .findFirst()
                 .get();
+        //Не могу достать урок без удаленного LessonScedule
+        //Lesson lessonByLessonSchedules = lessonService.findLessonByLessonSchedules(lessonSchedule);
         lessonScheduleService.delete(lessonSchedule);
-        //Lesson lessonById = lessonService.getById(lessonId);
-//        String infoLesson = lessonService.getInfoLessonbyId(lesson.getLessonId());
+//        Lesson byId = lessonService.getById(lessonByLessonSchedules.getLessonId());
+//        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(byId.getLessonId());
 //        new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
         InlineKeyboardMarkup keyboard = specificEventStartTime2Button.getKeyboard();
         String response = "Можешь удалить еще один старт для урока <i>\"" + lesson.getTitle() + "\"</i>, только будь внимателен!";
