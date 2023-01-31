@@ -17,15 +17,15 @@ public class InlineScheduleEditSpecificEventStartTimeChooseOperationButton
     public InlineKeyboardMarkup getKeyboard(Lesson lesson) {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button("Изменить время", Command.EDIT_SCHEDULE_EVENT_START_TIME.getName()
+                .button("Change time", Command.EDIT_SCHEDULE_EVENT_START_TIME.getName()
                         + Separator.COLON_SEPARATOR + lesson.getTitle())
                 .endRow()
                 .row()
-                .button("Добавить время", Command.ADD_SPECIFIC_EVENT_START_TIME.getName()
+                .button("Add time", Command.ADD_SPECIFIC_EVENT_START_TIME.getName()
                         + Separator.COLON_SEPARATOR + lesson.getTitle())
                 .endRow()
                 .row()
-                .button("Удалить время", Command.DELETE_SPECIFIC_EVENT_START_TIME.getName())
+                .button("Delete time", Command.DELETE_SPECIFIC_EVENT_START_TIME.getName())
                 .endRow()
                 .build();
     }

@@ -17,11 +17,11 @@ public class InlineScheduleCheckCorrectTitleButton implements
     public ReplyKeyboard getKeyboard(Lesson lesson) {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button("Я написал с ошибкой, давай попробуем еще раз",
+                .button("I made a mistake, let's try again",
                         Command.EDIT_SCHEDULE_EVENT_TITLE.getName())
                 .endRow()
                 .row()
-                .button("Дальше", Command.SAVE_EVENT_TEACHER_NAME.getName()
+                .button("Next", Command.SAVE_EVENT_TEACHER_NAME.getName()
                         + Separator.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()
                 .build();

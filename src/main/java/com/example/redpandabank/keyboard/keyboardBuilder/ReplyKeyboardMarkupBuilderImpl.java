@@ -42,7 +42,6 @@ public class ReplyKeyboardMarkupBuilderImpl extends ReplyKeyboardMarkupBuilder i
     }
 
     public ReplyKeyboardMarkup build() {
-
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
         keyboardMarkup.setSelective(true);
         keyboardMarkup.setResizeKeyboard(true);
@@ -50,5 +49,4 @@ public class ReplyKeyboardMarkupBuilderImpl extends ReplyKeyboardMarkupBuilder i
         keyboardMarkup.setKeyboard(keyboard);
         return keyboardMarkup;
     }
-
 }

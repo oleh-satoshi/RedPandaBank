@@ -23,22 +23,22 @@ public class InlineScheduleEditEventFieldButton implements
     public InlineKeyboardMarkup getKeyboard(Lesson lesson) {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button("Название урока: " + lesson.getTitle(),
+                .button("Lesson name: " + lesson.getTitle(),
                         Command.EDIT_SPECIFIC_EVENT_FIELD.getName()
                                 + Separator.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()
                 .row()
-                .button("Имя учителя: " + lesson.getTeacher(),
+                .button("Teacher's name: " + lesson.getTeacher(),
                         Command.EDIT_SCHEDULE_EVENT_TEACHER.getName()
                                 + Separator.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()
                 .row()
-                .button("Время начала урока: " + getStartTime(lesson),
+                .button("Lesson start time: " + getStartTime(lesson),
                         Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
                                 + Separator.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()
                 .row()
-                .button("Длительность урока: " + lesson.getDuration(),
+                .button("Lesson duration: " + lesson.getDuration(),
                         Command.EDIT_SCHEDULE_EVENT_DURATION.getName()
                                 + Separator.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()

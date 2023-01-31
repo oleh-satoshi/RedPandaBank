@@ -1,5 +1,6 @@
 package com.example.redpandabank.keyboard.schedule;
 
+import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import org.springframework.stereotype.Component;
@@ -11,16 +12,16 @@ public class InlineScheduleAddEventByWeekday implements Pressable {
     public ReplyKeyboard getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button("Monday", "/scheduleMonday")
-                .extraButton("Tuesday", "/scheduleTuesday")
+                .button(WeekDay.MONDAY.getDay(), "/scheduleMonday")
+                .extraButton(WeekDay.TUESDAY.getDay(), "/scheduleTuesday")
                 .endRow()
                 .row()
-                .button("Wednesday", "/scheduleWednesday")
-                .extraButton("Thursday", "/scheduleThursday")
+                .button(WeekDay.WEDNESDAY.getDay(), "/scheduleWednesday")
+                .extraButton(WeekDay.THURSDAY.getDay(), "/scheduleThursday")
                 .endRow()
                 .row()
-                .button("Friday", "/scheduleThursday")
-                .extraButton("Saturday", "/scheduleSaturday")
+                .button(WeekDay.FRIDAY.getDay(), "/scheduleThursday")
+                .extraButton(WeekDay.SATURDAY.getDay(), "/scheduleSaturday")
                 .endRow()
                 .build();
     }

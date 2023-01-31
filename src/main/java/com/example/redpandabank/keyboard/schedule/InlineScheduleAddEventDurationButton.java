@@ -15,10 +15,10 @@ public class InlineScheduleAddEventDurationButton implements Pressable {
     public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button("Изменить длительность урока", Command.EDIT_EVENT_DURATION.getName())
+                .button("Change lesson duration", Command.EDIT_EVENT_DURATION.getName())
                 .endRow()
                 .row()
-                .button("Дальше", Command.SAVE_EVENT_DAY.getName())
+                .button("Next", Command.SAVE_EVENT_DAY.getName())
                 .endRow()
                 .build();
     }

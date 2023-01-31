@@ -12,7 +12,7 @@ public class InlineScheduleRepeatAddLessonButton implements Pressable {
     public ReplyKeyboard getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button("Попробовать еще раз", Command.ADD_SCHEDULE_EVENT.getName())
+                .button("Try again", Command.ADD_SCHEDULE_EVENT.getName())
                 .endRow()
                 .build();    }
 }

@@ -13,10 +13,10 @@ public class ReplyScheduleEditSpecificEventDurationStateButton implements Pressa
     public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button("Я ошибся, давай еще раз!", Command.EDIT_SCHEDULE_EVENT_DURATION.getName())
+                .button("I made a mistake, let's do it again!", Command.EDIT_SCHEDULE_EVENT_DURATION.getName())
                 .endRow()
                 .row()
-                .button("Я закончил!", Command.TO_MAIN_MENU.getName())
+                .button("I finish!", Command.TO_MAIN_MENU.getName())
                 .endRow()
                 .build();
     }

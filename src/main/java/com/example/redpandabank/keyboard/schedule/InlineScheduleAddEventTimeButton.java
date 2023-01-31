@@ -13,10 +13,10 @@ public class InlineScheduleAddEventTimeButton implements Pressable {
     public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button("Добавить еще день и время", Command.SAVE_EVENT_DAY.getName())
+                .button("Add another day and time", Command.SAVE_EVENT_DAY.getName())
                 .endRow()
                 .row()
-                .button("Готово!", Command.SCHEDULE.getName())
+                .button("Done!", Command.SCHEDULE.getName())
                 .endRow()
                 .build();
     }

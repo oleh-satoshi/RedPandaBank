@@ -17,14 +17,14 @@ public class InlineScheduleAddDaySpecificEventStartTimeButton implements
     public InlineKeyboardMarkup getKeyboard(Lesson lesson) {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button("Добавить еще одно начало урока", Command.ADD_SPECIFIC_EVENT_START_TIME.getName()
+                .button("Add another lesson start", Command.ADD_SPECIFIC_EVENT_START_TIME.getName()
                         + Separator.COLON_SEPARATOR + lesson.getTitle())
                 .endRow()
                 .row()
-                .button("Добавить еще день на это время", Command.ADD_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName())
+                .button("Add another day for this time", Command.ADD_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName())
                 .endRow()
                 .row()
-                .button("Я закончил!", Command.TO_MAIN_MENU.getName())
+                .button("I finish!", Command.TO_MAIN_MENU.getName())
                 .endRow()
                 .build();
     }

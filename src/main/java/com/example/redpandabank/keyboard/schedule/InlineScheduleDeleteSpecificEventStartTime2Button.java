@@ -13,10 +13,10 @@ public class InlineScheduleDeleteSpecificEventStartTime2Button implements Pressa
     public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button("Удалить еще одно начало урока", Command.DELETE_SPECIFIC_EVENT_START_TIME.getName())
+                .button("Delete another lesson start", Command.DELETE_SPECIFIC_EVENT_START_TIME.getName())
                 .endRow()
                 .row()
-                .button("Я закончил!", Command.TO_MAIN_MENU.getName())
+                .button("Done!", Command.TO_MAIN_MENU.getName())
                 .endRow()
                 .build();    }
 }

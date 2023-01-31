@@ -17,10 +17,10 @@ public class InlineScheduleAddTeacherNameButton implements
     public InlineKeyboardMarkup getKeyboard(Lesson lesson) {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button("Изменить имя учителя", Command.EDIT_EVENT_TEACHER_NAME.getName())
+                .button("Change teacher's name", Command.EDIT_EVENT_TEACHER_NAME.getName())
                 .endRow()
                 .row()
-                .button("Дальше", Command.SAVE_EVENT_DURATION.getName()
+                .button("Next", Command.SAVE_EVENT_DURATION.getName()
                         + Separator.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()
                 .build();

@@ -53,13 +53,6 @@ public class InlineKeyboardMarkupBuilderImpl extends InlineKeyboardMarkupBuilder
         return this;
     }
 
-//    public InlineKeyboardMarkupBuilder buttonWithURL(String text, String URL) {
-//        row.add(new InlineKeyboardButton()
-//                .setText(text)
-//                //.setUrl(URL));
-//        return this;
-//    }
-
     @Override
     public InlineKeyboardMarkupBuilderImpl endRow() {
         this.keyboard.add(this.row);
@@ -83,5 +76,4 @@ public class InlineKeyboardMarkupBuilderImpl extends InlineKeyboardMarkupBuilder
         editMessageText.setText(text);
         return editMessageText;
     }
-
 }
