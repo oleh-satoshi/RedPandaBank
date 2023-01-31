@@ -2,10 +2,13 @@ package com.example.redpandabank.strategy.commandStrategy.handler;
 
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.util.UpdateInfo;
 import com.vdurmont.emoji.EmojiParser;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
 @Service
 public class ScheduleStartCommandHandler implements CommandHandler<Update> {
@@ -22,8 +25,8 @@ public class ScheduleStartCommandHandler implements CommandHandler<Update> {
     @Override
     public SendMessage handle(Update update) {
         String response;
-        Long userId = update.getMessage().getChatId();
-        isInitialize = childService.findById(userId);
+        Long userId = UpdateInfo.getUserId(update);
+        isInitialize = childService.findById(userId).isPresent();
         if (!isInitialize) {
             childService.createChild(userId);
             response = EmojiParser.parseToUnicode("\"Гаааррр!\" :grinning: "
@@ -47,19 +50,11 @@ public class ScheduleStartCommandHandler implements CommandHandler<Update> {
                     + "Я приготовил себе сочнейший кусок бамбука и собираюсь садиться :fork_knife_plate: кушать, "
                     + "а ты пока что осмотрись тут и помни что я всегда откликнусь когда ты меня позовешь! "
                     ) ;
-            SendMessage sendMessage =  SendMessage.builder()
-                    .text(response)
-                    .chatId(userId)
-                    .replyMarkup(replyMainMenuButton.getKeyboard())
-                    .build();
-            return sendMessage;
+            ReplyKeyboardMarkup keyboard = replyMainMenuButton.getKeyboard();
+            return new MessageSenderImpl().sendMessageWithReply(userId, response,keyboard);
         } else {
             response = EmojiParser.parseToUnicode("Эй! Мы же с тобой познакомились уже! Ты что забыл? :sweat_smile:");
-            return SendMessage.builder()
-                    .text(response)
-                    .parseMode("HTML")
-                    .chatId(userId)
-                    .build();
+            return new MessageSenderImpl().sendMessage(userId, response);
         }
     }
 }

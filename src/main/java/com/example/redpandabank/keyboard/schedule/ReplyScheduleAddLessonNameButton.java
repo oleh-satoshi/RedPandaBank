@@ -13,7 +13,7 @@ public class ReplyScheduleAddLessonNameButton implements Pressable {
         return ReplyKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(Command.SAVE_EVENT_NAME.getName())
-                .button(Command.BACK_TO_MAIN_MENU.getName())
+                .button(Command.TO_MAIN_MENU.getName())
                 .endRow()
                 .build();
     }

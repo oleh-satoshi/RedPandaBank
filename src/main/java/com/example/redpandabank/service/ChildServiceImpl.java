@@ -3,6 +3,7 @@ package com.example.redpandabank.service;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.repository.ChildRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -24,14 +25,13 @@ public class ChildServiceImpl implements ChildService {
     }
 
     @Override
-    public Child getById(Long id) {
-        return childRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Can't find child by id: " + id));
+    public Optional<Child> getById(Long id) {
+        return childRepository.findById(id);
     }
 
     @Override
-    public boolean findById(Long id) {
-        return childRepository.findById(id).isPresent();
+    public Optional<Child> findById(Long id) {
+        return childRepository.findById(id);
     }
 
     @Override
@@ -39,6 +39,7 @@ public class ChildServiceImpl implements ChildService {
         childRepository.deleteById(id);
     }
 
+    @Override
     public Child createChild(Long userId) {
         Child child = new Child();
         child.setUserId(userId);
@@ -47,8 +48,8 @@ public class ChildServiceImpl implements ChildService {
         child.setCompleteTask(ZERO);
         child.setIncompleteTask(ZERO);
         child.setState(NO_STATE);
-        childRepository.save(child);
-        return child;
+        child.setIsSkip(false);
+        return create(child);
     }
 
     @Override

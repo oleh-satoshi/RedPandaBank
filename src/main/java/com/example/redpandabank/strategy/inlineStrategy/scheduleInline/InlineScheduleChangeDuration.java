@@ -29,7 +29,7 @@ public class InlineScheduleChangeDuration implements InlineHandler<Update> {
         Long childId = update.getCallbackQuery().getMessage().getChatId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
 
-        Child child = childService.getById(childId);
+        Child child = childService.getById(childId).get();
         child.setState(State.SAVE_DURATION.getState());
         child.setIsSkip(false);
         childService.create(child);

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.Optional;
+
 @PackagePrivate
 @Component
 public class TelegramBot {
@@ -35,21 +37,20 @@ public class TelegramBot {
         Boolean hasCallback = UpdateInfo.hasCallBack(update);
         String replyCommand;
 
-            if (hasReply || hasCallback) {
+        if (hasReply || hasCallback) {
             Long userId = UpdateInfo.getUserId(update);
-            Child child = childService.getById(userId);
+            Optional<Child> childOptional = childService.getById(userId);
+            Child child = childOptional.get();
             if (!child.getState().equals(State.NO_STATE.getState())
                     && !child.getIsSkip()) {
                 StateHandler stateHandler = stateStrategy.get(child);
                 return stateHandler.handle(update, this);
-            }
-
-            if (hasReply) {
-                replyCommand = update.getMessage().getText();
+            } else if (hasReply) {
+                replyCommand = UpdateInfo.getText(update);
                 CommandHandler commandHandler = commandStrategy.get(replyCommand);
                 return commandHandler.handle(update);
-            } else if (hasCallback) {
-                replyCommand = update.getCallbackQuery().getData();
+            } else if (hasCallback && childOptional.isPresent()) {
+                replyCommand = UpdateInfo.getData(update);
                 InlineHandler inlineHandler = inlineStrategy.get(replyCommand);
                 return inlineHandler.handle(update);
             }

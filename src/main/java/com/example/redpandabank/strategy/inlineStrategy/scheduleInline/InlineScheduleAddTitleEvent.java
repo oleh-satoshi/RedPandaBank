@@ -27,7 +27,7 @@ public class InlineScheduleAddTitleEvent implements InlineHandler<Update> {
         String response;
         Long userId = UpdateInfo.getUserId(update);
         Integer messageId = UpdateInfo.getMessageId(update);
-        Child child = childService.getById(userId);
+        Child child = childService.getById(userId).get();
         if (child.getIsSkip()) {
             child.setIsSkip(false);
         }

@@ -33,7 +33,7 @@ public class InlineScheduleChangeEventTitle implements InlineHandler<Update> {
 
         Lesson lesson = lessonService.findLessonByTitle(childId, parseCommand(command));
         lessonService.deleteLessonByTitleAndChildId(lesson.getTitle(), childId);
-        Child child = childService.getById(childId);
+        Child child = childService.getById(childId).get();
         child.setState(State.SAVE_TITLE_EVENT.getState());
         child.setIsSkip(false);
         childService.create(child);

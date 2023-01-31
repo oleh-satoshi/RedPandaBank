@@ -33,7 +33,7 @@ public class InlineScheduleAddTeacherName implements InlineHandler<Update> {
         String text = UpdateInfo.getData(update);
         Long userId = UpdateInfo.getUserId(update);
         Integer messageId = UpdateInfo.getMessageId(update);
-        Child child = childService.getById(userId);
+        Child child = childService.getById(userId).get();
         if (child.getIsSkip()) {
             child.setIsSkip(false);
         }

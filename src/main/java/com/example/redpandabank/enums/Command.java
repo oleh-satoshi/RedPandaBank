@@ -9,11 +9,10 @@ import java.util.Set;
 
 @Getter
 public enum Command {
-    TO_MAIN_MENU("/toMainMenu"),
-    NO_STATE("no state"),
+    TO_MAIN_MENU("/menu"),
+    NO_STATE("no_state"),
     START("/start"),
-    SCHEDULE("Расписание"),
-    SCHEDULE_2("/schedule"),
+    SCHEDULE("/schedule"),
     EDIT_SCHEDULE("Редактировать расписание"),
     ADD_SCHEDULE_EVENT("Добавить новый урок"),
     SAVE_EVENT_NAME("/saveTitle"),
@@ -25,7 +24,6 @@ public enum Command {
     ADD_EVENT_EXTRA_DAY("/addEventExtraDay"),
     SAVE_EVENT_TIME("/addEventTime"),
     SAVE_EXTRA_EVENT_TIME("/saveExtraEventTime"),
-    BACK_TO_MAIN_MENU("Главное меню"),
     SAVE_EVENT_MONDAY("/scheduleMonday"),
     SAVE_EVENT_TUESDAY("/scheduleTuesday"),
     SAVE_EVENT_WEDNESDAY("/scheduleWednesday"),

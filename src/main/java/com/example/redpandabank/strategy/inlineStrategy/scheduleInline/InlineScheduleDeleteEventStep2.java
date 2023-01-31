@@ -74,10 +74,8 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
                     .endRow()
                     .build();
             String content = "Ты точно хочешь удалить этот урок?\n\n" + getLessonInfo(lesson);
-            return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inlineKeyboardMarkup, content);
-//            return new MessageSenderImpl().sendMessageWithInline(childId,
-//                    "Ты точно хочешь удалить этот урок?\n\n" + getLessonInfo(lesson),
-//                            inlineKeyboardMarkup);
+            return new MessageSenderImpl()
+                    .sendEditMessageWithInline(childId, messageId, inlineKeyboardMarkup, content);
         }
         return sendMessage;
     }

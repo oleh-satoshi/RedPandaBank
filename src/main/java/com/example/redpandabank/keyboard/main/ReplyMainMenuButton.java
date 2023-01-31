@@ -14,7 +14,7 @@ public class ReplyMainMenuButton  implements Pressable {
         return ReplyKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(Command.SCHEDULE.getName())
-                .button("тут будут еще кнопки")
+                .button("More")
                 .endRow()
                 .build();
     }

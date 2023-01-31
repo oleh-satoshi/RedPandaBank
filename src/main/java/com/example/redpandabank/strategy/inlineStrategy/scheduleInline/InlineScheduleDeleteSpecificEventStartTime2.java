@@ -44,12 +44,7 @@ public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandle
                 .filter(lessonSchedul -> lessonSchedul.getLessonStartTime().equals(localTime))
                 .findFirst()
                 .get();
-        //Не могу достать урок без удаленного LessonScedule
-        //Lesson lessonByLessonSchedules = lessonService.findLessonByLessonSchedules(lessonSchedule);
         lessonScheduleService.delete(lessonSchedule);
-//        Lesson byId = lessonService.getById(lessonByLessonSchedules.getLessonId());
-//        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(byId.getLessonId());
-//        new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
         InlineKeyboardMarkup keyboard = specificEventStartTime2Button.getKeyboard();
         String response = "Можешь удалить еще один старт для урока <i>\"" + lesson.getTitle() + "\"</i>, только будь внимателен!";
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);

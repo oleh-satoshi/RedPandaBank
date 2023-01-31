@@ -8,9 +8,9 @@ public interface ChildService {
     String NO_STATE = "no state";
     Child create(Child child);
 
-    Child getById(Long id);
+    Optional<Child> getById(Long id);
 
-    boolean findById(Long id);
+    Optional<Child> findById(Long id);
 
     void deleteById(Long id);
 

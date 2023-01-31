@@ -34,10 +34,9 @@ public class CommandStrategyImpl implements CommandStrategy {
         commandStrategyMap = new HashMap<>();
         commandStrategyMap.put(Command.START.getName(), new ScheduleStartCommandHandler(this.replyMainMenuButton, this.childService));
         commandStrategyMap.put(Command.SCHEDULE.getName(), new ScheduleMenuShowCommandHandler(this.inlineScheduleMenuButton));
-        commandStrategyMap.put(Command.BACK_TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.replyMainMenuButton));
+        commandStrategyMap.put(Command.TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.replyMainMenuButton));
         commandStrategyMap.put(Command.DELETE_EVENT.getName(), new ScheduleDeleteEventCommandHandler(this.lessonService));
         commandStrategyMap.put(Command.EDIT_SCHEDULE_EXISTING_EVENT.getName(), new EditScheduleEventCommandHandler(this.lessonService));
-        commandStrategyMap.put(Command.SCHEDULE_2.getName(), new ScheduleMenuShowCommandHandler(this.inlineScheduleMenuButton));
     }
 
     @Override
