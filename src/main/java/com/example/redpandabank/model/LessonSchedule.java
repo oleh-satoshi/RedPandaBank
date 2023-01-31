@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 
 import java.time.LocalTime;
 
@@ -14,7 +13,7 @@ import java.time.LocalTime;
 public class LessonSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long LessonScheduleId;
+    Long lessonScheduleId;
     Long childId;
     LocalTime lessonStartTime;
     String day;

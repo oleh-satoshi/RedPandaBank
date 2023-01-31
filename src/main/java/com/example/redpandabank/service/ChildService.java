@@ -18,5 +18,5 @@ public interface ChildService {
 
     Child findByUserId(Long userId);
 
-    Long parseId(String command);
+    Optional<Long> parseId(String command);
 }

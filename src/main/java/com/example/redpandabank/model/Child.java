@@ -12,7 +12,6 @@ import java.math.BigDecimal;
 @Table(name = "children")
 public class Child {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private BigDecimal count;
     private Integer rating;

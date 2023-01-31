@@ -40,11 +40,11 @@ public class TelegramBot {
         if (hasReply || hasCallback) {
             Long userId = UpdateInfo.getUserId(update);
             Optional<Child> childOptional = childService.getById(userId);
-            Child child = childOptional.get();
-            if (!child.getState().equals(State.NO_STATE.getState())
-                    && !child.getIsSkip()) {
-                StateHandler stateHandler = stateStrategy.get(child);
-                return stateHandler.handle(update, this);
+            if (childOptional.isPresent()
+                && !childOptional.get().getState().equals(State.NO_STATE.getState())
+                && !childOptional.get().getIsSkip()) {
+                    StateHandler stateHandler = stateStrategy.get(childOptional.get());
+                    return stateHandler.handle(update, this);
             } else if (hasReply) {
                 replyCommand = UpdateInfo.getText(update);
                 CommandHandler commandHandler = commandStrategy.get(replyCommand);

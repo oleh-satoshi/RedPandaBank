@@ -16,7 +16,7 @@ import static java.lang.Math.toIntExact;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
-public class InlineKeyboardMarkupBuilderImpl extends InlineKeyboardMarkupBuilder implements KeyboardMarkupBuilder {
+public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder, InlineKeyboardMarkupBuilder {
 
     List<InlineKeyboardButton> row;
     final List<List<InlineKeyboardButton>> keyboard;

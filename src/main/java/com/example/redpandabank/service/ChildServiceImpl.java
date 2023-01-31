@@ -1,7 +1,9 @@
 package com.example.redpandabank.service;
 
+import com.example.redpandabank.enums.State;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.repository.ChildRepository;
+import com.example.redpandabank.util.Separator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,7 +13,6 @@ import java.util.Optional;
 @Service
 public class ChildServiceImpl implements ChildService {
     private final static Integer ZERO = 0;
-    private final static String SEPARATOR = ":";
 
     private ChildRepository childRepository;
 
@@ -47,7 +48,7 @@ public class ChildServiceImpl implements ChildService {
         child.setRating(ZERO);
         child.setCompleteTask(ZERO);
         child.setIncompleteTask(ZERO);
-        child.setState(NO_STATE);
+        child.setState(State.NO_STATE.getState());
         child.setIsSkip(false);
         return create(child);
     }
@@ -58,11 +59,11 @@ public class ChildServiceImpl implements ChildService {
     }
 
     @Override
-    public Long parseId(String command) {
-        String[] split = command.split(SEPARATOR);
+    public Optional<Long> parseId(String command) {
+        String[] split = command.split(Separator.COLON_SEPARATOR);
         if (split.length > 1) {
-            return Long.valueOf(split[1]);
+            return Optional.of(Long.valueOf(split[1]));
         }
-        return null;
+        return Optional.empty();
     }
 }
