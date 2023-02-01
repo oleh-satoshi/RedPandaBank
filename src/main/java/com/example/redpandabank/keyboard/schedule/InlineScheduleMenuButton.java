@@ -3,10 +3,13 @@ package com.example.redpandabank.keyboard.schedule;
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleMenuButton implements Pressable {
     @Override

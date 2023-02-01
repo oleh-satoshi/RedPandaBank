@@ -4,12 +4,22 @@ import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.enums.WeekDay;
+import com.example.redpandabank.service.TranslateService;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleShowAllDaysButton implements Pressable<InlineKeyboardMarkup> {
+    final TranslateService translateService;
+    final String BACK = "back";
+
+    public InlineScheduleShowAllDaysButton(TranslateService translateService) {
+        this.translateService = translateService;
+    }
+
     @Override
     public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
@@ -24,7 +34,8 @@ public class InlineScheduleShowAllDaysButton implements Pressable<InlineKeyboard
                 .extraButton(WeekDay.SATURDAY.getDay(),WeekDay.SATURDAY.getDay())
                 .endRow()
                 .row()
-                .button("Back", Command.SCHEDULE.getName())
+                .button(translateService.getBySlug(BACK),
+                        Command.SCHEDULE.getName())
                 .endRow()
                 .build();
     }

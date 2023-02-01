@@ -5,17 +5,16 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalTime;
-
 @Data
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Entity
-@Table(name = "lessons_schedule")
-public class LessonSchedule {
+@Table(name ="translates")
+public class Translate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long lessonScheduleId;
-    Long childId;
-    LocalTime lessonStartTime;
-    String day;
+    Long id;
+    @Column(unique = true)
+    String slug;
+    String value;
+    String language;
 }

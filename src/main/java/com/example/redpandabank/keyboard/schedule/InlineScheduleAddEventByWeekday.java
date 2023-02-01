@@ -3,9 +3,12 @@ package com.example.redpandabank.keyboard.schedule;
 import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleAddEventByWeekday implements Pressable {
     @Override
