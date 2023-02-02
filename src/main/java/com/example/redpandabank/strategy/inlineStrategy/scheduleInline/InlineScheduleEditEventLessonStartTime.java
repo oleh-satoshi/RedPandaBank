@@ -10,11 +10,11 @@ import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -31,12 +31,17 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
     final ChildService childService;
     final InlineScheduleEditSpecificEventStartTimeChooseOperationButton
             inlineScheduleEditSpecificEventStartTimeChooseOperationButton;
+    final TranslateService translateService;
+    final String WHAT_TIME_FOR_LESSON = "what-time-for-lesson";
+    final String YOU_WANT_TO_CHANGE = "you-want-to-change";
 
     public InlineScheduleEditEventLessonStartTime(LessonService lessonService,
-                                                  ChildService childService, InlineScheduleEditSpecificEventStartTimeChooseOperationButton inlineScheduleEditSpecificEventStartTimeChooseOperationButton) {
+                                                  ChildService childService,
+                                                  InlineScheduleEditSpecificEventStartTimeChooseOperationButton inlineScheduleEditSpecificEventStartTimeChooseOperationButton, TranslateService translateService) {
         this.lessonService = lessonService;
         this.childService = childService;
         this.inlineScheduleEditSpecificEventStartTimeChooseOperationButton = inlineScheduleEditSpecificEventStartTimeChooseOperationButton;
+        this.translateService = translateService;
     }
 
     @Override
@@ -61,7 +66,9 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
         child.setState(State.EDIT_SPECIFIC_EVENT_START_TIME.getState());
         child.setIsSkip(false);
         childService.create(child);
-        String content = "Какое время для урока <i>\"" + lesson.getTitle() + "\"</i> ты хочешь изменить?";
+        String content = translateService.getBySlug(WHAT_TIME_FOR_LESSON)
+                + " <i>\"" + lesson.getTitle() + "\"</i> "
+                + translateService.getBySlug(YOU_WANT_TO_CHANGE);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, content);
     }
 

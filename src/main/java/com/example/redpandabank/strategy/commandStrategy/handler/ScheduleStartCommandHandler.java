@@ -3,23 +3,31 @@ package com.example.redpandabank.strategy.commandStrategy.handler;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.util.UpdateInfo;
 import com.vdurmont.emoji.EmojiParser;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Service
 public class ScheduleStartCommandHandler implements CommandHandler<Update> {
-    private final ReplyMainMenuButton replyMainMenuButton;
-    private final ChildService childService;
-    private boolean isInitialize;
+    final ReplyMainMenuButton replyMainMenuButton;
+    final ChildService childService;
+    final TranslateService translateService;
+    final String HELLO = "hello";
+    final String WE_ARE_MET = "we-are-met";
+    boolean isInitialize;
 
     public ScheduleStartCommandHandler(ReplyMainMenuButton replyMainMenuButton,
-                                       ChildService childService) {
+                                       ChildService childService, TranslateService translateService) {
         this.replyMainMenuButton = replyMainMenuButton;
         this.childService = childService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -29,31 +37,11 @@ public class ScheduleStartCommandHandler implements CommandHandler<Update> {
         isInitialize = childService.findById(userId).isPresent();
         if (!isInitialize) {
             childService.createChild(userId);
-            response = EmojiParser.parseToUnicode("\"Гаааррр!\" :grinning: "
-                    + "Это значит \"Привет!\" на языке панд :stuck_out_tongue: \n\n"
-                    + "В нашем :deciduous_tree: лесу меня знают все, такая уж у меня работа :card_index_dividers: \n\n"
-                    + "В детстве мне всегда нравилось мирить моих сестричек и братьев друг с другом, "
-                    + "а иногда и с родителями :sweat_smile: \n"
-                    + "а сегодня это стало моей работой и я продолжаю помогать родителям и детям дружить. "
-                    + "Я так люблю свою работу! :sparkling_heart: \n\n"
-                    + "Ой..Что-то я отвлекся, в общем будем с тобой друзьями! :handshake:  \n\n"
-                    + "Хоть у меня и пушистые :paw_prints: лапки мне все равно не сложно помогать "
-                    + "друзьям выполнять их домашние дела, я буду напоминать тебе сделать что-то, "
-                    + "а потом я буду смотреть как мой любимый друг справился с заданием! И да, иногда твои "
-                    + "родители тоже будут проверять твою работу! \n\n"
-                    + "А еще у меня будут хранится твои :moneybag: денежки! "
-                    + "Я всегда готов передать их твоим родителям когда ты этого захочешь! "
-                    + "Тебе нужно будет просто нажать кнопочку \"Обменять!\" "
-                    + "Я уверен что нам будет весело! \n\n"
-                    + "Ты всегда можешь мне написать и я тебе отвечу! "
-                    + "Я придумал для тебя специальные кнопочки что бы тебе было удобнее писать мне! "
-                    + "Я приготовил себе сочнейший кусок бамбука и собираюсь садиться :fork_knife_plate: кушать, "
-                    + "а ты пока что осмотрись тут и помни что я всегда откликнусь когда ты меня позовешь! "
-                    ) ;
+            response = EmojiParser.parseToUnicode(translateService.getBySlug(HELLO)) ;
             ReplyKeyboardMarkup keyboard = replyMainMenuButton.getKeyboard();
             return new MessageSenderImpl().sendMessageWithReply(userId, response,keyboard);
         } else {
-            response = EmojiParser.parseToUnicode("Эй! Мы же с тобой познакомились уже! Ты что забыл? :sweat_smile:");
+            response = EmojiParser.parseToUnicode(translateService.getBySlug(WE_ARE_MET));
             return new MessageSenderImpl().sendMessage(userId, response);
         }
     }

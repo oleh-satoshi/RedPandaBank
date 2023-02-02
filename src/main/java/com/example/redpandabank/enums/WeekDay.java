@@ -8,7 +8,7 @@ public enum WeekDay{
         THURSDAY("Thursday"),
         FRIDAY("Friday"),
         SATURDAY("Saturday"),
-        ALL_WEEK("All eww");
+        ALL_WEEK("All week");
 
         String day;
 

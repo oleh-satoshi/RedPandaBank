@@ -4,11 +4,11 @@ import com.example.redpandabank.enums.State;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -17,9 +17,12 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Component
 public class InlineScheduleAddTitleEvent implements InlineHandler<Update> {
     final ChildService childService;
+    final TranslateService translateService;
+    final String ENTER_LESSON_NAME = "enter-lesson-name";
 
-    public InlineScheduleAddTitleEvent(ChildService childService) {
+    public InlineScheduleAddTitleEvent(ChildService childService, TranslateService translateService) {
         this.childService = childService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -31,7 +34,7 @@ public class InlineScheduleAddTitleEvent implements InlineHandler<Update> {
         if (child.getIsSkip()) {
             child.setIsSkip(false);
         }
-        response = "Введи название урока:";
+        response = translateService.getBySlug(ENTER_LESSON_NAME);
         child.setState(State.SAVE_TITLE_EVENT.getState());
         childService.create(child);
         return new MessageSenderImpl().sendEditMessage(userId, messageId, response);

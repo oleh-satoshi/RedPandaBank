@@ -4,26 +4,31 @@ import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.repository.LessonRepository;
 import com.example.redpandabank.model.Lesson;
 import com.vdurmont.emoji.EmojiParser;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Service
 public class LessonServiceImpl implements LessonService {
-    private final LessonRepository lessonRepository;
-    private final MessageSender messageSender;
+    final LessonRepository lessonRepository;
+    final MessageSender messageSender;
+    final TranslateService translateService;
+    final String NO_LESSONS_FOR_THE_DAY = "no-lessons-for-the-day";
     public final static String NEXT_LINE = "%0A";
 
     public LessonServiceImpl(LessonRepository lessonRepository,
-                             MessageSender messageSender) {
+                             MessageSender messageSender,
+                             TranslateService translateService) {
         this.lessonRepository = lessonRepository;
         this.messageSender = messageSender;
+        this.translateService = translateService;
     }
 
     @Override
@@ -55,7 +60,7 @@ public class LessonServiceImpl implements LessonService {
     public Optional<String> getLessonsByDayAndChildId(Long childId, String day) {
         List<Lesson> lessonByDay = findLessonByChildIdAndWeekDay(childId, day);
         if (lessonByDay.isEmpty()) {
-            new MessageSenderImpl().sendMessageViaURL(childId, "На этот день еще уроков нет!");
+            new MessageSenderImpl().sendMessageViaURL(childId, translateService.getBySlug(NO_LESSONS_FOR_THE_DAY));
             return Optional.empty();
         }
         new MessageSenderImpl().sendMessageViaURL(childId,  EmojiParser.parseToUnicode(":calendar: " + "<b>" + day + "</b>"));

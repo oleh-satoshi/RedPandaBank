@@ -5,38 +5,46 @@ import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.commandStrategy.handler.BackToMainMenuCommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.*;
 import com.example.redpandabank.strategy.commandStrategy.handler.SchedulePlugCommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.handler.ScheduleStartCommandHandler;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
 
+
+@FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
 public class CommandStrategyImpl implements CommandStrategy {
-    private Map<String, CommandHandler> commandStrategyMap;
+    Map<String, CommandHandler> commandStrategyMap;
     final ReplyMainMenuButton replyMainMenuButton;
     final ChildService childService;
     final InlineScheduleMenuButton inlineScheduleMenuButton;
     final LessonService lessonService;
+    final TranslateService translateService;
 
 
     public CommandStrategyImpl(ReplyMainMenuButton replyMainMenuButton, ChildService childService,
-                               InlineScheduleMenuButton inlineScheduleMenuButton, LessonService lessonService) {
+                               InlineScheduleMenuButton inlineScheduleMenuButton,
+                               LessonService lessonService, TranslateService translateService) {
         this.replyMainMenuButton = replyMainMenuButton;
         this.childService = childService;
         this.inlineScheduleMenuButton = inlineScheduleMenuButton;
         this.lessonService = lessonService;
+        this.translateService = translateService;
 
         commandStrategyMap = new HashMap<>();
-        commandStrategyMap.put(Command.START.getName(), new ScheduleStartCommandHandler(this.replyMainMenuButton, this.childService));
-        commandStrategyMap.put(Command.SCHEDULE.getName(), new ScheduleMenuShowCommandHandler(this.inlineScheduleMenuButton));
-        commandStrategyMap.put(Command.TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.replyMainMenuButton));
-        commandStrategyMap.put(Command.DELETE_EVENT.getName(), new ScheduleDeleteEventCommandHandler(this.lessonService));
-        commandStrategyMap.put(Command.EDIT_SCHEDULE_EXISTING_EVENT.getName(), new EditScheduleEventCommandHandler(this.lessonService));
+        commandStrategyMap.put(Command.START.getName(), new ScheduleStartCommandHandler(this.replyMainMenuButton, this.childService, translateService));
+        commandStrategyMap.put(Command.SCHEDULE.getName(), new ScheduleMenuShowCommandHandler(this.inlineScheduleMenuButton, translateService));
+        commandStrategyMap.put(Command.TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.replyMainMenuButton, translateService));
+        commandStrategyMap.put(Command.DELETE_EVENT.getName(), new ScheduleDeleteEventCommandHandler(this.lessonService, translateService));
+        commandStrategyMap.put(Command.EDIT_SCHEDULE_EXISTING_EVENT.getName(), new EditScheduleEventCommandHandler(this.lessonService, this.translateService));
     }
 
     @Override
@@ -46,7 +54,7 @@ public class CommandStrategyImpl implements CommandStrategy {
         command = checkSaveEventDuration(command);
         CommandHandler commandHandler = commandStrategyMap.get(command);
         if (commandHandler == null) {
-            commandHandler = new SchedulePlugCommandHandler();
+            commandHandler = new SchedulePlugCommandHandler(translateService);
         }
         return commandHandler;
     }

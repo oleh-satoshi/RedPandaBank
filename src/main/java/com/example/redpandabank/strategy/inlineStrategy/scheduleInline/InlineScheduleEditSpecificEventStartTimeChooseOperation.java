@@ -4,12 +4,12 @@ import com.example.redpandabank.keyboard.schedule.InlineScheduleEditSpecificEven
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -20,12 +20,16 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 public class InlineScheduleEditSpecificEventStartTimeChooseOperation implements InlineHandler<Update> {
     final InlineScheduleEditSpecificEventStartTimeChooseOperationButton chooseOperationButton;
     final LessonService lessonService;
+    final TranslateService translateService;
+    final String OPTION_FOR_START_TIME = "option-for-start-time";
 
 
     public InlineScheduleEditSpecificEventStartTimeChooseOperation(InlineScheduleEditSpecificEventStartTimeChooseOperationButton chooseOperationButton,
-                                                                   LessonService lessonService) {
+                                                                   LessonService lessonService,
+                                                                   TranslateService translateService) {
         this.chooseOperationButton = chooseOperationButton;
         this.lessonService = lessonService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -34,7 +38,8 @@ public class InlineScheduleEditSpecificEventStartTimeChooseOperation implements 
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         Long lessonId = parseId(UpdateInfo.getData(update));
         Lesson lesson = lessonService.getById(lessonId);
-        String response = "Что ты хочешь сделать со временем начала урока <i>\"" + lesson.getTitle() + "\"</i> !";
+        String response = translateService.getBySlug(OPTION_FOR_START_TIME)
+                + " <i>\"" + lesson.getTitle() + "\"</i> !";
         InlineKeyboardMarkup inline = chooseOperationButton.getKeyboard(lesson);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, response);
     }

@@ -7,6 +7,7 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
@@ -24,12 +25,16 @@ public class InlineScheduleSaveEventDay implements InlineHandler<Update> {
     final LessonService lessonService;
     final ChildService childService;
     final InlineScheduleAddEventDay inlineScheduleAddEventDay;
+    final TranslateService translateService;
+    final String SAY_FOR_THE_LESSON = "day-for-the-lesson";
 
     public InlineScheduleSaveEventDay(LessonService lessonService, ChildService childService,
-                                      InlineScheduleAddEventDay inlineScheduleAddEventDay) {
+                                      InlineScheduleAddEventDay inlineScheduleAddEventDay,
+                                      TranslateService translateService) {
         this.lessonService = lessonService;
         this.childService = childService;
         this.inlineScheduleAddEventDay = inlineScheduleAddEventDay;
+        this.translateService = translateService;
     }
 
     @Override
@@ -46,7 +51,8 @@ public class InlineScheduleSaveEventDay implements InlineHandler<Update> {
         child.setState(State.SAVE_EVENT_DAY.getState());
         childService.create(child);
         InlineKeyboardMarkup keyboard = inlineScheduleAddEventDay.getKeyboard();
-        response = "Выбери день недели в который проходит урок <i>\"" + lesson.getTitle() + "\"</i>:    ";
+        response = translateService.getBySlug(SAY_FOR_THE_LESSON)
+                + " <i>\"" + lesson.getTitle() + "\"</i>:    ";
         return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, keyboard, response);
     }
 }

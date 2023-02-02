@@ -3,11 +3,9 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.LessonScheduleService;
-import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSender;
-import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.UpdateInfo;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -26,6 +24,18 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
     final LessonScheduleService lessonScheduleService;
     final LessonService lessonService;
     final MessageSender messageSender;
+    final TranslateService translateService;
+    final String RESTORE = "restore";
+    final String LESSON = "lesson";
+    final String DELETE_LESSON_PART_2 = "delete-lesson-part-2";
+    final String ALREADY_BEEN_REMOVED = "already-been-removed";
+    final String I_WANT_TO_DELETE = "i-want-to-delete";
+    final String BACK_TO_LESSONS = "back-to-lessons";
+    final String MAKE_SURE_TO_DELETE_LESSON = "make-sure-to-delete-lesson";
+    final String TEACHER = "teacher";
+    final String START_AT = "start-at";
+    final String WILL_END_IN = "will-end-in";
+    final String DURATION = "duration";
     final static String YES = "yes";
     final static String SEPARATOR = ":";
     private SendMessage sendMessage;
@@ -33,18 +43,20 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
 
     public InlineScheduleDeleteEventStep2(LessonScheduleService lessonScheduleService,
                                           LessonService lessonService,
-                                          MessageSender messageSender) {
+                                          MessageSender messageSender, TranslateService translateService) {
         this.lessonScheduleService = lessonScheduleService;
         this.lessonService = lessonService;
         this.messageSender = messageSender;
+        this.translateService = translateService;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        childId = update.getCallbackQuery().getMessage().getChatId();
-        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+        childId = UpdateInfo.getUserId(update);
+        Integer messageId = UpdateInfo.getMessageId(update);
+        String title = UpdateInfo.getData(update);
+        String content;
         Lesson lesson;
-        String title = update.getCallbackQuery().getData();
         String[] split = title.split(SEPARATOR);
         if (split[1].equals(YES)) {
             lesson = lessonService.getById(Long.valueOf(split[2]));
@@ -53,27 +65,32 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
                 lessonService.create(lesson);
                 InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                         .row()
-                        .button("Восстановить", "/recoverData" + SEPARATOR + lesson.getLessonId())
+                        .button(translateService.getBySlug(RESTORE),
+                                "/recoverData" + SEPARATOR + lesson.getLessonId())
                         .endRow()
                         .build();
-                new MessageSenderImpl().sendMessageViaURL(childId, "Урок " + lesson.getTitle() + " удален! Если ты ошибся и удалил не тот урок ты можешь нажать кнопочку Восстановить и я верну урок обратно");
+                content = translateService.getBySlug(LESSON) + lesson.getTitle()
+                        + translateService.getBySlug(DELETE_LESSON_PART_2);
+                new MessageSenderImpl().sendMessageViaURL(childId, content);
                 return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId,
                         inlineKeyboardMarkup, "<strike>" + getLessonInfo(lesson) + "</strike>");
             } else {
-                new MessageSenderImpl().sendMessageViaURL(childId, "Урок " + lesson.getTitle() + " уже был удален!");
+                content = translateService.getBySlug(LESSON) + lesson.getTitle() + translateService.getBySlug(ALREADY_BEEN_REMOVED);
+                new MessageSenderImpl().sendMessageViaURL(childId, content);
             }
         } else if (split[0].equals(Command.DELETE_EVENT_BY_ID.getName())) {
             lesson = lessonService.getById(Long.valueOf(split[1]));
             InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                     .row()
-                    .button("Да, я хочу удалить " + lesson.getTitle(),
-                            Command.DELETE_EVENT_BY_ID.getName() + SEPARATOR + YES + SEPARATOR + lesson.getLessonId())
+                    .button(translateService.getBySlug(I_WANT_TO_DELETE) + lesson.getTitle(),
+                            Command.DELETE_EVENT_BY_ID.getName() + SEPARATOR
+                                    + YES + SEPARATOR + lesson.getLessonId())
                     .endRow()
                     .row()
-                    .button("Нет, верника меня к списку уроков", Command.DELETE_EVENT.getName())
+                    .button(translateService.getBySlug(BACK_TO_LESSONS), Command.DELETE_EVENT.getName())
                     .endRow()
                     .build();
-            String content = "Ты точно хочешь удалить этот урок?\n\n" + getLessonInfo(lesson);
+            content = translateService.getBySlug(MAKE_SURE_TO_DELETE_LESSON) + getLessonInfo(lesson);
             return new MessageSenderImpl()
                     .sendEditMessageWithInline(childId, messageId, inlineKeyboardMarkup, content);
         }
@@ -83,10 +100,10 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
     private String getLessonInfo(Lesson lesson) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(":school_satchel: " + "<b>" + lesson.getTitle() + "</b>" + "\n")
-                .append(":mortar_board: Учитель: " + "<i>" + lesson.getTeacher() + "</i>" + "\n")
-                .append(":bell: " + "Начинается в " + getStartTime(lesson))
-                .append(":checkered_flag: " + "Закончится в  " + getFinishTime(lesson) + "\n")
-                .append(":clock8: " + "Идет " + "<b>" + lesson.getDuration() + "</b>" +
+                .append(translateService.getBySlug(TEACHER) + "<i>" + lesson.getTeacher() + "</i>" + "\n")
+                .append(translateService.getBySlug(START_AT) + getStartTime(lesson))
+                .append(translateService.getBySlug(WILL_END_IN) + getFinishTime(lesson) + "\n")
+                .append(translateService.getBySlug(DURATION) + "<b>" + lesson.getDuration() + "</b>" +
                         lessonService.getDuration(lesson.getDuration()) + "\n");
 
         return EmojiParser.parseToUnicode(stringBuilder.toString());

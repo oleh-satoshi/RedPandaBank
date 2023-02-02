@@ -74,7 +74,6 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update>, Com
     }
 
     private LocalTime parseTime(String text) {
-        //TODO пропусти регексом, что бы проходили только цифры
         String[] response = text.split(":");
         return LocalTime.of(Integer.parseInt(response[0]), Integer.parseInt(response[1]));
     }

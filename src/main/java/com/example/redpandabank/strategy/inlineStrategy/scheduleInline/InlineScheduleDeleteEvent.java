@@ -6,10 +6,10 @@ import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -21,9 +21,13 @@ import java.util.HashSet;
 @Component
 public class InlineScheduleDeleteEvent implements InlineHandler<Update> {
     final LessonService lessonService;
+    final TranslateService translateService;
+    final String CHOOSE_LESSON_TO_DELETE = "choose-lesson-to-delete";
 
-    public InlineScheduleDeleteEvent(LessonService lessonService) {
+    public InlineScheduleDeleteEvent(LessonService lessonService,
+                                     TranslateService translateService) {
         this.lessonService = lessonService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -38,7 +42,7 @@ public class InlineScheduleDeleteEvent implements InlineHandler<Update> {
             inlineKeyboardMarkup.button(lesson.getTitle(), Command.DELETE_EVENT_BY_ID.getName() + ":" + lesson.getLessonId()).endRow();
         }
         InlineKeyboardMarkup keyboardMarkup = inlineKeyboardMarkup.build();
-        String content = "Внимательно посмотри на название урока и выбери тот который ты хочешь удалить..";
+        String content = translateService.getBySlug(CHOOSE_LESSON_TO_DELETE);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboardMarkup, content);
     }
 }

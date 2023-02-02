@@ -6,11 +6,13 @@ import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -22,23 +24,27 @@ import java.util.List;
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
-    private final LessonService lessonService;
-    private final LessonScheduleService lessonScheduleService;
+    final LessonService lessonService;
+    final LessonScheduleService lessonScheduleService;
+    final TranslateService translateService;
+    final String SAVE_DAY = "save-day";
 
 
     public InlineScheduleWeekdayButton(LessonService lessonService,
-                                       LessonScheduleService lessonScheduleService) {
+                                       LessonScheduleService lessonScheduleService,
+                                       TranslateService translateService) {
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
+        this.translateService = translateService;
     }
 
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        String response;
+        String content;
         String day;
-        String inputDay = update.getCallbackQuery().getData();
-        Long userId = update.getCallbackQuery().getMessage().getChatId();
+        String inputDay = UpdateInfo.getData(update);
+        Long userId = UpdateInfo.getUserId(update);
 
         if (inputDay.equals(Command.SAVE_EVENT_MONDAY.getName())) {
             day = WeekDay.MONDAY.getDay();
@@ -58,18 +64,13 @@ public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
         } else if (inputDay.equals(Command.SAVE_EVENT_SATURDAY.getName())) {
             day = WeekDay.SATURDAY.getDay();
             createLessonSchedule(day, userId);
-        } else if (inputDay.equals(Command.SAVE_EVENT_SUNDAY.getName())) {
+        } else {
             day = WeekDay.SUNDAY.getDay();
             createLessonSchedule(day, userId);
         }
 
-        response= "День недели сохранили!";
-
-
-        return new SendMessage().builder()
-                        .chatId(update.getCallbackQuery().getMessage().getChatId())
-                        .text(response)
-                        .build();
+        content= translateService.getBySlug(SAVE_DAY);
+        return new MessageSenderImpl().sendMessage(userId, content);
     }
 
     private void createLessonSchedule(String day, Long userId) {

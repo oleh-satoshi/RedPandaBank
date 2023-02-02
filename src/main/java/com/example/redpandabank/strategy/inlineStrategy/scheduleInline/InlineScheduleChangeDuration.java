@@ -3,12 +3,11 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 import com.example.redpandabank.enums.State;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -16,12 +15,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleChangeDuration implements InlineHandler<Update> {
-    final LessonService lessonService;
     final ChildService childService;
+    final TranslateService translateService;
+    final String ENTER_LESSON_DURATION_AGAIN = "enter-lesson-duration-again";
 
-    public InlineScheduleChangeDuration(LessonService lessonService, ChildService childService) {
-        this.lessonService = lessonService;
+    public InlineScheduleChangeDuration(ChildService childService,
+                                        TranslateService translateService) {
         this.childService = childService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -33,6 +34,7 @@ public class InlineScheduleChangeDuration implements InlineHandler<Update> {
         child.setState(State.SAVE_DURATION.getState());
         child.setIsSkip(false);
         childService.create(child);
-        return new MessageSenderImpl().sendEditMessage(childId, messageId, "Попробуй снова ввести длительность урока, будь внимателен:");
+        String content = translateService.getBySlug(ENTER_LESSON_DURATION_AGAIN);
+        return new MessageSenderImpl().sendEditMessage(childId, messageId, content);
     }
 }

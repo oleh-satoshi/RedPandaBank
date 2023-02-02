@@ -6,6 +6,7 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -21,10 +22,14 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class InlineScheduleEditSpecificEventDuration implements InlineHandler<Update> {
     final LessonService lessonService;
     final ChildService childService;
+    final TranslateService translateService;
+    final String NEW_DURATION_FOR_LESSON = "new-duration-for-lesson";
 
-    public InlineScheduleEditSpecificEventDuration(LessonService lessonService, ChildService childService) {
+    public InlineScheduleEditSpecificEventDuration(LessonService lessonService, ChildService childService,
+                                                   TranslateService translateService) {
         this.lessonService = lessonService;
         this.childService = childService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -38,7 +43,8 @@ public class InlineScheduleEditSpecificEventDuration implements InlineHandler<Up
                 + Separator.COLON_SEPARATOR + lesson.getLessonId());
         child.setIsSkip(false);
         childService.create(child);
-        String content = "Введи новую длительность для этого урока <i>\"" + lesson.getTitle() + "\"</i> !";;
+        String content = translateService.getBySlug(NEW_DURATION_FOR_LESSON)
+                + " <i>\"" + lesson.getTitle() + "\"</i> !";;
         return new MessageSenderImpl().sendEditMessage(userId, messageId, content);
     }
 

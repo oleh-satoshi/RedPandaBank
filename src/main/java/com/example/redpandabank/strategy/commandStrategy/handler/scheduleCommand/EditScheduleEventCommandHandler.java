@@ -5,10 +5,10 @@ import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBui
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -21,9 +21,13 @@ import static com.example.redpandabank.strategy.commandStrategy.handler.schedule
 @FieldDefaults(level= AccessLevel.PRIVATE)@Component
 public class EditScheduleEventCommandHandler implements CommandHandler<Update> {
     final LessonService lessonService;
+    final TranslateService translateService;
+    final String WHAT_LESSON_EDIT = "what-lesson-edit";
 
-    public EditScheduleEventCommandHandler(LessonService lessonService) {
+    public EditScheduleEventCommandHandler(LessonService lessonService,
+                                           TranslateService translateService) {
         this.lessonService = lessonService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -39,7 +43,7 @@ public class EditScheduleEventCommandHandler implements CommandHandler<Update> {
                     Command.EDIT_SPECIFIC_EVENT_FIELD.getName() + SEPARATOR + lesson.getTitle()).endRow();
         }
         SendMessage sendMessage = new MessageSenderImpl().sendMessageWithInline(childId,
-                "Какой урок ты хочешь редактировать?",
+                translateService.getBySlug(WHAT_LESSON_EDIT),
                 inlineKeyboardMarkupBuilderImpl.build());
         return sendMessage;
     }

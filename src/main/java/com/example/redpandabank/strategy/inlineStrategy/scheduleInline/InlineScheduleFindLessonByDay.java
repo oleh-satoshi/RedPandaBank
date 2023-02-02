@@ -13,6 +13,8 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
+import java.util.Optional;
+
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleFindLessonByDay implements InlineHandler<Update> {
@@ -31,6 +33,7 @@ public class InlineScheduleFindLessonByDay implements InlineHandler<Update> {
         Long childId = UpdateInfo.getUserId(update);
         lessonService.getLessonsByDayAndChildId(childId, day);
         ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
-        return new MessageSenderImpl().sendMessageWithReply(childId, "", keyboard);
+        Optional<String> content = Optional.of("");
+        return new MessageSenderImpl().sendMessageWithReply(childId, content.get(), keyboard);
     }
 }

@@ -5,10 +5,10 @@ import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -20,9 +20,13 @@ import java.util.HashSet;
 public class ScheduleDeleteEventCommandHandler implements CommandHandler<Update> {
     final static String SEPARATOR = ":";
     final LessonService lessonService;
+    final TranslateService translateService;
+    final String CHOOSE_LESSON_TO_DELETE = "choose-lesson-to-delete";
 
-    public ScheduleDeleteEventCommandHandler(LessonService lessonService) {
+    public ScheduleDeleteEventCommandHandler(LessonService lessonService,
+                                             TranslateService translateService) {
         this.lessonService = lessonService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -38,7 +42,7 @@ public class ScheduleDeleteEventCommandHandler implements CommandHandler<Update>
                     Command.DELETE_EVENT_BY_ID.getName() + SEPARATOR + lesson.getLessonId()).endRow();
         }
         SendMessage sendMessage = new MessageSenderImpl().sendMessageWithInline(childId,
-                "Внимательно посмотри на название урока и выбери тот который ты хочешь удалить..",
+                translateService.getBySlug(CHOOSE_LESSON_TO_DELETE),
                 inlineKeyboardMarkupBuilderImpl.build());
         return sendMessage;
     }

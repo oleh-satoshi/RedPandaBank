@@ -3,11 +3,12 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -16,10 +17,15 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @Component
 public class InlineScheduleRecoverEvent implements InlineHandler<Update> {
     final LessonService lessonService;
-    final static String SEPARATOR = ":";
+    final TranslateService translateService;
+    final String LESSON = "lesson";
+    final String BACK_TO_SCHEDULE = "back-to-schedule";
+    final String RETURN_TO_SCHEDULE = "return-to-schedule";
 
-    public InlineScheduleRecoverEvent(LessonService lessonService) {
+    public InlineScheduleRecoverEvent(LessonService lessonService,
+                                      TranslateService translateService) {
         this.lessonService = lessonService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -27,18 +33,23 @@ public class InlineScheduleRecoverEvent implements InlineHandler<Update> {
         Long childId = UpdateInfo.getUserId(update);
         String command = UpdateInfo.getData(update);
         Lesson lesson = lessonService.getById(parseId(command));
+        String content;
         if (lesson.getIsDeleted()) {
             lesson.setIsDeleted(false);
             lessonService.create(lesson);
-            new MessageSenderImpl().sendMessageViaURL(childId, "Урок " + lesson.getTitle() + " снова добавлен в твое расписание!%0A%0A");
+            content = translateService.getBySlug(LESSON) + lesson.getTitle()
+                    + translateService.getBySlug(BACK_TO_SCHEDULE);
+            new MessageSenderImpl().sendMessageViaURL(childId,
+                    content);
             new MessageSenderImpl().sendMessageViaURL(childId, lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId()));
         } else {
-            new MessageSenderImpl().sendMessageViaURL(childId,"Я уже добавил этот урок в твое расписание, не переживай");
+            content = translateService.getBySlug(RETURN_TO_SCHEDULE);
+            new MessageSenderImpl().sendMessageViaURL(childId,content);
         }
         return null;
     }
 
     private Long parseId(String command) {
-        return Long.valueOf(command.split(SEPARATOR)[1]);
+        return Long.valueOf(command.split(Separator.COLON_SEPARATOR)[1]);
     }
 }

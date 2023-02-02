@@ -6,10 +6,11 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -19,17 +20,22 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class InlineScheduleChangeEventTitle implements InlineHandler<Update> {
     final LessonService lessonService;
     final ChildService childService;
+    final TranslateService translateService;
+    final String ENTER_LESSON_NAME_AGAIN = "enter-lesson-name-again";
 
-    public InlineScheduleChangeEventTitle(LessonService lessonService, ChildService childService) {
+    public InlineScheduleChangeEventTitle(LessonService lessonService,
+                                          ChildService childService,
+                                          TranslateService translateService) {
         this.lessonService = lessonService;
         this.childService = childService;
+        this.translateService = translateService;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        Long childId = update.getCallbackQuery().getMessage().getChatId();
-        String command = update.getCallbackQuery().getMessage().getText();
-        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+        Long childId = UpdateInfo.getUserId(update);
+        String command = UpdateInfo.getText(update);
+        Integer messageId = UpdateInfo.getMessageId(update);
 
         Lesson lesson = lessonService.findLessonByTitle(childId, parseCommand(command));
         lessonService.deleteLessonByTitleAndChildId(lesson.getTitle(), childId);
@@ -37,7 +43,8 @@ public class InlineScheduleChangeEventTitle implements InlineHandler<Update> {
         child.setState(State.SAVE_TITLE_EVENT.getState());
         child.setIsSkip(false);
         childService.create(child);
-        return new MessageSenderImpl().sendEditMessage(childId, messageId, "Попробуй снова ввести имя урока, будь внимателен:");
+        String content = translateService.getBySlug(ENTER_LESSON_NAME_AGAIN);
+        return new MessageSenderImpl().sendEditMessage(childId, messageId, content);
     }
 
     private String parseCommand(String command) {

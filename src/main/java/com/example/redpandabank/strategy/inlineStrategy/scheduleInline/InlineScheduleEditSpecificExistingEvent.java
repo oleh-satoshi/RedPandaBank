@@ -6,11 +6,11 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -23,15 +23,20 @@ public class InlineScheduleEditSpecificExistingEvent implements InlineHandler<Up
     final LessonScheduleService lessonScheduleService;
     final InlineScheduleEditEventFieldButton inlineScheduleEditEventFieldButton;
     final InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilder;
+    final TranslateService translateService;
+    final String WHAT_FIELD_IN_THE_LESSON = "what-field-in-the-lesson";
+    final String WANT_TO_FIX = "want-to-fix";
 
     public InlineScheduleEditSpecificExistingEvent(LessonService lessonService,
                                                    LessonScheduleService lessonScheduleService,
                                                    InlineScheduleEditEventFieldButton inlineScheduleEditEventFieldButton,
-                                                   InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilder) {
+                                                   InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilder,
+                                                   TranslateService translateService) {
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.inlineScheduleEditEventFieldButton = inlineScheduleEditEventFieldButton;
         this.inlineKeyboardMarkupBuilder = inlineKeyboardMarkupBuilder;
+        this.translateService = translateService;
     }
 
     @Override
@@ -41,7 +46,9 @@ public class InlineScheduleEditSpecificExistingEvent implements InlineHandler<Up
         Lesson lesson = lessonService.getById(lessonId);
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         InlineKeyboardMarkup inline = inlineScheduleEditEventFieldButton.getKeyboard(lesson);
-        String content = "Какое поле в уроке <i>\"" + lesson.getTitle() + "\"</i> ты хочешь исправить?";
+        String content = translateService.getBySlug(WHAT_FIELD_IN_THE_LESSON)
+                + " <i>\"" + lesson.getTitle() + "\"</i> "
+                + translateService.getBySlug(WANT_TO_FIX);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, content);
     }
 
