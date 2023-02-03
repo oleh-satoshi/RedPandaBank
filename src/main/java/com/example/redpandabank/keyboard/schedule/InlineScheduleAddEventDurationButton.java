@@ -15,7 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 public class InlineScheduleAddEventDurationButton implements Pressable {
     TranslateService translateService;
     final String CHANGE_LESSON_DURATION = "change-lesson-duration";
-    final String NEXT = "Next";
+    final String NEXT = "next";
 
     public InlineScheduleAddEventDurationButton(TranslateService translateService) {
         this.translateService = translateService;

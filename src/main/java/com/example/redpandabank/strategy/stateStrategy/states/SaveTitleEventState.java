@@ -14,11 +14,9 @@ import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
@@ -46,7 +44,7 @@ public class SaveTitleEventState implements StateHandler<Update>, CommandCheckab
         lessonTitle = UpdateInfo.getText(update);
         Child child = childService.findByUserId(userId);
         if (checkCommand(lessonTitle, child)) {
-            if (lessonService.findAllByTitle(lessonTitle, userId)) {
+            if (lessonService.checkAllByTitle(lessonTitle, userId)) {
                 Lesson lesson = new Lesson();
                 lesson.setChildId(userId);
                 lesson.setTitle(lessonTitle);

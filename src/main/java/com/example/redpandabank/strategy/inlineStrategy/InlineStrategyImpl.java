@@ -99,9 +99,9 @@ public class InlineStrategyImpl implements InlineStrategy {
         strategyMap.put(Command.SCHEDULE.getName(), new InlineShowMainMenu(inlineScheduleMenuButton, translateService));
         strategyMap.put(Command.SAVE_EVENT_NAME.getName(), new InlineScheduleAddTitleEvent(childService, translateService));
         strategyMap.put(Command.SAVE_EVENT_TIME.getName(), new InlineScheduleSaveEventTime(childService, translateService));
-        strategyMap.put(Command.SAVE_EVENT_TEACHER_NAME.getName(), new InlineScheduleAddTeacherName(childService, lessonService));
+        strategyMap.put(Command.SAVE_EVENT_TEACHER_NAME.getName(), new InlineScheduleAddTeacherName(childService, lessonService, translateService));
         strategyMap.put(Command.ADD_SCHEDULE_EVENT.getName(), new InlineScheduleAddTitleEvent(childService, translateService));
-        strategyMap.put(Command.SAVE_EVENT_DURATION.getName(), new InlineScheduleAddEventDuration(lessonService, childService));
+        strategyMap.put(Command.SAVE_EVENT_DURATION.getName(), new InlineScheduleAddEventDuration(lessonService, childService, translateService));
         strategyMap.put(Command.EDIT_SCHEDULE_EVENT_TITLE.getName(), new InlineScheduleChangeEventTitle(lessonService, childService, translateService));
         strategyMap.put(Command.EDIT_EVENT_TEACHER_NAME.getName(), new InlineScheduleChangeTeacher(childService, translateService));
         strategyMap.put(Command.EDIT_EVENT_DURATION.getName(), new InlineScheduleChangeDuration(childService, translateService));
@@ -113,9 +113,9 @@ public class InlineStrategyImpl implements InlineStrategy {
         strategyMap.put(Command.SHOW_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleEditEventLessonStartTime(lessonService, childService, chooseOperationButton, translateService));
         strategyMap.put(Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName(), new InlineScheduleEditSpecificEventStartTimeChooseOperation(chooseOperationButton, lessonService, translateService));
         strategyMap.put(Command.EDIT_SCHEDULE_EVENT_START_TIME.getName(), new InlineScheduleEditEventLessonStartTime(lessonService, childService, chooseOperationButton, translateService));
-        strategyMap.put(Command.ADD_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleAddTimeToLesson(lessonService, childService));
-        strategyMap.put(Command.ADD_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleAddDaySpecificEventStartTime(lessonScheduleService, lessonService, childService, inlineScheduleAddDaySpecificEventStartTimeButton));
-        strategyMap.put(Command.ADD_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleAddExtraDaySpecificStartTime(lessonService, lessonScheduleService, childService, inlineScheduleAddExtraDaySpecificStartTimeButton));
+        strategyMap.put(Command.ADD_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleAddTimeToLesson(lessonService, childService, translateService));
+        strategyMap.put(Command.ADD_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleAddDaySpecificEventStartTime(lessonScheduleService, lessonService, childService, inlineScheduleAddDaySpecificEventStartTimeButton, translateService));
+        strategyMap.put(Command.ADD_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleAddExtraDaySpecificStartTime(lessonService, lessonScheduleService, childService, inlineScheduleAddExtraDaySpecificStartTimeButton, translateService));
         strategyMap.put(Command.SET_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName(), new InlineSetExtraDaySpecificStartTime(lessonService, lessonScheduleService, childService, inlineScheduleAddDaySpecificEventStartTimeButton, translateService));
         strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleDeleteSpecificEventStartTime(lessonService, translateService));
         strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName(), new InlineScheduleDeleteSpecificEventStartTime2(lessonService, lessonScheduleService, specificEventStartTime2Button, translateService));

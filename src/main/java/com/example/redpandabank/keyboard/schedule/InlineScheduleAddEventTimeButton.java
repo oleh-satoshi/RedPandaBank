@@ -15,7 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 public class InlineScheduleAddEventTimeButton implements Pressable {
     final TranslateService translateService;
     final String ADD_ANOTHER_DAY_AND_TIME = "add-another-day-and-time";
-    final String DONE = "Done!";
+    final String DONE = "done";
 
     public InlineScheduleAddEventTimeButton(TranslateService translateService) {
         this.translateService = translateService;

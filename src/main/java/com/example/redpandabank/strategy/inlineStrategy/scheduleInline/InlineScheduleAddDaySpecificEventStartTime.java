@@ -5,10 +5,7 @@ import com.example.redpandabank.keyboard.schedule.InlineScheduleAddDaySpecificEv
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
-import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.LessonScheduleService;
-import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -29,13 +26,18 @@ public class InlineScheduleAddDaySpecificEventStartTime implements InlineHandler
     final LessonService lessonService;
     final ChildService childService;
     final InlineScheduleAddDaySpecificEventStartTimeButton inlineScheduleAddDaySpecificEventStartTimeButton;
+    final TranslateService translateService;
+    final String ADDED_DAY = "added_day";
+    final String SOMETHING_ELSE_INTERESTING = "something-else-interesting";
 
     public InlineScheduleAddDaySpecificEventStartTime(LessonScheduleService lessonScheduleService,
-                                                      LessonService lessonService, ChildService childService, InlineScheduleAddDaySpecificEventStartTimeButton inlineScheduleAddDaySpecificEventStartTimeButton) {
+                                                      LessonService lessonService, ChildService childService,
+                                                      InlineScheduleAddDaySpecificEventStartTimeButton inlineScheduleAddDaySpecificEventStartTimeButton, TranslateService translateService) {
         this.lessonScheduleService = lessonScheduleService;
         this.lessonService = lessonService;
         this.childService = childService;
         this.inlineScheduleAddDaySpecificEventStartTimeButton = inlineScheduleAddDaySpecificEventStartTimeButton;
+        this.translateService = translateService;
     }
 
     @Override
@@ -54,7 +56,9 @@ public class InlineScheduleAddDaySpecificEventStartTime implements InlineHandler
         child.setIsSkip(false);
         childService.create(child);
         ReplyKeyboard keyboard = inlineScheduleAddDaySpecificEventStartTimeButton.getKeyboard(lesson);
-        String response = "День добавили для урока <i>\"" + lesson.getTitle() + "\"</i> , может чтото еще интересно?";
+        String response = translateService.getBySlug(ADDED_DAY)
+                 + " <i>\"" + lesson.getTitle() + "\"</i>"
+                 + translateService.getBySlug(SOMETHING_ELSE_INTERESTING);
         String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
         new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
         return new MessageSenderImpl().sendMessageWithInline(childId, response, keyboard);

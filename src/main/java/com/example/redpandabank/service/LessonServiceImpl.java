@@ -78,7 +78,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public Boolean findAllByTitle(String title, Long childId) {
+    public Boolean checkAllByTitle(String title, Long childId) {
         return lessonRepository.findAllByTitleAndChildId(title, childId).isEmpty();
     }
 

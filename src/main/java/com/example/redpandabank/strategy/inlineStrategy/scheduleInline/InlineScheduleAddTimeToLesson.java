@@ -6,11 +6,11 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -20,11 +20,16 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class InlineScheduleAddTimeToLesson implements InlineHandler<Update> {
     final LessonService lessonService;
     final ChildService childService;
+    final TranslateService translateService;
+    final String ENTER_TIME_FOR_LESSON = "enter-time-for-lesson";
+
 
     public InlineScheduleAddTimeToLesson(LessonService lessonService,
-                                         ChildService childService) {
+                                         ChildService childService,
+                                         TranslateService translateService) {
         this.lessonService = lessonService;
         this.childService = childService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -38,7 +43,7 @@ public class InlineScheduleAddTimeToLesson implements InlineHandler<Update> {
                 + Separator.COLON_SEPARATOR + lesson.getTitle());
         child.setIsSkip(false);
         childService.create(child);
-        String response = "Можешь написать новое время начала для урока <i>\"" + lesson.getTitle() + "\"</i>:";
+        String response = translateService.getBySlug(ENTER_TIME_FOR_LESSON) +  " <i>\"" + lesson.getTitle() + "\"</i>:";
         return new MessageSenderImpl().sendEditMessage(childId, messageId, response);
     }
 

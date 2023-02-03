@@ -23,7 +23,7 @@ public class InlineSetExtraDaySpecificStartTime implements InlineHandler<Update>
     final ChildService childService;
     final InlineScheduleAddDaySpecificEventStartTimeButton inlineScheduleAddDaySpecificEventStartTimeButton;
     final TranslateService translateService;
-    final String SOMETHING_ELSE = "something-else";
+    final String SOMETHING_ELSE_FOR_LESSON = "something-else-for-lesson";
 
     public InlineSetExtraDaySpecificStartTime(LessonService lessonService,
                                               LessonScheduleService lessonScheduleService,
@@ -53,7 +53,7 @@ public class InlineSetExtraDaySpecificStartTime implements InlineHandler<Update>
         lessonScheduleService.create(newLessonSchedule);
         lessonService.create(lesson);
         InlineKeyboardMarkup keyboard = inlineScheduleAddDaySpecificEventStartTimeButton.getKeyboard(lesson);
-        String response = translateService.getBySlug(SOMETHING_ELSE)
+        String response = translateService.getBySlug(SOMETHING_ELSE_FOR_LESSON)
                 + " <i>\"" + lesson.getTitle() + "\"</i>?";
         String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
         new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);

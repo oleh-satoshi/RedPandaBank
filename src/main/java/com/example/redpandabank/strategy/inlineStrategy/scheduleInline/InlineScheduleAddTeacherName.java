@@ -6,12 +6,12 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -21,10 +21,13 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class InlineScheduleAddTeacherName implements InlineHandler<Update> {
     final ChildService childService;
     final LessonService lessonService;
+    final TranslateService translateService;
+    final String WHO_TEACHES = "who-teaches";
 
-    public InlineScheduleAddTeacherName(ChildService childService, LessonService lessonService) {
+    public InlineScheduleAddTeacherName(ChildService childService, LessonService lessonService, TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -38,7 +41,8 @@ public class InlineScheduleAddTeacherName implements InlineHandler<Update> {
             child.setIsSkip(false);
         }
         Lesson lesson = lessonService.getById(parseId(text));
-        response = "Кто преподаёт <i>\"" + lesson.getTitle() + "\"</i>?";
+        response = translateService.getBySlug(WHO_TEACHES)
+                + " <i>\"" + lesson.getTitle() + " \"</i>?";
         child.setState(State.SAVE_TEACHER_NAME.getState());
         childService.create(child);
         return new MessageSenderImpl().sendEditMessage(userId, messageId, response);

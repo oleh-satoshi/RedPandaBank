@@ -24,7 +24,7 @@ public interface LessonService {
 
     Lesson getById(Long id);
 
-    Boolean findAllByTitle(String title, Long childId);
+    Boolean checkAllByTitle(String title, Long childId);
 
     Lesson findLessonByTitle(Long childId, String title);
 

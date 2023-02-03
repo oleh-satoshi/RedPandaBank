@@ -16,7 +16,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 public class InlineScheduleCheckCorrectTitleButton implements
         PressableWithArgument<ReplyKeyboard, Lesson> {
     final TranslateService translateService;
-    final String MADE_MISTAKE = "made-mistake";
+    final String MADE_MISTAKE = "made-mistake-do-again";
     final String NEXT = "next";
 
     public InlineScheduleCheckCorrectTitleButton(TranslateService translateService) {
