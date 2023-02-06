@@ -14,16 +14,22 @@ public class InlineScheduleAddEventDay implements Pressable {
     public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button(WeekDay.MONDAY.getDay(), Command.SAVE_EVENT_DAY.getName() + WeekDay.MONDAY.getDay())
-                .extraButton(WeekDay.TUESDAY.getDay(), Command.SAVE_EVENT_DAY.getName() + WeekDay.TUESDAY.getDay())
+                .button(WeekDay.MONDAY.getDay(),
+                        Command.SAVE_EVENT_DAY.getName() + WeekDay.MONDAY.getDay())
+                .extraButton(WeekDay.TUESDAY.getDay(),
+                        Command.SAVE_EVENT_DAY.getName() + WeekDay.TUESDAY.getDay())
                 .endRow()
                 .row()
-                .button(WeekDay.WEDNESDAY.getDay(), Command.SAVE_EVENT_DAY.getName() + WeekDay.WEDNESDAY.getDay())
-                .extraButton(WeekDay.THURSDAY.getDay(), Command.SAVE_EVENT_DAY.getName() + WeekDay.THURSDAY.getDay())
+                .button(WeekDay.WEDNESDAY.getDay(),
+                        Command.SAVE_EVENT_DAY.getName() + WeekDay.WEDNESDAY.getDay())
+                .extraButton(WeekDay.THURSDAY.getDay(),
+                        Command.SAVE_EVENT_DAY.getName() + WeekDay.THURSDAY.getDay())
                 .endRow()
                 .row()
-                .button(WeekDay.FRIDAY.getDay(), Command.SAVE_EVENT_DAY.getName() + WeekDay.FRIDAY.getDay())
-                .extraButton(WeekDay.SATURDAY.getDay(), Command.SAVE_EVENT_DAY.getName() + WeekDay.SATURDAY.getDay())
+                .button(WeekDay.FRIDAY.getDay(),
+                        Command.SAVE_EVENT_DAY.getName() + WeekDay.FRIDAY.getDay())
+                .extraButton(WeekDay.SATURDAY.getDay(),
+                        Command.SAVE_EVENT_DAY.getName() + WeekDay.SATURDAY.getDay())
                 .endRow()
                 .build();
     }

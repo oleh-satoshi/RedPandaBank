@@ -12,7 +12,6 @@ import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -30,14 +29,18 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update>, Com
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
     final InlineScheduleAddSpecificEventStartTimeButton startTimeButton;
+    final TranslateService translateService;
+    final String TIME_ALREADY_ADD_FOR_LESSON = "time-already-add-for-lesson";
+    final String WHAT_DAY_OF_WEEK = "what-day-of-week";
 
     public AddSpecificEventStartTimeState(ChildService childService, LessonService lessonService,
                                           LessonScheduleService lessonScheduleService,
-                                          InlineScheduleAddSpecificEventStartTimeButton startTimeButton) {
+                                          InlineScheduleAddSpecificEventStartTimeButton startTimeButton, TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.startTimeButton = startTimeButton;
+        this.translateService = translateService;
     }
 
     @Override
@@ -59,13 +62,13 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update>, Com
             child.setState(State.NO_STATE.getState());
             child.setIsSkip(false);
             childService.create(child);
-            String response = "Новое время уже добавили для урока <i>\"" + lesson.getTitle() + "\"</i>,"
-                    + " а напомни мне для какого дня недели это время?";
+            String response = translateService.getBySlug(TIME_ALREADY_ADD_FOR_LESSON)
+                    + " <i>\"" + lesson.getTitle() + "\"</i>,"
+                    + translateService.getBySlug(WHAT_DAY_OF_WEEK);
             InlineKeyboardMarkup keyboard = startTimeButton.getKeyboard();
             return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
-        } else {
-            return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
+        return  goBackToTelegramBot(child, childService, telegramBot, update);
     }
 
     @Override

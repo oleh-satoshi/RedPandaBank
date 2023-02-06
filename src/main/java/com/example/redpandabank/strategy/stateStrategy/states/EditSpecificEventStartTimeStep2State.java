@@ -29,14 +29,18 @@ public class EditSpecificEventStartTimeStep2State implements StateHandler<Update
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
     final ReplyMainMenuButton mainMenuButton;
+    final TranslateService translateService;
+    final String START_TIME_CHANGED = "start-time-changed";
 
     public EditSpecificEventStartTimeStep2State(ChildService childService, LessonService lessonService,
                                                 LessonScheduleService lessonScheduleService,
-                                                ReplyMainMenuButton mainMenuButton) {
+                                                ReplyMainMenuButton mainMenuButton,
+                                                TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.mainMenuButton = mainMenuButton;
+        this.translateService = translateService;
     }
 
     @Override
@@ -58,14 +62,13 @@ public class EditSpecificEventStartTimeStep2State implements StateHandler<Update
             lessonScheduleService.create(lessonSchedule);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
-            String response = "Время начала урока изменили!";
+            String response = translateService.getBySlug(START_TIME_CHANGED);
             ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
             String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
             new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
             return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
-        } else {
-            return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
+        return  goBackToTelegramBot(child, childService, telegramBot, update);
     }
 
     @Override

@@ -21,7 +21,12 @@ public class LessonServiceImpl implements LessonService {
     final MessageSender messageSender;
     final TranslateService translateService;
     final String NO_LESSONS_FOR_THE_DAY = "no-lessons-for-the-day";
+    final String TEACHER = "teacher";
+    final String STARTS_AT = "starts-at";
+    final String LESSON_END_IN = "lesson-end-in";
+    final String LESSON_DURATION = "lesson-duration";
     public final static String NEXT_LINE = "%0A";
+
 
     public LessonServiceImpl(LessonRepository lessonRepository,
                              MessageSender messageSender,
@@ -63,7 +68,8 @@ public class LessonServiceImpl implements LessonService {
             new MessageSenderImpl().sendMessageViaURL(childId, translateService.getBySlug(NO_LESSONS_FOR_THE_DAY));
             return Optional.empty();
         }
-        new MessageSenderImpl().sendMessageViaURL(childId,  EmojiParser.parseToUnicode(":calendar: " + "<b>" + day + "</b>"));
+        new MessageSenderImpl().sendMessageViaURL(childId,  EmojiParser.parseToUnicode(
+                ":calendar: " + "<b>" + day + "</b>"));
         for (Lesson lesson : lessonByDay) {
             new MessageSenderImpl().sendMessageViaURL(childId, parseLessonForUrl(lesson));
         }
@@ -89,7 +95,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public String getDuration(Integer duration) {
-        return duration > 60 ? " часа" : " минут";
+        return duration > 60 ? " hours" : " minutes";
     }
 
     @Override
@@ -137,10 +143,11 @@ public class LessonServiceImpl implements LessonService {
     private String parseLessonForUrl(Lesson lesson) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(":school_satchel: " + "<b>" + lesson.getTitle() + "</b>" + NEXT_LINE)
-                .append(":mortar_board: Учитель: " + "<i>" + lesson.getTeacher() + "</i>" + NEXT_LINE)
-                .append(":bell: " + "Начинается в " + getStartTime(lesson))
-                .append(":checkered_flag: " + "Закончится в  " + getFinishTime(lesson))
-                .append(":clock8: " + "Идет " + "<b>" + lesson.getDuration() + "</b>" + getDuration(lesson.getDuration()) + NEXT_LINE);
+                .append(translateService.getBySlug(TEACHER) + "<i>" + lesson.getTeacher() + "</i>" + NEXT_LINE)
+                .append(":bell: " + translateService.getBySlug(STARTS_AT) + getStartTime(lesson))
+                .append(":checkered_flag: " + translateService.getBySlug(LESSON_END_IN) + getFinishTime(lesson))
+                .append(":clock8: " + translateService.getBySlug(LESSON_DURATION)
+                        + "<b>" + lesson.getDuration() + "</b>" + getDuration(lesson.getDuration()) + NEXT_LINE);
         return EmojiParser.parseToUnicode( stringBuilder.toString());
     }
 }

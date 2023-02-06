@@ -29,14 +29,17 @@ public class SaveEventDayState implements StateHandler<Update>, CommandCheckable
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
     final InlineScheduleAddExtraDayButton inlineScheduleAddExtraDayButton;
+    final TranslateService translateService;
+    final String ADD_LESSON_START_TIME = "add-lesson-start-time";
 
     public SaveEventDayState(ChildService childService, LessonService lessonService,
                              LessonScheduleService lessonScheduleService,
-                             InlineScheduleAddExtraDayButton inlineScheduleAddExtraDayButton) {
+                             InlineScheduleAddExtraDayButton inlineScheduleAddExtraDayButton, TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.inlineScheduleAddExtraDayButton = inlineScheduleAddExtraDayButton;
+        this.translateService = translateService;
     }
 
     @Override
@@ -72,11 +75,10 @@ public class SaveEventDayState implements StateHandler<Update>, CommandCheckable
             child.setState(State.NO_STATE.getState());
             childService.create(child);
             InlineKeyboardMarkup keyboard = inlineScheduleAddExtraDayButton.getKeyboard();
-            String response = "Давай добавим время начала урока";
+            String response = translateService.getBySlug(ADD_LESSON_START_TIME);
             return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, keyboard, response);
-        } else {
-            return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
+        return  goBackToTelegramBot(child, childService, telegramBot, update);
     }
 
     @Override

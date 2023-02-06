@@ -27,12 +27,16 @@ public class EditSpecificEventStartTimeState implements StateHandler<Update>, Co
     final ChildService childService;
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
+    final TranslateService translateService;
+    final String ENTER_NEW_TIME_FOR_LESSON = "enter-new-time-for-lesson";
 
     public EditSpecificEventStartTimeState(ChildService childService, LessonService lessonService,
-                                           LessonScheduleService lessonScheduleService) {
+                                           LessonScheduleService lessonScheduleService,
+                                           TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
+        this.translateService = translateService;
     }
 
     @Override
@@ -56,11 +60,11 @@ public class EditSpecificEventStartTimeState implements StateHandler<Update>, Co
             child.setState(State.EDIT_SPECIFIC_EVENT_START_TIME_STEP2.getState()
                     + Separator.COLON_SEPARATOR + lesson.getTitle());
             childService.create(child);
-            String response = "Можешь ввести новое время для урока <i>\"" + lesson.getTitle() + "\"</i>";
+            String response = translateService.getBySlug(ENTER_NEW_TIME_FOR_LESSON)
+                    + " <i>\"" + lesson.getTitle() + "\"</i>";
             return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
-        } else {
-            return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
+        return  goBackToTelegramBot(child, childService, telegramBot, update);
     }
 
         @Override

@@ -4,10 +4,7 @@ import com.example.redpandabank.enums.State;
 import com.example.redpandabank.keyboard.schedule.ReplyScheduleEditSpecificEventDurationStateButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
-import com.example.redpandabank.service.TelegramBot;
+import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
@@ -27,12 +24,15 @@ public class EditSpecificScheduleEventDurationState implements StateHandler<Upda
     final ChildService childService;
     final LessonService lessonService;
     final ReplyScheduleEditSpecificEventDurationStateButton eventDurationStateButton;
+    final TranslateService translateService;
+    final String SET_NEW_DURATION = "set-new-duration";
 
     public EditSpecificScheduleEventDurationState(ChildService childService,
-                                                  LessonService lessonService, ReplyScheduleEditSpecificEventDurationStateButton eventDurationStateButton) {
+                                                  LessonService lessonService, ReplyScheduleEditSpecificEventDurationStateButton eventDurationStateButton, TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.eventDurationStateButton = eventDurationStateButton;
+        this.translateService = translateService;
     }
 
     @Override
@@ -48,14 +48,14 @@ public class EditSpecificScheduleEventDurationState implements StateHandler<Upda
             child.setState(State.NO_STATE.getState());
             child.setIsSkip(false);
             childService.create(child);
-            String content = "Новая длительность для урока <i>\"" + lesson.getTitle() + "\"</i> установлена!";
+            String content = translateService.getBySlug(SET_NEW_DURATION)
+                    + " <i>\"" + lesson.getTitle() + "\"</i>!";
             InlineKeyboardMarkup keyboard = eventDurationStateButton.getKeyboard();
             String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
             new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
             return new MessageSenderImpl().sendMessageWithInline(userId, content, keyboard);
-        } else {
-            return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
+        return  goBackToTelegramBot(child, childService, telegramBot, update);
     }
 
     @Override

@@ -4,16 +4,12 @@ import com.example.redpandabank.enums.State;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventDurationButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
-import com.example.redpandabank.service.TelegramBot;
+import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -31,13 +27,17 @@ public class SaveDurationEventState implements StateHandler<Update>, CommandChec
     final ChildService childService;
     final LessonService lessonService;
     final InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton;
+    final TranslateService translateService;
+    final String DURATION_FOR_LESSON = "duration-for-lesson";
+    final String LESSON_DURATION_INSTALLED_CHECK = "lesson-duration-installed-check";
 
     public SaveDurationEventState(ChildService childService, LessonService lessonService,
-                                  InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton) {
+                                  InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton, TranslateService translateService) {
 
         this.childService = childService;
         this.lessonService = lessonService;
         this.inlineScheduleAddEventDurationButton = inlineScheduleAddEventDurationButton;
+        this.translateService = translateService;
     }
 
     @Override
@@ -54,12 +54,12 @@ public class SaveDurationEventState implements StateHandler<Update>, CommandChec
             child.setState(State.NO_STATE.getState());
             childService.create(child);
             InlineKeyboardMarkup keyboard = inlineScheduleAddEventDurationButton.getKeyboard();
-            String response = "Длительность для урока \"<i>" + lesson.getTitle()
-                    + "\"</i> установили!\n\nЕсли ты написал без ошибок то жми кнопку <b>Дальше</b>";
+            String response = translateService.getBySlug(DURATION_FOR_LESSON)
+                    + "\"<i>" + lesson.getTitle() + "\"</i> "
+                    + translateService.getBySlug(LESSON_DURATION_INSTALLED_CHECK);
             return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
-        } else {
-            return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
+        return  goBackToTelegramBot(child, childService, telegramBot, update);
     }
 
     @Override

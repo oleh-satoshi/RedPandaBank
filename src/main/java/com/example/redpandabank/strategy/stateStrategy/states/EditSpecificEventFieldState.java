@@ -4,10 +4,7 @@ import com.example.redpandabank.enums.State;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
-import com.example.redpandabank.service.TelegramBot;
+import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
@@ -27,12 +24,16 @@ public class EditSpecificEventFieldState implements StateHandler<Update>, Comman
     final ChildService childService;
     final LessonService lessonService;
     final ReplyMainMenuButton mainMenuButton;
+    final TranslateService translateService;
+    final String LESSON_WAS_SAVE = "lesson-was-save";
 
     public EditSpecificEventFieldState(ChildService childService, LessonService lessonService,
-                                       ReplyMainMenuButton mainMenuButton) {
+                                       ReplyMainMenuButton mainMenuButton,
+                                       TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.mainMenuButton = mainMenuButton;
+        this.translateService = translateService;
     }
 
     @Override
@@ -50,12 +51,11 @@ public class EditSpecificEventFieldState implements StateHandler<Update>, Comman
             childService.create(child);
             String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
             new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
-            String response = "Название урока успешно сохранили! Пойду поем!";
+            String response = translateService.getBySlug(LESSON_WAS_SAVE);
             ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
             return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
-        } else {
-            return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
+        return  goBackToTelegramBot(child, childService, telegramBot, update);
     }
 
     @Override

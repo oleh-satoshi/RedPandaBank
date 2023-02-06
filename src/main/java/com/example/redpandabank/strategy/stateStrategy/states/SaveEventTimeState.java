@@ -29,14 +29,17 @@ public class SaveEventTimeState implements StateHandler<Update>, CommandCheckabl
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
     final InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton;
+    final TranslateService translateService;
+    final String LESSON_ADDED_TO_SCHEDULE = "lesson-added-to-schedule";
 
     public SaveEventTimeState(ChildService childService,
                               LessonService lessonService,
-                              LessonScheduleService lessonScheduleService, InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton) {
+                              LessonScheduleService lessonScheduleService, InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton, TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.inlineScheduleAddEventTimeButton = inlineScheduleAddEventTimeButton;
+        this.translateService = translateService;
     }
 
     @Override
@@ -58,11 +61,10 @@ public class SaveEventTimeState implements StateHandler<Update>, CommandCheckabl
             child.setState(State.NO_STATE.getState());
             childService.create(child);
             InlineKeyboardMarkup keyboard = inlineScheduleAddEventTimeButton.getKeyboard();
-            String response = "Готово! Урок добавлен в твое расписание!";
+            String response = translateService.getBySlug(LESSON_ADDED_TO_SCHEDULE);
             return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
-        } else {
-            return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
+        return  goBackToTelegramBot(child, childService, telegramBot, update);
     }
 
     @Override

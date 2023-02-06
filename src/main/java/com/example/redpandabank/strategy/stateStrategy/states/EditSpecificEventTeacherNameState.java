@@ -4,10 +4,7 @@ import com.example.redpandabank.enums.State;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
-import com.example.redpandabank.service.TelegramBot;
+import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
@@ -27,13 +24,17 @@ public class EditSpecificEventTeacherNameState implements StateHandler<Update>, 
     final ChildService childService;
     final LessonService lessonService;
     final ReplyMainMenuButton mainMenuButton;
+    final TranslateService translateService;
+    final String TEACHER_CHANGED = "teacher-changed";
 
     public EditSpecificEventTeacherNameState(ChildService childService,
                                              LessonService lessonService,
-                                             ReplyMainMenuButton mainMenuButton) {
+                                             ReplyMainMenuButton mainMenuButton,
+                                             TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.mainMenuButton = mainMenuButton;
+        this.translateService = translateService;
     }
 
 
@@ -49,14 +50,13 @@ public class EditSpecificEventTeacherNameState implements StateHandler<Update>, 
             lessonService.create(lesson);
             child.setState(State.NO_STATE.getState());
             childService.create(child);
-            String response = "Учителя изменили!";
+            String response = translateService.getBySlug(TEACHER_CHANGED);
             ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
             String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
             new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
             return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
-        } else {
-            return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
+        return  goBackToTelegramBot(child, childService, telegramBot, update);
     }
 
     @Override

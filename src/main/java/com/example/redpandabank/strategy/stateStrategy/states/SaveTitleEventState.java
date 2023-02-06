@@ -5,10 +5,7 @@ import com.example.redpandabank.keyboard.schedule.InlineScheduleCheckCorrectTitl
 import com.example.redpandabank.keyboard.schedule.InlineScheduleRepeatAddLessonButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
-import com.example.redpandabank.service.TelegramBot;
+import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
@@ -28,21 +25,30 @@ public class SaveTitleEventState implements StateHandler<Update>, CommandCheckab
     final LessonService lessonService;
     final InlineScheduleCheckCorrectTitleButton inlineScheduleCheckCorrectTitleButton;
     final InlineScheduleRepeatAddLessonButton inlineScheduleRepeatAddLessonButton;
+    final TranslateService translateService;
+    final String TEACHER = "teacher";
+    final String TEACHER_SAVED_CHECK = "teacher-saved-check";
+    final String NEXT_BUTTON = "next";
+    final String LESSON_ALREADY_SAVED = "lesson-already-saved";
 
     public SaveTitleEventState(ChildService childService, LessonService lessonService,
                                InlineScheduleCheckCorrectTitleButton inlineScheduleCheckCorrectTitleButton,
-                               InlineScheduleRepeatAddLessonButton inlineScheduleRepeatAddLessonButton) {
+                               InlineScheduleRepeatAddLessonButton inlineScheduleRepeatAddLessonButton,
+                               TranslateService translateService) {
         this.lessonService = lessonService;
         this.inlineScheduleCheckCorrectTitleButton = inlineScheduleCheckCorrectTitleButton;
         this.inlineScheduleRepeatAddLessonButton = inlineScheduleRepeatAddLessonButton;
         this.childService = childService;
+        this.translateService = translateService;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update, TelegramBot telegramBot) {
+        String response;
         userId = UpdateInfo.getUserId(update);
         lessonTitle = UpdateInfo.getText(update);
         Child child = childService.findByUserId(userId);
+
         if (checkCommand(lessonTitle, child)) {
             if (lessonService.checkAllByTitle(lessonTitle, userId)) {
                 Lesson lesson = new Lesson();
@@ -53,19 +59,20 @@ public class SaveTitleEventState implements StateHandler<Update>, CommandCheckab
                 child.setState(State.NO_STATE.getState());
                 childService.create(child);
                 ReplyKeyboard keyboard = inlineScheduleCheckCorrectTitleButton.getKeyboard(lesson);
-                String response = "Урок \"<i>" + lesson.getTitle()
-                        + "\"</i> сохранили!\n\nЕсли ты написал без ошибок то жми кнопку <b>Дальше</b>";
+                response = translateService.getBySlug(TEACHER)
+                        + "\"<i>" + lesson.getTitle() + "\"</i> "
+                        + translateService.getBySlug(TEACHER_SAVED_CHECK)
+                        + "<b>" + translateService.getBySlug(NEXT_BUTTON) + "</b>";
                 return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
             } else {
                 child.setState(State.NO_STATE.getState());
                 childService.create(child);
                 ReplyKeyboard keyboard = inlineScheduleRepeatAddLessonButton.getKeyboard();
-                return new MessageSenderImpl().sendMessageWithInline(userId,
-                        "Такой урок уже сохраняли!", keyboard);
+                response = translateService.getBySlug(LESSON_ALREADY_SAVED);
+                return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
             }
-        } else {
-          return  goBackToTelegramBot(child, childService, telegramBot, update);
         }
+        return  goBackToTelegramBot(child, childService, telegramBot, update);
     }
 
     @Override
