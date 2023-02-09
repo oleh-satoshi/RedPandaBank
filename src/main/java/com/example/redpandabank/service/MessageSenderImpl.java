@@ -74,6 +74,10 @@ public class MessageSenderImpl implements MessageSender {
         return editMessageText;
     }
 
+    public String replaceSpace(String text) {
+        return text.replaceAll(" ", "%20");
+    }
+
     private void sendUrl(String urlString) {
         try {
             URL url = new URL(urlString);

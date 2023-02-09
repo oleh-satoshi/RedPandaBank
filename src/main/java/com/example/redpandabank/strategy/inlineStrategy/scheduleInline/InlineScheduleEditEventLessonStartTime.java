@@ -13,6 +13,7 @@ import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
+import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -46,9 +47,9 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        Long childId = update.getCallbackQuery().getFrom().getId();
-        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        String title = parseData(update.getCallbackQuery().getData());
+        Long childId = UpdateInfo.getUserId(update);
+        Integer messageId = UpdateInfo.getMessageId(update);
+        String title = parseData(UpdateInfo.getData(update));
         Lesson lesson = lessonService.findLessonByTitle(childId, title);
         List<LocalTime> timeList = lesson.getLessonSchedules().stream()
                 .map(LessonSchedule::getLessonStartTime)

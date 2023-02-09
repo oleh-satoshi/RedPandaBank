@@ -17,8 +17,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 public class InlineScheduleEditSpecificEventStartTimeChooseOperationButton
         implements PressableWithArgument<ReplyKeyboard, Lesson> {
     final TranslateService translateService;
-    final String CHANGE_TIME = "change-time";
-    final String ADD_TIME = "add-time";
+    final String CHANGE_TIME = "change-time-lesson";
+    final String ADD_TIME = "add-time-lesson";
+    final String DELETE_TIME = "delete-time-lesson";
+    final String BACK = "back";
 
     public InlineScheduleEditSpecificEventStartTimeChooseOperationButton(TranslateService translateService) {
         this.translateService = translateService;
@@ -38,8 +40,13 @@ public class InlineScheduleEditSpecificEventStartTimeChooseOperationButton
                         + Separator.COLON_SEPARATOR + lesson.getTitle())
                 .endRow()
                 .row()
-                .button(translateService.getBySlug(ADD_TIME),
+                .button(translateService.getBySlug(DELETE_TIME),
                         Command.DELETE_SPECIFIC_EVENT_START_TIME.getName())
+                .endRow()
+                .row()
+                .button(translateService.getBySlug(BACK),
+                        Command.EDIT_SPECIFIC_EXISTING_EVENT.getName()
+                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
                 .endRow()
                 .build();
     }

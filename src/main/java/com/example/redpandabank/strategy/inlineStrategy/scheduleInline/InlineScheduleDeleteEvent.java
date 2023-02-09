@@ -23,6 +23,7 @@ public class InlineScheduleDeleteEvent implements InlineHandler<Update> {
     final LessonService lessonService;
     final TranslateService translateService;
     final String CHOOSE_LESSON_TO_DELETE = "choose-lesson-to-delete";
+    final String BACK = "back";
 
     public InlineScheduleDeleteEvent(LessonService lessonService,
                                      TranslateService translateService) {
@@ -41,8 +42,12 @@ public class InlineScheduleDeleteEvent implements InlineHandler<Update> {
         for (Lesson lesson : allByTitle) {
             inlineKeyboardMarkup.button(lesson.getTitle(), Command.DELETE_EVENT_BY_ID.getName() + ":" + lesson.getLessonId()).endRow();
         }
-        InlineKeyboardMarkup keyboardMarkup = inlineKeyboardMarkup.build();
+        InlineKeyboardMarkup inline = inlineKeyboardMarkup.row()
+                .button(translateService.getBySlug(BACK),
+                        Command.EDIT_SCHEDULE.getName())
+                .endRow()
+                .build();
         String content = translateService.getBySlug(CHOOSE_LESSON_TO_DELETE);
-        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboardMarkup, content);
+        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, content);
     }
 }

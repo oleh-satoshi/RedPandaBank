@@ -1,5 +1,7 @@
 package com.example.redpandabank.strategy.inlineStrategy;
 
+import com.example.redpandabank.keyboard.InlineChooseLanguage;
+import com.example.redpandabank.keyboard.InlineStartInitButton;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.keyboard.schedule.*;
@@ -40,7 +42,8 @@ public class InlineStrategyImpl implements InlineStrategy {
     final ReplyMainMenuButton mainMenuButton;
     final InlineScheduleDeleteSpecificEventStartTime2Button specificEventStartTime2Button;
     final TranslateService translateService;
-
+    final InlineChooseLanguage inlineChooseLanguage;
+    final InlineStartInitButton inlineStartInitButton;
 
     public InlineStrategyImpl(LessonService lessonService,
                               LessonScheduleService lessonScheduleService,
@@ -56,7 +59,7 @@ public class InlineStrategyImpl implements InlineStrategy {
                               InlineScheduleAddExtraDaySpecificStartTimeButton inlineScheduleAddExtraDaySpecificStartTimeButton,
                               ReplyMainMenuButton mainMenuButton,
                               InlineScheduleDeleteSpecificEventStartTime2Button specificEventStartTime2Button,
-                              TranslateService translateService) {
+                              TranslateService translateService, InlineChooseLanguage inlineChooseLanguage, InlineStartInitButton inlineStartInitButton) {
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.messageSender = messageSender;
@@ -74,6 +77,9 @@ public class InlineStrategyImpl implements InlineStrategy {
         this.mainMenuButton = mainMenuButton;
         this.specificEventStartTime2Button = specificEventStartTime2Button;
         this.translateService = translateService;
+        this.inlineChooseLanguage = inlineChooseLanguage;
+        this.inlineStartInitButton = inlineStartInitButton;
+
         strategyMap = new HashMap<>();
         strategyMap.put(Command.TO_MAIN_MENU.getName(), new InlineToMainMenu(mainMenuButton, this.translateService));
         strategyMap.put(Command.SAVE_EVENT_MONDAY.getName(), new InlineScheduleWeekdayButton(lessonService, lessonScheduleService, translateService));
@@ -120,6 +126,9 @@ public class InlineStrategyImpl implements InlineStrategy {
         strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleDeleteSpecificEventStartTime(lessonService, translateService));
         strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName(), new InlineScheduleDeleteSpecificEventStartTime2(lessonService, lessonScheduleService, specificEventStartTime2Button, translateService));
         strategyMap.put(Command.EDIT_SCHEDULE_EVENT_DURATION.getName(), new InlineScheduleEditSpecificEventDuration(lessonService, childService, translateService));
+        strategyMap.put(Command.START.getName(), new LanguageInlineHandler(this.inlineChooseLanguage));
+        strategyMap.put(Command.SET_LANGUAGE.getName(), new SetLanguageInlineHandler(childService, translateService, mainMenuButton, this.inlineStartInitButton));
+        strategyMap.put(Command.START_INIT.getName(), new InlineStartInit(translateService, mainMenuButton));
     }
 
     @Override
@@ -141,6 +150,8 @@ public class InlineStrategyImpl implements InlineStrategy {
         command = checkSetExtraDaySpecificStartTime(command);
         command = checkDeleteSpecificEventStartTime2(command);
         command = checkInlineEditSpecificEventDuration(command);
+        command = checkSetLanguageCommandHandler(command);
+
         InlineHandler inlineHandler = strategyMap.get(command);
         if (inlineHandler == null) {
             inlineHandler = new InlinePlug(translateService);
@@ -284,5 +295,12 @@ public class InlineStrategyImpl implements InlineStrategy {
         }
         return command;
     }
-}
 
+    private String checkSetLanguageCommandHandler(String command) {
+        String commandSetLanguage = Command.SET_LANGUAGE.getName();
+        if (command.contains(commandSetLanguage)) {
+            return command.split(Separator.COLON_SEPARATOR)[0];
+        }
+        return command;
+    }
+}

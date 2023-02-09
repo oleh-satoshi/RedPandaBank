@@ -5,6 +5,7 @@ import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.AccessLevel;
@@ -36,8 +37,8 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
     final String START_AT = "start-at";
     final String WILL_END_IN = "will-end-in";
     final String DURATION = "duration";
-    final static String YES = "yes";
-    final static String SEPARATOR = ":";
+    final String YES = "yes";
+    final String DELETE_LESSON = "delete-lesson";
     private SendMessage sendMessage;
     Long childId;
 
@@ -57,7 +58,7 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
         String title = UpdateInfo.getData(update);
         String content;
         Lesson lesson;
-        String[] split = title.split(SEPARATOR);
+        String[] split = title.split(Separator.COLON_SEPARATOR);
         if (split[1].equals(YES)) {
             lesson = lessonService.getById(Long.valueOf(split[2]));
             if (!lesson.getIsDeleted()) {
@@ -66,12 +67,12 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
                 InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                         .row()
                         .button(translateService.getBySlug(RESTORE),
-                                "/recoverData" + SEPARATOR + lesson.getLessonId())
+                                "/recoverData" + Separator.COLON_SEPARATOR + lesson.getLessonId())
                         .endRow()
                         .build();
                 content = translateService.getBySlug(LESSON) + lesson.getTitle()
                         + translateService.getBySlug(DELETE_LESSON_PART_2);
-                new MessageSenderImpl().sendMessageViaURL(childId, content);
+                new MessageSenderImpl().sendMessageViaURL(childId, new MessageSenderImpl().replaceSpace(content));
                 return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId,
                         inlineKeyboardMarkup, "<strike>" + getLessonInfo(lesson) + "</strike>");
             } else {
@@ -83,11 +84,12 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
             InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                     .row()
                     .button(translateService.getBySlug(I_WANT_TO_DELETE) + lesson.getTitle(),
-                            Command.DELETE_EVENT_BY_ID.getName() + SEPARATOR
-                                    + YES + SEPARATOR + lesson.getLessonId())
+                            Command.DELETE_EVENT_BY_ID.getName() + Separator.COLON_SEPARATOR
+                                    + YES + Separator.COLON_SEPARATOR + lesson.getLessonId())
                     .endRow()
                     .row()
-                    .button(translateService.getBySlug(BACK_TO_LESSONS), Command.DELETE_EVENT.getName())
+                    .button(translateService.getBySlug(BACK_TO_LESSONS),
+                            Command.DELETE_EVENT.getName())
                     .endRow()
                     .build();
             content = translateService.getBySlug(MAKE_SURE_TO_DELETE_LESSON) + getLessonInfo(lesson);

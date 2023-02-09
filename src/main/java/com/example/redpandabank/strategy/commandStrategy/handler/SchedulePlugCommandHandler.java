@@ -19,7 +19,7 @@ public class SchedulePlugCommandHandler implements CommandHandler<Update> {
 
     @Override
     public SendMessage handle(Update update) {
-        String firstName = update.getMessage().getChat().getFirstName();
+        String firstName = UpdateInfo.getFirstName(update);
         Long chatId = UpdateInfo.getUserId(update);
         String response = firstName + translateService.getBySlug(NO_COMMAND);
         return new MessageSenderImpl().sendMessage(chatId, response);

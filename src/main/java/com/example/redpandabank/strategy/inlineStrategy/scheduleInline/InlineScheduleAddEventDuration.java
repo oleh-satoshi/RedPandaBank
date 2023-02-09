@@ -43,8 +43,7 @@ public class InlineScheduleAddEventDuration implements InlineHandler<Update> {
         }
         List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
         Lesson lesson = lessons.get(lessons.size() - 1);
-        response = translateService.getBySlug(DURATION_FOR_LESSON)
-                + " <i>\"" + lesson.getTitle() + "\"</i>?";
+        response = translateService.getBySlug(DURATION_FOR_LESSON);
         child.setState(State.SAVE_DURATION.getState());
         childService.create(child);
         return new MessageSenderImpl().sendEditMessage(userId, messageId, response);

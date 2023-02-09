@@ -34,7 +34,8 @@ public class SaveEventDayState implements StateHandler<Update>, CommandCheckable
 
     public SaveEventDayState(ChildService childService, LessonService lessonService,
                              LessonScheduleService lessonScheduleService,
-                             InlineScheduleAddExtraDayButton inlineScheduleAddExtraDayButton, TranslateService translateService) {
+                             InlineScheduleAddExtraDayButton inlineScheduleAddExtraDayButton,
+                             TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;

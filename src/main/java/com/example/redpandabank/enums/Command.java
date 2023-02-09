@@ -54,7 +54,9 @@ public enum Command {
     ADD_DAY_SPECIFIC_EVENT_START_TIME("/addDaySpecificStartTime"),
     ADD_EXTRA_DAY_SPECIFIC_EVENT_START_TIME("/addExtraDaySpecificStartTime"),
     SET_EXTRA_DAY_SPECIFIC_EVENT_START_TIME("/setExtraDaySpecificStartTime"),
-    EDIT_SPECIFIC_SCHEDULE_EVENT_DURATION("/editSpecificScheduleEventDuration");
+    EDIT_SPECIFIC_SCHEDULE_EVENT_DURATION("/editSpecificScheduleEventDuration"),
+    SET_LANGUAGE("/setLanguage"),
+    START_INIT("/startInit");
 
     private final String name;
 

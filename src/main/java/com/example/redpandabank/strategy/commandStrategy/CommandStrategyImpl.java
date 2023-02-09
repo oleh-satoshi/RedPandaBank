@@ -1,5 +1,6 @@
 package com.example.redpandabank.strategy.commandStrategy;
 
+import com.example.redpandabank.keyboard.InlineChooseLanguage;
 import com.example.redpandabank.keyboard.schedule.*;
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
@@ -10,7 +11,6 @@ import com.example.redpandabank.strategy.commandStrategy.handler.BackToMainMenuC
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.*;
 import com.example.redpandabank.strategy.commandStrategy.handler.SchedulePlugCommandHandler;
-import com.example.redpandabank.strategy.commandStrategy.handler.ScheduleStartCommandHandler;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -28,23 +28,26 @@ public class CommandStrategyImpl implements CommandStrategy {
     final InlineScheduleMenuButton inlineScheduleMenuButton;
     final LessonService lessonService;
     final TranslateService translateService;
+    final InlineChooseLanguage inlineChooseLanguage;
 
 
     public CommandStrategyImpl(ReplyMainMenuButton replyMainMenuButton, ChildService childService,
                                InlineScheduleMenuButton inlineScheduleMenuButton,
-                               LessonService lessonService, TranslateService translateService) {
+                               LessonService lessonService, TranslateService translateService,
+                               InlineChooseLanguage inlineChooseLanguage) {
         this.replyMainMenuButton = replyMainMenuButton;
         this.childService = childService;
         this.inlineScheduleMenuButton = inlineScheduleMenuButton;
         this.lessonService = lessonService;
         this.translateService = translateService;
+        this.inlineChooseLanguage = inlineChooseLanguage;
 
         commandStrategyMap = new HashMap<>();
-        commandStrategyMap.put(Command.START.getName(), new ScheduleStartCommandHandler(this.replyMainMenuButton, this.childService, translateService));
         commandStrategyMap.put(Command.SCHEDULE.getName(), new ScheduleMenuShowCommandHandler(this.inlineScheduleMenuButton, translateService));
         commandStrategyMap.put(Command.TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.replyMainMenuButton, translateService));
         commandStrategyMap.put(Command.DELETE_EVENT.getName(), new ScheduleDeleteEventCommandHandler(this.lessonService, translateService));
         commandStrategyMap.put(Command.EDIT_SCHEDULE_EXISTING_EVENT.getName(), new EditScheduleEventCommandHandler(this.lessonService, this.translateService));
+        commandStrategyMap.put(Command.START.getName(), new LanguageCommandHandler(inlineChooseLanguage, childService, translateService));
     }
 
     @Override

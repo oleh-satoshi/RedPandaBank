@@ -51,8 +51,7 @@ public class InlineScheduleSaveEventDay implements InlineHandler<Update> {
         child.setState(State.SAVE_EVENT_DAY.getState());
         childService.create(child);
         InlineKeyboardMarkup keyboard = inlineScheduleAddEventDay.getKeyboard();
-        response = translateService.getBySlug(SAY_FOR_THE_LESSON)
-                + " <i>\"" + lesson.getTitle() + "\"</i>:    ";
+        response = translateService.getBySlug(SAY_FOR_THE_LESSON);
         return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, keyboard, response);
     }
 }

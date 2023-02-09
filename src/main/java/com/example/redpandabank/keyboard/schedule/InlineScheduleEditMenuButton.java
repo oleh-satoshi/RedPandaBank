@@ -14,9 +14,9 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 public class InlineScheduleEditMenuButton implements Pressable {
     final TranslateService translateService;
     final String BACK = "back";
-    final String addScheduleEvent = Command.ADD_SCHEDULE_EVENT.getName();
-    final String editScheduleEvent = Command.EDIT_SCHEDULE_EXISTING_EVENT.getName();
-    final String deleteScheduleEvent = Command.DELETE_EVENT.getName();
+    final String ADD_NEW_LESSON = "add-new-lesson";
+    final String EDIT_SAVED_LESSON = "edit-saved-lesson";
+    final String DELETE_LESSON = "delete-lesson";
 
     public InlineScheduleEditMenuButton(TranslateService translateService) {
         this.translateService = translateService;
@@ -25,13 +25,13 @@ public class InlineScheduleEditMenuButton implements Pressable {
     public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button(addScheduleEvent, addScheduleEvent)
+                .button(translateService.getBySlug(ADD_NEW_LESSON), Command.ADD_SCHEDULE_EVENT.getName())
                 .endRow()
                 .row()
-                .button(editScheduleEvent, editScheduleEvent)
+                .button(translateService.getBySlug(EDIT_SAVED_LESSON), Command.EDIT_SCHEDULE_EXISTING_EVENT.getName())
                 .endRow()
                 .row()
-                .button(deleteScheduleEvent, deleteScheduleEvent)
+                .button(translateService.getBySlug(DELETE_LESSON), Command.DELETE_EVENT.getName())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(BACK), Command.SCHEDULE.getName())

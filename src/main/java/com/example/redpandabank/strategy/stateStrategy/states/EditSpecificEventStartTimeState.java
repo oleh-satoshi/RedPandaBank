@@ -43,8 +43,8 @@ public class EditSpecificEventStartTimeState implements StateHandler<Update>, Co
     public BotApiMethod<?> handle(Update update, TelegramBot telegramBot) {
         userId = UpdateInfo.getUserId(update);
         messageId = UpdateInfo.getMessageId(update);
-        lessonTitle = UpdateInfo.hasReply(update) ? UpdateInfo.getText(update) : parseEventTitle(
-                UpdateInfo.getText(update));
+        lessonTitle = UpdateInfo.hasReply(update) ? UpdateInfo.getText(update) :
+                parseEventTitle(UpdateInfo.getText(update));
         Child child = childService.findByUserId(userId);
         if (checkCommand(lessonTitle, child)) {
             LocalTime localTime = parseTimeWithTitle( UpdateInfo.getData(update));

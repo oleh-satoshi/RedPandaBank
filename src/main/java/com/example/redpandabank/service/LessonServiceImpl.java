@@ -95,7 +95,10 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public String getDuration(Integer duration) {
-        return duration > 60 ? " hours" : " minutes";
+        if (duration != null) {
+            return duration > 60 ? " hours" : " minutes";
+        }
+        return "0";
     }
 
     @Override
@@ -146,8 +149,7 @@ public class LessonServiceImpl implements LessonService {
                 .append(translateService.getBySlug(TEACHER) + "<i>" + lesson.getTeacher() + "</i>" + NEXT_LINE)
                 .append(":bell: " + translateService.getBySlug(STARTS_AT) + getStartTime(lesson))
                 .append(":checkered_flag: " + translateService.getBySlug(LESSON_END_IN) + getFinishTime(lesson))
-                .append(":clock8: " + translateService.getBySlug(LESSON_DURATION)
-                        + "<b>" + lesson.getDuration() + "</b>" + getDuration(lesson.getDuration()) + NEXT_LINE);
+                .append(":clock8: " + translateService.getBySlug(LESSON_DURATION) + "<b>" + lesson.getDuration() + "</b>" + getDuration(lesson.getDuration()) + NEXT_LINE);
         return EmojiParser.parseToUnicode( stringBuilder.toString());
     }
 }

@@ -27,7 +27,8 @@ public class SaveTitleEventState implements StateHandler<Update>, CommandCheckab
     final InlineScheduleRepeatAddLessonButton inlineScheduleRepeatAddLessonButton;
     final TranslateService translateService;
     final String TEACHER = "teacher";
-    final String TEACHER_SAVED_CHECK = "teacher-saved-check";
+    final String LESSON = "lesson";
+    final String LESSON_SAVED_CHECK = "smth-saved-check";
     final String NEXT_BUTTON = "next";
     final String LESSON_ALREADY_SAVED = "lesson-already-saved";
 
@@ -59,9 +60,9 @@ public class SaveTitleEventState implements StateHandler<Update>, CommandCheckab
                 child.setState(State.NO_STATE.getState());
                 childService.create(child);
                 ReplyKeyboard keyboard = inlineScheduleCheckCorrectTitleButton.getKeyboard(lesson);
-                response = translateService.getBySlug(TEACHER)
+                response = translateService.getBySlug(LESSON)
                         + "\"<i>" + lesson.getTitle() + "\"</i> "
-                        + translateService.getBySlug(TEACHER_SAVED_CHECK)
+                        + translateService.getBySlug(LESSON_SAVED_CHECK)
                         + "<b>" + translateService.getBySlug(NEXT_BUTTON) + "</b>";
                 return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
             } else {

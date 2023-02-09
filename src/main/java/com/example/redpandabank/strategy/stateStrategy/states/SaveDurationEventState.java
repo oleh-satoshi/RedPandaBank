@@ -29,7 +29,8 @@ public class SaveDurationEventState implements StateHandler<Update>, CommandChec
     final InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton;
     final TranslateService translateService;
     final String DURATION_FOR_LESSON = "duration-for-lesson";
-    final String LESSON_DURATION_INSTALLED_CHECK = "lesson-duration-installed-check";
+    final String LESSON_DURATION_INSTALLED_CHECK = "smth-saved-check";
+    final String NEXT_BUTTON = "next";
 
     public SaveDurationEventState(ChildService childService, LessonService lessonService,
                                   InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton, TranslateService translateService) {
@@ -55,8 +56,8 @@ public class SaveDurationEventState implements StateHandler<Update>, CommandChec
             childService.create(child);
             InlineKeyboardMarkup keyboard = inlineScheduleAddEventDurationButton.getKeyboard();
             String response = translateService.getBySlug(DURATION_FOR_LESSON)
-                    + "\"<i>" + lesson.getTitle() + "\"</i> "
-                    + translateService.getBySlug(LESSON_DURATION_INSTALLED_CHECK);
+                    + translateService.getBySlug(LESSON_DURATION_INSTALLED_CHECK)
+                    + "<b>" + translateService.getBySlug(NEXT_BUTTON) + "</b>";
             return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
         }
         return  goBackToTelegramBot(child, childService, telegramBot, update);

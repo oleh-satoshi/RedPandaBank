@@ -18,7 +18,7 @@ import java.util.Optional;
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleFindLessonByDay implements InlineHandler<Update> {
-    final LessonService lessonService;
+    final LessonService  lessonService;
     final ReplyMainMenuButton mainMenuButton;
 
     public InlineScheduleFindLessonByDay(LessonService lessonService,

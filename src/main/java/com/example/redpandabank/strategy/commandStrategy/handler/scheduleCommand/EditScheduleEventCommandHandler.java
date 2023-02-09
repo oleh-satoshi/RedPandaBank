@@ -18,7 +18,8 @@ import java.util.HashSet;
 
 import static com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.ScheduleDeleteEventCommandHandler.SEPARATOR;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)@Component
+@FieldDefaults(level= AccessLevel.PRIVATE)
+@Component
 public class EditScheduleEventCommandHandler implements CommandHandler<Update> {
     final LessonService lessonService;
     final TranslateService translateService;

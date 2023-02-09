@@ -24,6 +24,7 @@ public class InlineScheduleEditEvent implements InlineHandler<Update> {
     final LessonService lessonService;
     final TranslateService translateService;
     final String CHOOSE_LESSON_TO_CHANGE = "choose-lesson-to-change";
+    final String BACK = "back";
 
     public InlineScheduleEditEvent(LessonService lessonService,
                                    TranslateService translateService) {
@@ -45,8 +46,12 @@ public class InlineScheduleEditEvent implements InlineHandler<Update> {
                     + Separator.COLON_SEPARATOR + lesson.getLessonId());
             builder.endRow();
         }
-        InlineKeyboardMarkup keyboard = builder.build();
+        InlineKeyboardMarkup inline = builder.row()
+                .button(translateService.getBySlug(BACK),
+                        Command.EDIT_SCHEDULE.getName())
+                .endRow()
+                .build();
         String response = translateService.getBySlug(CHOOSE_LESSON_TO_CHANGE);
-        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
+        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, response);
     }
 }

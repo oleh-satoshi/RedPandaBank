@@ -24,6 +24,7 @@ public class InlineScheduleEditEventFieldButton implements
     final String TEACHER_NAME = "teacher-name";
     final String LESSON_START_TIME = "lesson-start-time";
     final String LESSON_DURATION = "lesson-duration";
+    final String BACK = "back";
 
     public InlineScheduleEditEventFieldButton(TranslateService translateService) {
         this.translateService = translateService;
@@ -51,6 +52,10 @@ public class InlineScheduleEditEventFieldButton implements
                 .button(translateService.getBySlug(LESSON_DURATION) + lesson.getDuration(),
                         Command.EDIT_SCHEDULE_EVENT_DURATION.getName()
                                 + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                .endRow()
+                .row()
+                .button(translateService.getBySlug(BACK),
+                        Command.EDIT_SCHEDULE_EXISTING_EVENT.getName())
                 .endRow()
                 .build();
     }

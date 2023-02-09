@@ -27,7 +27,8 @@ public class SaveTeacherNameState implements StateHandler<Update>, CommandChecka
     final InlineScheduleAddTeacherNameButton inlineScheduleAddTeacherNameButton;
     final TranslateService translateService;
     final String TEACHER = "teacher";
-    final String TEACHER_ADDED = "add-teacher-name-for-lesson";
+    final String SMTH_SAVED_CHECK = "smth-saved-check";
+    final String NEXT_BUTTON = "next";
 
     public SaveTeacherNameState(ChildService childService,
                                 LessonService lessonService,
@@ -54,7 +55,8 @@ public class SaveTeacherNameState implements StateHandler<Update>, CommandChecka
             InlineKeyboardMarkup keyboard = inlineScheduleAddTeacherNameButton.getKeyboard(lesson);
             String response = translateService.getBySlug(TEACHER)
                     + " \"<i>" + lesson.getTeacher() + "\"</i> "
-                    + translateService.getBySlug(TEACHER_ADDED);
+                    + translateService.getBySlug(SMTH_SAVED_CHECK)
+                    + "<b>" + translateService.getBySlug(NEXT_BUTTON) + "</b>";
             return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
         }
         return  goBackToTelegramBot(child, childService, telegramBot, update);
