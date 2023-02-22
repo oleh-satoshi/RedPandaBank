@@ -126,7 +126,6 @@ public class InlineStrategyImpl implements InlineStrategy {
         strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleDeleteSpecificEventStartTime(lessonService, translateService));
         strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName(), new InlineScheduleDeleteSpecificEventStartTime2(lessonService, lessonScheduleService, specificEventStartTime2Button, translateService));
         strategyMap.put(Command.EDIT_SCHEDULE_EVENT_DURATION.getName(), new InlineScheduleEditSpecificEventDuration(lessonService, childService, translateService));
-        strategyMap.put(Command.START.getName(), new LanguageInlineHandler(this.inlineChooseLanguage));
         strategyMap.put(Command.SET_LANGUAGE.getName(), new SetLanguageInlineHandler(childService, translateService, mainMenuButton, this.inlineStartInitButton));
         strategyMap.put(Command.START_INIT.getName(), new InlineStartInit(translateService, mainMenuButton));
     }

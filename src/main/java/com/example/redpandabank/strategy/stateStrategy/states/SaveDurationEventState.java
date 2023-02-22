@@ -5,7 +5,6 @@ import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventDuration
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.*;
-import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
@@ -19,7 +18,7 @@ import java.util.List;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
-public class SaveDurationEventState implements StateHandler<Update>, CommandCheckable {
+public class SaveDurationEventState implements StateHandler<Update> {
     final static String NUMBERS_ONLY = "\\W";
     final static String PLUG = "";
     Long userId;
@@ -42,29 +41,22 @@ public class SaveDurationEventState implements StateHandler<Update>, CommandChec
     }
 
     @Override
-    public BotApiMethod<?> handle(Update update, TelegramBot telegramBot) {
+    public BotApiMethod<?> handle(Update update) {
         userId = UpdateInfo.getUserId(update);
         duration = UpdateInfo.getText(update);
         Child child = childService.findByUserId(userId);
-        if (checkCommand(duration, child)) {
-            List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
-            Lesson lesson = lessons.get(lessons.size() - 1);
-            lesson.setDuration(Integer.parseInt(duration.replaceAll(NUMBERS_ONLY, PLUG)));
-            lesson.setLessonId(lesson.getLessonId());
-            lessonService.create(lesson);
-            child.setState(State.NO_STATE.getState());
-            childService.create(child);
-            InlineKeyboardMarkup keyboard = inlineScheduleAddEventDurationButton.getKeyboard();
-            String response = translateService.getBySlug(DURATION_FOR_LESSON)
-                    + translateService.getBySlug(LESSON_DURATION_INSTALLED_CHECK)
-                    + "<b>" + translateService.getBySlug(NEXT_BUTTON) + "</b>";
-            return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
-        }
-        return  goBackToTelegramBot(child, childService, telegramBot, update);
+        List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
+        Lesson lesson = lessons.get(lessons.size() - 1);
+        lesson.setDuration(Integer.parseInt(duration.replaceAll(NUMBERS_ONLY, PLUG)));
+        lesson.setLessonId(lesson.getLessonId());
+        lessonService.create(lesson);
+        child.setState(State.NO_STATE.getState());
+        childService.create(child);
+        InlineKeyboardMarkup keyboard = inlineScheduleAddEventDurationButton.getKeyboard();
+        String response = translateService.getBySlug(DURATION_FOR_LESSON)
+                + translateService.getBySlug(LESSON_DURATION_INSTALLED_CHECK)
+                + "<b>" + translateService.getBySlug(NEXT_BUTTON) + "</b>";
+        return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
     }
 
-    @Override
-    public boolean checkCommand(String command, Child child) {
-        return CommandCheckable.super.checkCommand(command, child);
-    }
 }

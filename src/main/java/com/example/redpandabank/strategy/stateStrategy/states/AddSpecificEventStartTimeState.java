@@ -6,7 +6,6 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.*;
-import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -22,7 +21,7 @@ import java.util.List;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
-public class AddSpecificEventStartTimeState implements StateHandler<Update>, CommandCheckable {
+public class AddSpecificEventStartTimeState implements StateHandler<Update> {
     Long userId;
     LocalTime localTime;
     final ChildService childService;
@@ -35,7 +34,8 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update>, Com
 
     public AddSpecificEventStartTimeState(ChildService childService, LessonService lessonService,
                                           LessonScheduleService lessonScheduleService,
-                                          InlineScheduleAddSpecificEventStartTimeButton startTimeButton, TranslateService translateService) {
+                                          InlineScheduleAddSpecificEventStartTimeButton startTimeButton,
+                                          TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
@@ -44,36 +44,28 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update>, Com
     }
 
     @Override
-    public BotApiMethod<?> handle(Update update, TelegramBot telegramBot) {
+    public BotApiMethod<?> handle(Update update) {
         userId = UpdateInfo.getUserId(update);
         localTime = parseTime(UpdateInfo.getText(update));
         Child child = childService.findByUserId(userId);
-        if (checkCommand(localTime.toString(), child)) {
-            String title = parseTitleFromState(child.getState());
-            LocalTime localTime = parseTime(update.getMessage().getText());
-            Lesson lesson = lessonService.findLessonByTitle(userId, title);
-            List<LessonSchedule> lessonSchedules = lesson.getLessonSchedules();
-            LessonSchedule lessonSchedule = new LessonSchedule();
-            lessonSchedule.setLessonStartTime(localTime);
-            lessonSchedule.setChildId(userId);
-            lessonSchedules.add(lessonSchedule);
-            lessonScheduleService.create(lessonSchedule);
-            lessonService.create(lesson);
-            child.setState(State.NO_STATE.getState());
-            child.setIsSkip(false);
-            childService.create(child);
-            String response = translateService.getBySlug(TIME_ALREADY_ADD_FOR_LESSON)
-                    + " <i>\"" + lesson.getTitle() + "\"</i>,"
-                    + translateService.getBySlug(WHAT_DAY_OF_WEEK);
-            InlineKeyboardMarkup keyboard = startTimeButton.getKeyboard();
-            return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
-        }
-        return  goBackToTelegramBot(child, childService, telegramBot, update);
-    }
-
-    @Override
-    public boolean checkCommand(String command, Child child) {
-        return CommandCheckable.super.checkCommand(command, child);
+        String title = parseTitleFromState(child.getState());
+        LocalTime localTime = parseTime(update.getMessage().getText());
+        Lesson lesson = lessonService.findLessonByTitle(userId, title);
+        List<LessonSchedule> lessonSchedules = lesson.getLessonSchedules();
+        LessonSchedule lessonSchedule = new LessonSchedule();
+        lessonSchedule.setLessonStartTime(localTime);
+        lessonSchedule.setChildId(userId);
+        lessonSchedules.add(lessonSchedule);
+        lessonScheduleService.create(lessonSchedule);
+        lessonService.create(lesson);
+        child.setState(State.NO_STATE.getState());
+        child.setIsSkip(false);
+        childService.create(child);
+        String response = translateService.getBySlug(TIME_ALREADY_ADD_FOR_LESSON)
+                + " <i>\"" + lesson.getTitle() + "\"</i>,"
+                + translateService.getBySlug(WHAT_DAY_OF_WEEK);
+        InlineKeyboardMarkup keyboard = startTimeButton.getKeyboard();
+        return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
     }
 
     private LocalTime parseTime(String text) {

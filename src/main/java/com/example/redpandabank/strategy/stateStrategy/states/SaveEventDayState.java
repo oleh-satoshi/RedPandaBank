@@ -7,7 +7,6 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.*;
-import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
@@ -22,7 +21,7 @@ import java.util.List;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
-public class SaveEventDayState implements StateHandler<Update>, CommandCheckable {
+public class SaveEventDayState implements StateHandler<Update> {
     Long userId;
     String day;
     final ChildService childService;
@@ -44,46 +43,38 @@ public class SaveEventDayState implements StateHandler<Update>, CommandCheckable
     }
 
     @Override
-    public BotApiMethod<?> handle(Update update, TelegramBot telegramBot) {
+    public BotApiMethod<?> handle(Update update) {
         userId = UpdateInfo.getUserId(update);
         day = UpdateInfo.getText(update);
         Child child = childService.findByUserId(userId);
-        if (checkCommand(day, child)) {
-            Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-            String day = update.getCallbackQuery().getData();
-            List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
-            Lesson lesson = lessons.get(lessons.size() - 1);
-            LessonSchedule lessonSchedule = new LessonSchedule();
-            if (day.contains(WeekDay.MONDAY.getDay())) {
-                lessonSchedule.setDay(WeekDay.MONDAY.getDay());
-            } else if (day.contains(WeekDay.TUESDAY.getDay())) {
-                lessonSchedule.setDay(WeekDay.TUESDAY.getDay());
-            } else if (day.contains(WeekDay.WEDNESDAY.getDay())) {
-                lessonSchedule.setDay(WeekDay.WEDNESDAY.getDay());
-            } else if (day.contains(WeekDay.THURSDAY.getDay())) {
-                lessonSchedule.setDay(WeekDay.THURSDAY.getDay());
-            } else if (day.contains(WeekDay.FRIDAY.getDay())) {
-                lessonSchedule.setDay(WeekDay.FRIDAY.getDay());
-            } else if (day.contains(WeekDay.SATURDAY.getDay())) {
-                lessonSchedule.setDay(WeekDay.SATURDAY.getDay());
-            }
-            lessonSchedule.setChildId(userId);
-            List<LessonSchedule> listLessonSchedule = new ArrayList<>();
-            listLessonSchedule.add(lessonSchedule);
-            lesson.setLessonSchedules(listLessonSchedule);
-            lessonScheduleService.create(lessonSchedule);
-            lessonService.create(lesson);
-            child.setState(State.NO_STATE.getState());
-            childService.create(child);
-            InlineKeyboardMarkup keyboard = inlineScheduleAddExtraDayButton.getKeyboard();
-            String response = translateService.getBySlug(ADD_LESSON_START_TIME);
-            return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, keyboard, response);
+        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+        String day = update.getCallbackQuery().getData();
+        List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
+        Lesson lesson = lessons.get(lessons.size() - 1);
+        LessonSchedule lessonSchedule = new LessonSchedule();
+        if (day.contains(WeekDay.MONDAY.getDay())) {
+            lessonSchedule.setDay(WeekDay.MONDAY.getDay());
+        } else if (day.contains(WeekDay.TUESDAY.getDay())) {
+            lessonSchedule.setDay(WeekDay.TUESDAY.getDay());
+        } else if (day.contains(WeekDay.WEDNESDAY.getDay())) {
+            lessonSchedule.setDay(WeekDay.WEDNESDAY.getDay());
+        } else if (day.contains(WeekDay.THURSDAY.getDay())) {
+            lessonSchedule.setDay(WeekDay.THURSDAY.getDay());
+        } else if (day.contains(WeekDay.FRIDAY.getDay())) {
+            lessonSchedule.setDay(WeekDay.FRIDAY.getDay());
+        } else if (day.contains(WeekDay.SATURDAY.getDay())) {
+            lessonSchedule.setDay(WeekDay.SATURDAY.getDay());
         }
-        return  goBackToTelegramBot(child, childService, telegramBot, update);
-    }
-
-    @Override
-    public boolean checkCommand(String command, Child child) {
-        return CommandCheckable.super.checkCommand(command, child);
+        lessonSchedule.setChildId(userId);
+        List<LessonSchedule> listLessonSchedule = new ArrayList<>();
+        listLessonSchedule.add(lessonSchedule);
+        lesson.setLessonSchedules(listLessonSchedule);
+        lessonScheduleService.create(lessonSchedule);
+        lessonService.create(lesson);
+        child.setState(State.NO_STATE.getState());
+        childService.create(child);
+        InlineKeyboardMarkup keyboard = inlineScheduleAddExtraDayButton.getKeyboard();
+        String response = translateService.getBySlug(ADD_LESSON_START_TIME);
+        return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, keyboard, response);
     }
 }

@@ -116,7 +116,8 @@ public class LessonServiceImpl implements LessonService {
     public String getFinishTime(Lesson lesson) {
         StringBuilder stringBuilder = new StringBuilder();
         List<String> stringList = lesson.getLessonSchedules().stream()
-                .map(lessonSchedule -> "<b>" + lessonSchedule.getLessonStartTime().plusMinutes(lesson.getDuration()) + "</b>")
+                .map(lessonSchedule -> "<b>"
+                        + lessonSchedule.getLessonStartTime().plusMinutes(lesson.getDuration()) + "</b>")
                 .collect(Collectors.toList());
         String string = stringBuilder.append(stringList).toString();
         return string.substring(1, string.length() - 1) + NEXT_LINE;

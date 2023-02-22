@@ -55,7 +55,8 @@ public class MessageSenderImpl implements MessageSender {
                 .build();
     }
 
-    public EditMessageText sendEditMessageWithInline(Long userId, Integer messageId, InlineKeyboardMarkup keyboard, String content) {
+    public EditMessageText sendEditMessageWithInline(Long userId, Integer messageId,
+                                                     InlineKeyboardMarkup keyboard, String content) {
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setChatId(userId);
         editMessageText.setMessageId(messageId);

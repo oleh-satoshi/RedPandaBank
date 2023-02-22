@@ -6,7 +6,6 @@ import com.example.redpandabank.keyboard.schedule.InlineScheduleRepeatAddLessonB
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.*;
-import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
@@ -18,7 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
-public class SaveTitleEventState implements StateHandler<Update>, CommandCheckable {
+public class SaveTitleEventState implements StateHandler<Update> {
     Long userId;
     String lessonTitle;
     final ChildService childService;
@@ -26,7 +25,6 @@ public class SaveTitleEventState implements StateHandler<Update>, CommandCheckab
     final InlineScheduleCheckCorrectTitleButton inlineScheduleCheckCorrectTitleButton;
     final InlineScheduleRepeatAddLessonButton inlineScheduleRepeatAddLessonButton;
     final TranslateService translateService;
-    final String TEACHER = "teacher";
     final String LESSON = "lesson";
     final String LESSON_SAVED_CHECK = "smth-saved-check";
     final String NEXT_BUTTON = "next";
@@ -44,40 +42,30 @@ public class SaveTitleEventState implements StateHandler<Update>, CommandCheckab
     }
 
     @Override
-    public BotApiMethod<?> handle(Update update, TelegramBot telegramBot) {
+    public BotApiMethod<?> handle(Update update) {
         String response;
         userId = UpdateInfo.getUserId(update);
         lessonTitle = UpdateInfo.getText(update);
         Child child = childService.findByUserId(userId);
-
-        if (checkCommand(lessonTitle, child)) {
-            if (lessonService.checkAllByTitle(lessonTitle, userId)) {
-                Lesson lesson = new Lesson();
-                lesson.setChildId(userId);
-                lesson.setTitle(lessonTitle);
-                lesson.setIsDeleted(false);
-                lessonService.create(lesson);
-                child.setState(State.NO_STATE.getState());
-                childService.create(child);
-                ReplyKeyboard keyboard = inlineScheduleCheckCorrectTitleButton.getKeyboard(lesson);
-                response = translateService.getBySlug(LESSON)
-                        + "\"<i>" + lesson.getTitle() + "\"</i> "
-                        + translateService.getBySlug(LESSON_SAVED_CHECK)
-                        + "<b>" + translateService.getBySlug(NEXT_BUTTON) + "</b>";
-                return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
-            } else {
-                child.setState(State.NO_STATE.getState());
-                childService.create(child);
-                ReplyKeyboard keyboard = inlineScheduleRepeatAddLessonButton.getKeyboard();
-                response = translateService.getBySlug(LESSON_ALREADY_SAVED);
-                return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
-            }
+        if (lessonService.checkAllByTitle(lessonTitle, userId)) {
+            Lesson lesson = new Lesson();
+            lesson.setChildId(userId);
+            lesson.setTitle(lessonTitle);
+            lesson.setIsDeleted(false);
+            lessonService.create(lesson);
+            child.setState(State.NO_STATE.getState());
+            childService.create(child);
+            ReplyKeyboard keyboard = inlineScheduleCheckCorrectTitleButton.getKeyboard(lesson);
+            response = translateService.getBySlug(LESSON)
+                    + "\"<i>" + lesson.getTitle() + "\"</i> "
+                    + translateService.getBySlug(LESSON_SAVED_CHECK)
+                    + "<b>" + translateService.getBySlug(NEXT_BUTTON) + "</b>";
+            return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
         }
-        return  goBackToTelegramBot(child, childService, telegramBot, update);
-    }
-
-    @Override
-    public boolean checkCommand(String command, Child child) {
-        return CommandCheckable.super.checkCommand(command, child);
+        child.setState(State.NO_STATE.getState());
+        childService.create(child);
+        ReplyKeyboard keyboard = inlineScheduleRepeatAddLessonButton.getKeyboard();
+        response = translateService.getBySlug(LESSON_ALREADY_SAVED);
+        return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
     }
 }

@@ -6,7 +6,6 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.*;
-import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
@@ -22,7 +21,7 @@ import java.util.List;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
-public class SaveEventTimeState implements StateHandler<Update>, CommandCheckable {
+public class SaveEventTimeState implements StateHandler<Update> {
     Long userId;
     String time;
     final ChildService childService;
@@ -34,7 +33,9 @@ public class SaveEventTimeState implements StateHandler<Update>, CommandCheckabl
 
     public SaveEventTimeState(ChildService childService,
                               LessonService lessonService,
-                              LessonScheduleService lessonScheduleService, InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton, TranslateService translateService) {
+                              LessonScheduleService lessonScheduleService,
+                              InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton,
+                              TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
@@ -43,37 +44,28 @@ public class SaveEventTimeState implements StateHandler<Update>, CommandCheckabl
     }
 
     @Override
-    public BotApiMethod<?> handle(Update update, TelegramBot telegramBot) {
+    public BotApiMethod<?> handle(Update update) {
         userId = UpdateInfo.getUserId(update);
         time = UpdateInfo.getText(update);
         Child child = childService.findByUserId(userId);
-        if (checkCommand(time, child)) {
-            String time = update.getMessage().getText();
-            List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
-            Lesson lesson = lessons.get(lessons.size() - 1);
-            int size = lesson.getLessonSchedules().size() - 1;
-            LessonSchedule lessonSchedule = lesson.getLessonSchedules().get(size);
-            lessonSchedule.setLessonStartTime(parseTime(time));
-            List<LessonSchedule> lessonSchedules = new ArrayList<>();
-            lessonSchedules.add(lessonSchedule);
-            lesson.setLessonSchedules(lessonSchedules);
-            lessonService.create(lesson);
-            child.setState(State.NO_STATE.getState());
-            childService.create(child);
-            InlineKeyboardMarkup keyboard = inlineScheduleAddEventTimeButton.getKeyboard();
-            String response = translateService.getBySlug(LESSON_ADDED_TO_SCHEDULE);
-            return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
-        }
-        return  goBackToTelegramBot(child, childService, telegramBot, update);
-    }
-
-    @Override
-    public boolean checkCommand(String command, Child child) {
-        return CommandCheckable.super.checkCommand(command, child);
+        String time = update.getMessage().getText();
+        List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
+        Lesson lesson = lessons.get(lessons.size() - 1);
+        int size = lesson.getLessonSchedules().size() - 1;
+        LessonSchedule lessonSchedule = lesson.getLessonSchedules().get(size);
+        lessonSchedule.setLessonStartTime(parseTime(time));
+        List<LessonSchedule> lessonSchedules = new ArrayList<>();
+        lessonSchedules.add(lessonSchedule);
+        lesson.setLessonSchedules(lessonSchedules);
+        lessonService.create(lesson);
+        child.setState(State.NO_STATE.getState());
+        childService.create(child);
+        InlineKeyboardMarkup keyboard = inlineScheduleAddEventTimeButton.getKeyboard();
+        String response = translateService.getBySlug(LESSON_ADDED_TO_SCHEDULE);
+        return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
     }
 
     private LocalTime parseTime(String text) {
-        //TODO пропусти регексом, что бы проходили только цифры
         String[] response = text.split(":");
         return LocalTime.of(Integer.parseInt(response[0]), Integer.parseInt(response[1]));
     }

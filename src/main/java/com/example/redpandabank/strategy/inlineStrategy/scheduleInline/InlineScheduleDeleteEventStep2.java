@@ -77,7 +77,7 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
                         inlineKeyboardMarkup, "<strike>" + getLessonInfo(lesson) + "</strike>");
             } else {
                 content = translateService.getBySlug(LESSON) + lesson.getTitle() + translateService.getBySlug(ALREADY_BEEN_REMOVED);
-                new MessageSenderImpl().sendMessageViaURL(childId, content);
+                new MessageSenderImpl().sendMessageViaURL(childId, new MessageSenderImpl().replaceSpace(content));
             }
         } else if (split[0].equals(Command.DELETE_EVENT_BY_ID.getName())) {
             lesson = lessonService.getById(Long.valueOf(split[1]));
@@ -123,7 +123,8 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
     private String getFinishTime(Lesson lesson) {
         StringBuilder stringBuilder = new StringBuilder();
         List<String> stringList = lesson.getLessonSchedules().stream()
-                .map(lessonSchedule -> "<b>" + lessonSchedule.getLessonStartTime().plusMinutes(lesson.getDuration()) + "</b>")
+                .map(lessonSchedule -> "<b>"
+                        + lessonSchedule.getLessonStartTime().plusMinutes(lesson.getDuration()) + "</b>")
                 .collect(Collectors.toList());
         String string = stringBuilder.append(stringList).toString();
         return string.substring(1, string.length() - 1);

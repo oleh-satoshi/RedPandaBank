@@ -6,7 +6,6 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.*;
-import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -21,7 +20,7 @@ import java.time.LocalTime;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
-public class EditSpecificEventStartTimeStep2State implements StateHandler<Update>, CommandCheckable {
+public class EditSpecificEventStartTimeStep2State implements StateHandler<Update> {
     Long userId;
     String lessonTitle;
     Integer messageId;
@@ -44,36 +43,28 @@ public class EditSpecificEventStartTimeStep2State implements StateHandler<Update
     }
 
     @Override
-    public BotApiMethod<?> handle(Update update, TelegramBot telegramBot) {
+    public BotApiMethod<?> handle(Update update) {
         userId = UpdateInfo.getUserId(update);
         messageId = UpdateInfo.getMessageId(update);
         lessonTitle = UpdateInfo.hasReply(update) ? UpdateInfo.getText(update) : parseEventTitle(
                 UpdateInfo.getText(update));
         Child child = childService.findByUserId(userId);
-        if (checkCommand(lessonTitle, child)) {
-            String title = parseTitleFromState(child.getState());
-            LocalTime localTime = parseTime(update.getMessage().getText());
-            Lesson lesson = lessonService.findLessonByTitle(userId, title);
-            LessonSchedule lessonSchedule = lesson.getLessonSchedules().stream()
-                    .filter(lessonSchedul -> lessonSchedul.getLessonStartTime().equals(LocalTime.MIN))
-                    .findFirst()
-                    .get();
-            lessonSchedule.setLessonStartTime(localTime);
-            lessonScheduleService.create(lessonSchedule);
-            child.setState(State.NO_STATE.getState());
-            childService.create(child);
-            String response = translateService.getBySlug(START_TIME_CHANGED);
-            ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
-            String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
-            new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
-            return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
-        }
-        return  goBackToTelegramBot(child, childService, telegramBot, update);
-    }
-
-    @Override
-    public boolean checkCommand (String command, Child child){
-        return CommandCheckable.super.checkCommand(command, child);
+        String title = parseTitleFromState(child.getState());
+        LocalTime localTime = parseTime(update.getMessage().getText());
+        Lesson lesson = lessonService.findLessonByTitle(userId, title);
+        LessonSchedule lessonSchedule = lesson.getLessonSchedules().stream()
+                .filter(lessonSchedul -> lessonSchedul.getLessonStartTime().equals(LocalTime.MIN))
+                .findFirst()
+                .get();
+        lessonSchedule.setLessonStartTime(localTime);
+        lessonScheduleService.create(lessonSchedule);
+        child.setState(State.NO_STATE.getState());
+        childService.create(child);
+        String response = translateService.getBySlug(START_TIME_CHANGED);
+        ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
+        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
+        new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
+        return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
     }
 
     private String parseEventTitle (String name){
@@ -85,7 +76,6 @@ public class EditSpecificEventStartTimeStep2State implements StateHandler<Update
     }
 
     private LocalTime parseTime(String text) {
-        //TODO пропусти регексом, что бы проходили только цифры
         String[] response = text.split(":");
         return LocalTime.of(Integer.parseInt(response[0]), Integer.parseInt(response[1]));
     }

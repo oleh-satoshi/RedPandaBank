@@ -5,7 +5,6 @@ import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.*;
-import com.example.redpandabank.strategy.stateStrategy.CommandCheckable;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -18,7 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
 @Component
-public class EditSpecificEventTeacherNameState implements StateHandler<Update>, CommandCheckable {
+public class EditSpecificEventTeacherNameState implements StateHandler<Update> {
     Long userId;
     String teacherName;
     final ChildService childService;
@@ -39,29 +38,21 @@ public class EditSpecificEventTeacherNameState implements StateHandler<Update>, 
 
 
     @Override
-    public BotApiMethod<?> handle(Update update, TelegramBot telegramBot) {
+    public BotApiMethod<?> handle(Update update) {
         userId = UpdateInfo.getUserId(update);
         teacherName = UpdateInfo.getText(update);
         Child child = childService.findByUserId(userId);
-        if (checkCommand(teacherName, child)) {
-            Long lessonId = parseId(child.getState());
-            Lesson lesson = lessonService.getById(lessonId);
-            lesson.setTeacher(teacherName);
-            lessonService.create(lesson);
-            child.setState(State.NO_STATE.getState());
-            childService.create(child);
-            String response = translateService.getBySlug(TEACHER_CHANGED);
-            ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
-            String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
-            new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
-            return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
-        }
-        return  goBackToTelegramBot(child, childService, telegramBot, update);
-    }
-
-    @Override
-    public boolean checkCommand(String command, Child child) {
-        return CommandCheckable.super.checkCommand(command, child);
+        Long lessonId = parseId(child.getState());
+        Lesson lesson = lessonService.getById(lessonId);
+        lesson.setTeacher(teacherName);
+        lessonService.create(lesson);
+        child.setState(State.NO_STATE.getState());
+        childService.create(child);
+        String response = translateService.getBySlug(TEACHER_CHANGED);
+        ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
+        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
+        new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
+        return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
     }
 
     private Long parseId(String text) {

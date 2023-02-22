@@ -34,6 +34,8 @@ public class UpdateInfo {
     }
 
     public static String getFirstName(Update update) {
-        return update.getCallbackQuery().getMessage().getChat().getFirstName();
+        return update.hasCallbackQuery()
+                ? update.getCallbackQuery().getMessage().getChat().getFirstName()
+                : update.getMessage().getChat().getFirstName();
     }
 }

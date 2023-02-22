@@ -15,6 +15,12 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 public class InlineScheduleShowAllDaysButton implements Pressable<InlineKeyboardMarkup> {
     final TranslateService translateService;
     final String BACK = "back";
+    final String MONDAY = "monday";
+    final String TUESDAY = "tuesday";
+    final String WEDNESDAY = "wednesday";
+    final String THURSDAY = "thursday";
+    final String FRIDAY = "friday";
+    final String SATURDAY = "saturday";
 
     public InlineScheduleShowAllDaysButton(TranslateService translateService) {
         this.translateService = translateService;
@@ -24,14 +30,14 @@ public class InlineScheduleShowAllDaysButton implements Pressable<InlineKeyboard
     public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button(WeekDay.MONDAY.getDay(), WeekDay.MONDAY.getDay())
-                .extraButton(WeekDay.TUESDAY.getDay(),WeekDay.TUESDAY.getDay())
-                .extraButton(WeekDay.WEDNESDAY.getDay(), WeekDay.WEDNESDAY.getDay())
+                .button(translateService.getBySlug(MONDAY), WeekDay.MONDAY.getDay())
+                .extraButton(translateService.getBySlug(TUESDAY), WeekDay.TUESDAY.getDay())
+                .extraButton(translateService.getBySlug(WEDNESDAY), WeekDay.WEDNESDAY.getDay())
                 .endRow()
                 .row()
-                .button(WeekDay.THURSDAY.getDay(),WeekDay.THURSDAY.getDay())
-                .extraButton(WeekDay.FRIDAY.getDay(), WeekDay.FRIDAY.getDay())
-                .extraButton(WeekDay.SATURDAY.getDay(),WeekDay.SATURDAY.getDay())
+                .button(translateService.getBySlug(THURSDAY), WeekDay.THURSDAY.getDay())
+                .extraButton(translateService.getBySlug(FRIDAY), WeekDay.FRIDAY.getDay())
+                .extraButton(translateService.getBySlug(SATURDAY), WeekDay.SATURDAY.getDay())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(BACK),
