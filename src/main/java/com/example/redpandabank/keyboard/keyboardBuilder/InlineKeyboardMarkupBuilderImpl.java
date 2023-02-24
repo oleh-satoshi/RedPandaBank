@@ -15,8 +15,7 @@ import java.util.List;
 import static java.lang.Math.toIntExact;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
-@Component
-public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder, InlineKeyboardMarkupBuilder {
+public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder {
 
     List<InlineKeyboardButton> row;
     final List<List<InlineKeyboardButton>> keyboard;
@@ -32,7 +31,7 @@ public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder, I
 
     @Override
     public InlineKeyboardMarkupBuilderImpl row() {
-        this.row = new ArrayList<>();
+        row = new ArrayList<>();
         return this;
     }
 
@@ -40,7 +39,7 @@ public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder, I
         InlineKeyboardButton keyboardButton = new InlineKeyboardButton();
         keyboardButton.setCallbackData(callbackData);
         keyboardButton.setText(text);
-        this.row = new ArrayList<>();
+        row = new ArrayList<>();
         row.add(keyboardButton);
         return this;
     }
@@ -55,12 +54,11 @@ public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder, I
 
     @Override
     public InlineKeyboardMarkupBuilderImpl endRow() {
-        this.keyboard.add(this.row);
-        this.row = null;
+        keyboard.add(row);
+        row = null;
         return this;
     }
 
-    @Override
     public InlineKeyboardMarkup build() {
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         keyboardMarkup.setKeyboard(keyboard);

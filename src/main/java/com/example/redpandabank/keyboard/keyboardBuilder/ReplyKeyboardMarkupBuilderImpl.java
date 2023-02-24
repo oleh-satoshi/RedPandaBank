@@ -11,8 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @FieldDefaults(level= AccessLevel.PRIVATE)
-@Component
-public class ReplyKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder, ReplyKeyboardMarkupBuilder {
+public class ReplyKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder {
 
     final List<KeyboardRow> keyboard = new ArrayList<>();
     KeyboardRow row;

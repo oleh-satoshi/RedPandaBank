@@ -69,7 +69,7 @@ public enum Command {
     }
 
     public static Set<String> getGeneralCommands() {
-        Set generalCommands = new HashSet();
+        Set<String> generalCommands = new HashSet();
         for (int i = 0; i < Command.values().length; i++) {
             generalCommands.add(Command.values()[i].getName());
         }
