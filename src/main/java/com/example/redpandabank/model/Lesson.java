@@ -1,19 +1,37 @@
 package com.example.redpandabank.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+import lombok.experimental.PackagePrivate;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
-@Entity
+@EqualsAndHashCode
+@FieldDefaults(level=AccessLevel.PRIVATE)@Entity
 @Table(name = "lessons")
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String title;
-    private String description;
-    private LocalDateTime lessonsStartTime;
-    private LocalDateTime notificationsTime;
+    Long lessonId;
+    String title;
+    String teacher;
+    Integer duration;
+    Long childId;
+    @OneToMany
+    @JoinColumn(name = "lesson_id", nullable = false)
+    List<LessonSchedule> lessonSchedules;
+    Boolean isDeleted;
+
+    @Override
+    public String toString() {
+        return "Lesson{" +
+                "lessonId=" + lessonId +
+                ", title='" + title + '\'' +
+                ", teacher='" + teacher + '\'' +
+                ", duration=" + duration +
+                ", childId=" + childId +
+                '}';
+    }
 }

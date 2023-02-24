@@ -1,26 +1,29 @@
 package com.example.redpandabank.service;
 
-import com.example.redpandabank.strategy.CommandStrategy;
-import com.example.redpandabank.strategy.handler.CommandHandler;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.redpandabank.strategy.mainCommandHandler.MainCommandHandler;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.List;
+
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class TelegramBot {
-    private CommandStrategy commandStrategy;
+    final List<MainCommandHandler> handlers;
 
-    public TelegramBot(CommandStrategy commandStrategy) {
-        this.commandStrategy = commandStrategy;
+    public TelegramBot(List<MainCommandHandler> handlers) {
+        this.handlers = handlers;
     }
 
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            String commandMessage = update.getMessage().getText();
-            CommandHandler commandHandler = commandStrategy.get(commandMessage);
-            return commandHandler.handle(update);
-        }
-        return null;
+        MainCommandHandler mainCommandHandler = handlers.stream()
+                .filter(handler -> handler.isApplicable(update))
+                .findFirst()
+                .orElseThrow(
+                        () -> new RuntimeException("Can't find implementation for request in TelegramBot class"));
+        return mainCommandHandler.handle(update);
     }
 }
