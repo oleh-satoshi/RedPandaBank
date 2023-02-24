@@ -2,7 +2,6 @@ package com.example.redpandabank.strategy.inlineStrategy;
 
 import com.example.redpandabank.keyboard.InlineChooseLanguage;
 import com.example.redpandabank.keyboard.InlineStartInitButton;
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.keyboard.schedule.*;
 import com.example.redpandabank.enums.Command;
@@ -30,7 +29,6 @@ public class InlineStrategyImpl implements InlineStrategy {
     final MessageSender messageSender;
     final InlineScheduleAddEventByWeekday inlineScheduleAddEventByWeekday;
     final InlineScheduleEditEventFieldButton inlineScheduleEditEventFieldButton;
-    final InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilder;
     final InlineScheduleShowAllDaysButton inlineScheduleShowAllDaysButton;
     final InlineScheduleMenuButton inlineScheduleMenuButton;
     final InlineScheduleEditMenuButton inlineScheduleEditMenuButton;
@@ -50,7 +48,6 @@ public class InlineStrategyImpl implements InlineStrategy {
                               MessageSender messageSender,
                               InlineScheduleAddEventByWeekday inlineScheduleAddEventByWeekday,
                               InlineScheduleEditEventFieldButton inlineScheduleEditEventFieldButton,
-                              InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilder,
                               InlineScheduleShowAllDaysButton inlineScheduleShowAllDaysButton, InlineScheduleMenuButton inlineScheduleMenuButton,
                               InlineScheduleEditMenuButton inlineScheduleEditMenuButton,
                               ChildService childService, InlineScheduleAddEventDay inlineScheduleAddEventDay,
@@ -65,7 +62,6 @@ public class InlineStrategyImpl implements InlineStrategy {
         this.messageSender = messageSender;
         this.inlineScheduleAddEventByWeekday = inlineScheduleAddEventByWeekday;
         this.inlineScheduleEditEventFieldButton = inlineScheduleEditEventFieldButton;
-        this.inlineKeyboardMarkupBuilder = inlineKeyboardMarkupBuilder;
         this.inlineScheduleShowAllDaysButton = inlineScheduleShowAllDaysButton;
         this.inlineScheduleMenuButton = inlineScheduleMenuButton;
         this.inlineScheduleEditMenuButton = inlineScheduleEditMenuButton;
@@ -113,7 +109,7 @@ public class InlineStrategyImpl implements InlineStrategy {
         strategyMap.put(Command.EDIT_EVENT_DURATION.getName(), new InlineScheduleChangeDuration(childService, translateService));
         strategyMap.put(Command.SAVE_EVENT_DAY.getName(), new InlineScheduleSaveEventDay(lessonService, childService, inlineScheduleAddEventDay, translateService));
         strategyMap.put(Command.EDIT_SCHEDULE_EXISTING_EVENT.getName(), new InlineScheduleEditEvent(lessonService, translateService));
-        strategyMap.put(Command.EDIT_SPECIFIC_EXISTING_EVENT.getName(), new InlineScheduleEditSpecificExistingEvent(lessonService, lessonScheduleService, inlineScheduleEditEventFieldButton, inlineKeyboardMarkupBuilder, translateService));
+        strategyMap.put(Command.EDIT_SPECIFIC_EXISTING_EVENT.getName(), new InlineScheduleEditSpecificExistingEvent(lessonService, inlineScheduleEditEventFieldButton, translateService));
         strategyMap.put(Command.EDIT_SCHEDULE_EVENT_FIELD.getName(), new InlineScheduleEditEventField(lessonService, childService, translateService));
         strategyMap.put(Command.EDIT_SCHEDULE_EVENT_TEACHER.getName(), new InlineScheduleEditEvenTeacherName(lessonService, childService, translateService));
         strategyMap.put(Command.SHOW_SPECIFIC_EVENT_START_TIME.getName(), new InlineScheduleEditEventLessonStartTime(lessonService, childService, chooseOperationButton, translateService));

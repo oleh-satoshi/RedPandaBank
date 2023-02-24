@@ -18,7 +18,9 @@ public interface LessonService {
 
     List<Lesson> findLessonByChildIdAndWeekDay(Long userId, String day);
 
-    HashSet<Lesson> findAllByChildId(Long childId);
+    HashSet<Lesson> getSetWithAllLessonByChildId(Long childId);
+
+    List<Lesson> getAllByChildId(Long childId);
 
     Optional<String> getLessonsByDayAndChildId(Long userId, String day);
 

@@ -1,8 +1,9 @@
-package com.example.redpandabank.service;
+package com.example.redpandabank.service.impl;
 
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.repository.LessonScheduleRepository;
+import com.example.redpandabank.service.LessonScheduleService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.PackagePrivate;
@@ -22,11 +23,6 @@ public class LessonScheduleServiceImpl implements LessonScheduleService {
     @Override
     public LessonSchedule create(LessonSchedule lessonSchedule) {
         return lessonScheduleRepository.save(lessonSchedule);
-    }
-
-    @Override
-    public List<LessonSchedule> findAllByChildId(Long childID) {
-        return lessonScheduleRepository.findAllByChildId(childID);
     }
 
     @Override

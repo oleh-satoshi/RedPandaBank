@@ -1,8 +1,11 @@
-package com.example.redpandabank.service;
+package com.example.redpandabank.service.impl;
 
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.repository.LessonRepository;
 import com.example.redpandabank.model.Lesson;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
+import com.example.redpandabank.service.TranslateService;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +21,6 @@ import java.util.stream.Collectors;
 @Service
 public class LessonServiceImpl implements LessonService {
     final LessonRepository lessonRepository;
-    final MessageSender messageSender;
     final TranslateService translateService;
     final String NO_LESSONS_FOR_THE_DAY = "no-lessons-for-the-day";
     final String TEACHER = "teacher";
@@ -29,10 +31,8 @@ public class LessonServiceImpl implements LessonService {
 
 
     public LessonServiceImpl(LessonRepository lessonRepository,
-                             MessageSender messageSender,
                              TranslateService translateService) {
         this.lessonRepository = lessonRepository;
-        this.messageSender = messageSender;
         this.translateService = translateService;
     }
 
@@ -57,8 +57,13 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public HashSet<Lesson> findAllByChildId(Long childId) {
+    public HashSet<Lesson> getSetWithAllLessonByChildId(Long childId) {
         return lessonRepository.findAllByChildId(childId);
+    }
+
+    @Override
+    public List<Lesson> getAllByChildId(Long childId) {
+        return lessonRepository.getAllByChildId(childId);
     }
 
     @Override

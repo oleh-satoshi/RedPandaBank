@@ -5,7 +5,7 @@ import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBui
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import lombok.AccessLevel;
@@ -35,7 +35,7 @@ public class InlineScheduleDeleteEvent implements InlineHandler<Update> {
     public BotApiMethod<?> handle(Update update) {
         Long childId = update.getCallbackQuery().getFrom().getId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        HashSet<Lesson> allByTitle = lessonService.findAllByChildId(childId);
+        HashSet<Lesson> allByTitle = lessonService.getSetWithAllLessonByChildId(childId);
 
         InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                 .row();

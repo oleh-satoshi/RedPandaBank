@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
 import com.example.redpandabank.keyboard.schedule.InlineScheduleMenuButton;
-import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import lombok.AccessLevel;

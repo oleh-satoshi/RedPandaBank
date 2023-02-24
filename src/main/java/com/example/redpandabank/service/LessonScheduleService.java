@@ -8,7 +8,6 @@ import java.util.List;
 public interface LessonScheduleService {
     LessonSchedule create(LessonSchedule lessonSchedule);
 
-    List<LessonSchedule> findAllByChildId(Long childID);
 
     List<LessonSchedule> findAllByLessonId(Long id);
 

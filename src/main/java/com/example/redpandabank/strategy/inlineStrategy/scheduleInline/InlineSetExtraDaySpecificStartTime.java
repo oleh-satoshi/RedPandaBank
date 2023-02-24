@@ -4,6 +4,7 @@ import com.example.redpandabank.keyboard.schedule.InlineScheduleAddDaySpecificEv
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.*;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
@@ -45,7 +46,6 @@ public class InlineSetExtraDaySpecificStartTime implements InlineHandler<Update>
         List<LessonSchedule> lessonSchedules = lesson.getLessonSchedules();
         LessonSchedule lessonSchedule = lessonSchedules.get(lessonSchedules.size() - 1);
         LessonSchedule newLessonSchedule = new LessonSchedule();
-        newLessonSchedule.setChildId(childId);
         newLessonSchedule.setDay(day);
         newLessonSchedule.setLessonStartTime(lessonSchedule.getLessonStartTime());
         lessonSchedules.add(newLessonSchedule);

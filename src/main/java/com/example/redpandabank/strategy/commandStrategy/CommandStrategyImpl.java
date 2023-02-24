@@ -24,11 +24,9 @@ import java.util.Map;
 public class CommandStrategyImpl implements CommandStrategy {
     Map<String, CommandHandler> commandStrategyMap;
     final ReplyMainMenuButton replyMainMenuButton;
-    final ChildService childService;
     final InlineScheduleMenuButton inlineScheduleMenuButton;
     final LessonService lessonService;
     final TranslateService translateService;
-    final InlineChooseLanguage inlineChooseLanguage;
 
 
     public CommandStrategyImpl(ReplyMainMenuButton replyMainMenuButton, ChildService childService,
@@ -36,11 +34,9 @@ public class CommandStrategyImpl implements CommandStrategy {
                                LessonService lessonService, TranslateService translateService,
                                InlineChooseLanguage inlineChooseLanguage) {
         this.replyMainMenuButton = replyMainMenuButton;
-        this.childService = childService;
         this.inlineScheduleMenuButton = inlineScheduleMenuButton;
         this.lessonService = lessonService;
         this.translateService = translateService;
-        this.inlineChooseLanguage = inlineChooseLanguage;
 
         commandStrategyMap = new HashMap<>();
         commandStrategyMap.put(Command.SCHEDULE.getName(), new ScheduleMenuShowCommandHandler(this.inlineScheduleMenuButton, translateService));

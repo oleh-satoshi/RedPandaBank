@@ -2,7 +2,7 @@ package com.example.redpandabank.strategy.commandStrategy.handler;
 
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.util.UpdateInfo;
 import com.vdurmont.emoji.EmojiParser;

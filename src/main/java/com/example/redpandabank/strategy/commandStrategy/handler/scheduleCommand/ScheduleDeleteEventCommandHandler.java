@@ -4,7 +4,7 @@ import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBui
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import lombok.AccessLevel;
@@ -32,7 +32,7 @@ public class ScheduleDeleteEventCommandHandler implements CommandHandler<Update>
     @Override
     public BotApiMethod<?> handle(Update update) {
         Long childId = update.getMessage().getChatId();
-        HashSet<Lesson> allByTitle = lessonService.findAllByChildId(childId);
+        HashSet<Lesson> allByTitle = lessonService.getSetWithAllLessonByChildId(childId);
 
         InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkupBuilderImpl =
                 InlineKeyboardMarkupBuilderImpl.create()

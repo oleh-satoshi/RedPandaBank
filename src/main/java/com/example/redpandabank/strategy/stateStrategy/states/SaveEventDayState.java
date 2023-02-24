@@ -7,6 +7,7 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.*;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
@@ -65,7 +66,6 @@ public class SaveEventDayState implements StateHandler<Update> {
         } else if (day.contains(WeekDay.SATURDAY.getDay())) {
             lessonSchedule.setDay(WeekDay.SATURDAY.getDay());
         }
-        lessonSchedule.setChildId(userId);
         List<LessonSchedule> listLessonSchedule = new ArrayList<>();
         listLessonSchedule.add(lessonSchedule);
         lesson.setLessonSchedules(listLessonSchedule);

@@ -15,7 +15,6 @@ public class LessonSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long lessonScheduleId;
-    Long childId;
     LocalTime lessonStartTime;
     String day;
 }

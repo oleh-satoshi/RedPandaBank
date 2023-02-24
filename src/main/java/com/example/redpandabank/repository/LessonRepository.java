@@ -32,4 +32,6 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
     void deleteLessonByTitleAndChildId(String title, Long id);
 
     Lesson findLessonByLessonSchedules(LessonSchedule lessonSchedule);
+
+    List<Lesson> getAllByChildId(Long childId);
 }
