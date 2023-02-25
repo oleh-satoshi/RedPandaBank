@@ -15,12 +15,11 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-
 import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleDeleteSpecificEventStartTime implements InlineHandler<Update> {
     final LessonService lessonService;

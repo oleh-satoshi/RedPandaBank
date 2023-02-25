@@ -15,14 +15,13 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleAddTimeToLesson implements InlineHandler<Update> {
     final LessonService lessonService;
     final ChildService childService;
     final TranslateService translateService;
     final String ENTER_TIME_FOR_LESSON = "enter-time-for-lesson";
-
 
     public InlineScheduleAddTimeToLesson(LessonService lessonService,
                                          ChildService childService,
@@ -43,7 +42,7 @@ public class InlineScheduleAddTimeToLesson implements InlineHandler<Update> {
                 + Separator.COLON_SEPARATOR + lesson.getTitle());
         child.setIsSkip(false);
         childService.create(child);
-        String response = translateService.getBySlug(ENTER_TIME_FOR_LESSON) +  " <i>\"" + lesson.getTitle() + "\"</i>:";
+        String response = translateService.getBySlug(ENTER_TIME_FOR_LESSON) + " <i>\"" + lesson.getTitle() + "\"</i>:";
         return new MessageSenderImpl().sendEditMessage(childId, messageId, response);
     }
 

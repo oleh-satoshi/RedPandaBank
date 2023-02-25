@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleAddDaySpecificEventStartTimeButton implements PressableWithArgument<ReplyKeyboard, Lesson> {
     TranslateService translateService;

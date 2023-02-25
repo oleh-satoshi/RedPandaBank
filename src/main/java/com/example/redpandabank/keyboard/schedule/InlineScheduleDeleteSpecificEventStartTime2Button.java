@@ -31,5 +31,6 @@ public class InlineScheduleDeleteSpecificEventStartTime2Button implements Pressa
                 .button(translateService.getBySlug(DONE),
                         Command.TO_MAIN_MENU.getName())
                 .endRow()
-                .build();    }
+                .build();
+    }
 }

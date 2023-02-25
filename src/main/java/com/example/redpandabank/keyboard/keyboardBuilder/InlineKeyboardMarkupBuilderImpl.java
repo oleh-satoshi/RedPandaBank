@@ -1,20 +1,16 @@
 package com.example.redpandabank.keyboard.keyboardBuilder;
 
+import static java.lang.Math.toIntExact;
+
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.Math.toIntExact;
-
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder {
 
     List<InlineKeyboardButton> row;

@@ -1,25 +1,25 @@
 package com.example.redpandabank.strategy.commandStrategy;
 
 import com.example.redpandabank.keyboard.InlineChooseLanguage;
-import com.example.redpandabank.keyboard.schedule.*;
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleMenuButton;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.commandStrategy.handler.BackToMainMenuCommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
-import com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.*;
 import com.example.redpandabank.strategy.commandStrategy.handler.SchedulePlugCommandHandler;
+import com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.EditScheduleEventCommandHandler;
+import com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.ScheduleDeleteEventCommandHandler;
+import com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.ScheduleMenuShowCommandHandler;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
 
-
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class CommandStrategyImpl implements CommandStrategy {
     Map<String, CommandHandler> commandStrategyMap;
@@ -27,7 +27,6 @@ public class CommandStrategyImpl implements CommandStrategy {
     final InlineScheduleMenuButton inlineScheduleMenuButton;
     final LessonService lessonService;
     final TranslateService translateService;
-
 
     public CommandStrategyImpl(ReplyMainMenuButton replyMainMenuButton, ChildService childService,
                                InlineScheduleMenuButton inlineScheduleMenuButton,
@@ -62,10 +61,9 @@ public class CommandStrategyImpl implements CommandStrategy {
         String commandName = Command.SAVE_EVENT_NAME.getName();
         if (command.contains(commandName) && !commandName.equals(command)) {
             String result = command.substring(0, 9);
-            return  result;
-        } else {
-            return command;
+            return result;
         }
+        return command;
     }
 
     private String checkSaveEventTeacher(String command) {

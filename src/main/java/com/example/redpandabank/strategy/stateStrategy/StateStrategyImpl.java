@@ -2,22 +2,38 @@ package com.example.redpandabank.strategy.stateStrategy;
 
 import com.example.redpandabank.enums.State;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
-import com.example.redpandabank.keyboard.schedule.*;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventDurationButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventTimeButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddExtraDayButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddSpecificEventStartTimeButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddTeacherNameButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleCheckCorrectTitleButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleRepeatAddLessonButton;
+import com.example.redpandabank.keyboard.schedule.ReplyScheduleEditSpecificEventDurationStateButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.TranslateService;
-import com.example.redpandabank.strategy.stateStrategy.states.*;
+import com.example.redpandabank.strategy.stateStrategy.states.AddSpecificEventStartTimeState;
+import com.example.redpandabank.strategy.stateStrategy.states.EditSpecificEventFieldState;
+import com.example.redpandabank.strategy.stateStrategy.states.EditSpecificEventStartTimeState;
+import com.example.redpandabank.strategy.stateStrategy.states.EditSpecificEventStartTimeStep2State;
+import com.example.redpandabank.strategy.stateStrategy.states.EditSpecificEventTeacherNameState;
+import com.example.redpandabank.strategy.stateStrategy.states.EditSpecificScheduleEventDurationState;
+import com.example.redpandabank.strategy.stateStrategy.states.SaveDurationEventState;
+import com.example.redpandabank.strategy.stateStrategy.states.SaveEventDayState;
+import com.example.redpandabank.strategy.stateStrategy.states.SaveEventTimeState;
+import com.example.redpandabank.strategy.stateStrategy.states.SaveTeacherNameState;
+import com.example.redpandabank.strategy.stateStrategy.states.SaveTitleEventState;
 import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class StateStrategyImpl implements StateStrategy {
     Map<String, StateHandler> stateStrategyMap;

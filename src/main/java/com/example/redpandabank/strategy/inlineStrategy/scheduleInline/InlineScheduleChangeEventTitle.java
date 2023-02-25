@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleChangeEventTitle implements InlineHandler<Update> {
     final LessonService lessonService;
@@ -36,7 +36,6 @@ public class InlineScheduleChangeEventTitle implements InlineHandler<Update> {
         Long childId = UpdateInfo.getUserId(update);
         String command = UpdateInfo.getText(update);
         Integer messageId = UpdateInfo.getMessageId(update);
-
         Lesson lesson = lessonService.findLessonByTitle(childId, parseCommand(command));
         lessonService.deleteLessonByTitleAndChildId(lesson.getTitle(), childId);
         Child child = childService.getById(childId).get();

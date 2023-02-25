@@ -15,14 +15,13 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleEditSpecificEventStartTimeChooseOperation implements InlineHandler<Update> {
     final InlineScheduleEditSpecificEventStartTimeChooseOperationButton chooseOperationButton;
     final LessonService lessonService;
     final TranslateService translateService;
     final String OPTION_FOR_START_TIME = "option-for-start-time";
-
 
     public InlineScheduleEditSpecificEventStartTimeChooseOperation(InlineScheduleEditSpecificEventStartTimeChooseOperationButton chooseOperationButton,
                                                                    LessonService lessonService,

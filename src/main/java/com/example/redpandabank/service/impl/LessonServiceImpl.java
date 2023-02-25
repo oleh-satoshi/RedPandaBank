@@ -4,14 +4,12 @@ import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.repository.LessonRepository;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +25,7 @@ public class LessonServiceImpl implements LessonService {
     final String STARTS_AT = "starts-at";
     final String LESSON_END_IN = "lesson-end-in";
     final String LESSON_DURATION = "lesson-duration";
-    public final static String NEXT_LINE = "%0A";
-
+    public static final String NEXT_LINE = "%0A";
 
     public LessonServiceImpl(LessonRepository lessonRepository,
                              TranslateService translateService) {
@@ -73,12 +70,11 @@ public class LessonServiceImpl implements LessonService {
             new MessageSenderImpl().sendMessageViaURL(childId, translateService.getBySlug(NO_LESSONS_FOR_THE_DAY));
             return Optional.empty();
         }
-        new MessageSenderImpl().sendMessageViaURL(childId,  EmojiParser.parseToUnicode(
+        new MessageSenderImpl().sendMessageViaURL(childId, EmojiParser.parseToUnicode(
                 ":calendar: " + "<b>" + day + "</b>"));
         for (Lesson lesson : lessonByDay) {
             new MessageSenderImpl().sendMessageViaURL(childId, parseLessonForUrl(lesson));
         }
-
         return Optional.empty();
     }
 
@@ -156,6 +152,6 @@ public class LessonServiceImpl implements LessonService {
                 .append(":bell: " + translateService.getBySlug(STARTS_AT) + getStartTime(lesson))
                 .append(":checkered_flag: " + translateService.getBySlug(LESSON_END_IN) + getFinishTime(lesson))
                 .append(":clock8: " + translateService.getBySlug(LESSON_DURATION) + "<b>" + lesson.getDuration() + "</b>" + getDuration(lesson.getDuration()) + NEXT_LINE);
-        return EmojiParser.parseToUnicode( stringBuilder.toString());
+        return EmojiParser.parseToUnicode(stringBuilder.toString());
     }
 }

@@ -20,12 +20,11 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-
 import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Update> {
     final LessonService lessonService;
@@ -61,7 +60,6 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
                             + Separator.COLON_SEPARATOR + localTime.toString())
                     .endRow();
         }
-
         InlineKeyboardMarkup inline = builder.build();
         Child child = childService.findByUserId(childId);
         child.setState(State.EDIT_SPECIFIC_EVENT_START_TIME.getState());

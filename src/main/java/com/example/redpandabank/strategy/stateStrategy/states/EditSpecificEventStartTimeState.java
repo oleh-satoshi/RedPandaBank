@@ -4,7 +4,10 @@ import com.example.redpandabank.enums.State;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
-import com.example.redpandabank.service.*;
+import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonScheduleService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
@@ -14,11 +17,10 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
 import java.time.LocalTime;
 import java.util.List;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class EditSpecificEventStartTimeState implements StateHandler<Update> {
     Long userId;
@@ -46,7 +48,7 @@ public class EditSpecificEventStartTimeState implements StateHandler<Update> {
         lessonTitle = UpdateInfo.hasReply(update) ? UpdateInfo.getText(update) :
                 parseEventTitle(UpdateInfo.getText(update));
         Child child = childService.findByUserId(userId);
-        LocalTime localTime = parseTimeWithTitle( UpdateInfo.getData(update));
+        LocalTime localTime = parseTimeWithTitle(UpdateInfo.getData(update));
         Lesson lesson = lessonService.findLessonByTitle(userId, lessonTitle);
         List<LessonSchedule> lessonSchedules = lesson.getLessonSchedules();
         LessonSchedule specificLessonSchedule = lessonSchedules.stream()
@@ -64,7 +66,7 @@ public class EditSpecificEventStartTimeState implements StateHandler<Update> {
         return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
     }
 
-    private String parseEventTitle (String name){
+    private String parseEventTitle(String name) {
         return name.split(Separator.QUOTE_SEPARATOR)[1];
     }
 

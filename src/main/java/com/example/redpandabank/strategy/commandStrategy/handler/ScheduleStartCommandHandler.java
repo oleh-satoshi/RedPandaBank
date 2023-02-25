@@ -37,7 +37,7 @@ public class ScheduleStartCommandHandler implements CommandHandler<Update> {
         isInitialize = childService.findById(userId).isPresent();
         if (!isInitialize) {
             childService.createChild(userId);
-            response = EmojiParser.parseToUnicode(translateService.getBySlug(HELLO)) ;
+            response = EmojiParser.parseToUnicode(translateService.getBySlug(HELLO));
             ReplyKeyboardMarkup keyboard = replyMainMenuButton.getKeyboard();
             return new MessageSenderImpl().sendMessageWithReply(userId, response,keyboard);
         } else {

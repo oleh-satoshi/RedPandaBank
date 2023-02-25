@@ -1,11 +1,8 @@
 package com.example.redpandabank.enums;
 
-import lombok.Getter;
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Update;
-
 import java.util.HashSet;
 import java.util.Set;
+import lombok.Getter;
 
 @Getter
 public enum Command {

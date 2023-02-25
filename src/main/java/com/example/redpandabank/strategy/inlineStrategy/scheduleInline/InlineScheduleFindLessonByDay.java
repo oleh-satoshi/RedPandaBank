@@ -11,13 +11,12 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-
 import java.util.Optional;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleFindLessonByDay implements InlineHandler<Update> {
-    final LessonService  lessonService;
+    final LessonService lessonService;
     final ReplyMainMenuButton mainMenuButton;
 
     public InlineScheduleFindLessonByDay(LessonService lessonService,

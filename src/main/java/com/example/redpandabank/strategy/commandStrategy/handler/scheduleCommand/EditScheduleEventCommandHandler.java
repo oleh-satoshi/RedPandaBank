@@ -1,5 +1,7 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
+import static com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.ScheduleDeleteEventCommandHandler.SEPARATOR;
+
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
@@ -13,12 +15,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
 import java.util.HashSet;
 
-import static com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.ScheduleDeleteEventCommandHandler.SEPARATOR;
-
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class EditScheduleEventCommandHandler implements CommandHandler<Update> {
     final LessonService lessonService;

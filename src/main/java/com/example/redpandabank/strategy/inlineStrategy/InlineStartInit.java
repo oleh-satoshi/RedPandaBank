@@ -11,9 +11,9 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
-public class InlineStartInit implements InlineHandler <Update> {
+public class InlineStartInit implements InlineHandler<Update> {
     final TranslateService translateService;
     final ReplyMainMenuButton mainMenuButton;
     final String HELLO = "hello";

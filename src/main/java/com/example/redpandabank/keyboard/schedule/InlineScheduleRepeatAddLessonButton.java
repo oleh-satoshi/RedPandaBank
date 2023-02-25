@@ -26,5 +26,6 @@ public class InlineScheduleRepeatAddLessonButton implements Pressable {
                 .button(translateService.getBySlug(TRY_AGAIN),
                         Command.ADD_SCHEDULE_EVENT.getName())
                 .endRow()
-                .build();    }
+                .build();
+    }
 }

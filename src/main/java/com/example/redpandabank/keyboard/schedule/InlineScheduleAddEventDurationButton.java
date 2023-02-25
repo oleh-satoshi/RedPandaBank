@@ -6,11 +6,10 @@ import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBui
 import com.example.redpandabank.service.TranslateService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleAddEventDurationButton implements Pressable {
     TranslateService translateService;

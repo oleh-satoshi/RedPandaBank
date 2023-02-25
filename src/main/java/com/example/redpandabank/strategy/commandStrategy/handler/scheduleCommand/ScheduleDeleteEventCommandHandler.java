@@ -13,10 +13,10 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
 import java.util.HashSet;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)@Component
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Component
 public class ScheduleDeleteEventCommandHandler implements CommandHandler<Update> {
     final static String SEPARATOR = ":";
     final LessonService lessonService;

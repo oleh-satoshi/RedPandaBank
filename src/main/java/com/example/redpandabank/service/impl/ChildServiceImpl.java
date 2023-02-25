@@ -6,8 +6,6 @@ import com.example.redpandabank.repository.ChildRepository;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.util.Separator;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.util.Optional;
 

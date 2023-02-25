@@ -11,7 +11,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
-public class ReplyMainMenuButton  implements Pressable {
+public class ReplyMainMenuButton implements Pressable {
     final TranslateService translateService;
     final String MORE = "more";
 

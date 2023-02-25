@@ -11,7 +11,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)@Component
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Component
 public class ScheduleMenuShowCommandHandler implements CommandHandler<Update> {
     final InlineScheduleMenuButton inlineScheduleMenuButton;
     final TranslateService translateService;

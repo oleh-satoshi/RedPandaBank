@@ -13,7 +13,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
 import java.util.Optional;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -33,7 +32,8 @@ public class StateMainCommandHandler implements MainCommandHandler {
         Long userId = UpdateInfo.getUserId(update);
         childOptional = childService.getById(userId);
         StateHandler stateHandler = stateStrategy.get(childOptional.get());
-        return stateHandler.handle(update);    }
+        return stateHandler.handle(update);
+    }
 
     @Override
     public boolean isApplicable(Update update) {

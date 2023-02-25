@@ -1,15 +1,22 @@
 package com.example.redpandabank.model;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
-
 import java.util.List;
 
 @Data
 @EqualsAndHashCode
-@FieldDefaults(level=AccessLevel.PRIVATE)@Entity
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
 @Table(name = "lessons")
 public class Lesson {
     @Id
@@ -27,11 +34,11 @@ public class Lesson {
     @Override
     public String toString() {
         return "Lesson{" +
-                "lessonId=" + lessonId +
-                ", title='" + title + '\'' +
-                ", teacher='" + teacher + '\'' +
-                ", duration=" + duration +
-                ", childId=" + childId +
+                "lessonId =" + lessonId +
+                ", title ='" + title + '\'' +
+                ", teacher ='" + teacher + '\'' +
+                ", duration =" + duration +
+                ", childId =" + childId +
                 '}';
     }
 }

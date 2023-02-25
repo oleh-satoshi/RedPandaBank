@@ -3,24 +3,61 @@ package com.example.redpandabank.strategy.inlineStrategy;
 import com.example.redpandabank.keyboard.InlineChooseLanguage;
 import com.example.redpandabank.keyboard.InlineStartInitButton;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
-import com.example.redpandabank.keyboard.schedule.*;
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.enums.WeekDay;
-import com.example.redpandabank.service.*;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddDaySpecificEventStartTimeButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventByWeekday;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventDay;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddExtraDaySpecificStartTimeButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleDeleteSpecificEventStartTime2Button;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleEditEventFieldButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleEditMenuButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleEditSpecificEventStartTimeChooseOperationButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleMenuButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleShowAllDaysButton;
+import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonScheduleService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.mainMenu.InlineToMainMenu;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleAddDaySpecificEventStartTime;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleAddEventDuration;
-import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEdit;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleAddExtraDaySpecificStartTime;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleAddTeacherName;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleAddTimeToLesson;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleAddTitleEvent;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleChangeDuration;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleChangeEventTitle;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleChangeTeacher;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleChooseEventByDay;
-import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.*;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleDeleteEvent;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleDeleteEventStep2;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleDeleteSpecificEventStartTime;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleDeleteSpecificEventStartTime2;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEdit;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEditEvenTeacherName;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEditEvent;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEditEventField;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEditEventLessonStartTime;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEditSpecificEventDuration;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEditSpecificEventStartTimeChooseOperation;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEditSpecificExistingEvent;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleFindLessonByDay;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleRecoverEvent;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleSaveEventDay;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleSaveEventTime;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleWeekdayButton;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineSetExtraDaySpecificStartTime;
+import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineShowMainMenu;
 import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
-
 import java.util.HashMap;
 import java.util.Map;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineStrategyImpl implements InlineStrategy {
     Map<String, InlineHandler> strategyMap;
@@ -225,7 +262,6 @@ public class InlineStrategyImpl implements InlineStrategy {
         }
         return command;
     }
-
 
     private String checkEditSpecificEventLessonStartTime(String command) {
         String name = Command.SHOW_SPECIFIC_EVENT_START_TIME.getName();

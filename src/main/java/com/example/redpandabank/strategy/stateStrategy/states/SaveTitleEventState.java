@@ -5,7 +5,9 @@ import com.example.redpandabank.keyboard.schedule.InlineScheduleCheckCorrectTitl
 import com.example.redpandabank.keyboard.schedule.InlineScheduleRepeatAddLessonButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.*;
+import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
@@ -16,7 +18,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class SaveTitleEventState implements StateHandler<Update> {
     Long userId;

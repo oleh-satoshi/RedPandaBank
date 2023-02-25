@@ -15,21 +15,19 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
     final TranslateService translateService;
     final String SAVE_DAY = "save-day";
-
 
     public InlineScheduleWeekdayButton(LessonService lessonService,
                                        LessonScheduleService lessonScheduleService,
@@ -38,7 +36,6 @@ public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
         this.lessonScheduleService = lessonScheduleService;
         this.translateService = translateService;
     }
-
 
     @Override
     public BotApiMethod<?> handle(Update update) {
@@ -70,7 +67,7 @@ public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
             createLessonSchedule(day, userId);
         }
 
-        content= translateService.getBySlug(SAVE_DAY);
+        content = translateService.getBySlug(SAVE_DAY);
         return new MessageSenderImpl().sendMessage(userId, content);
     }
 
@@ -85,7 +82,7 @@ public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
         lessonScheduleService.create(lessonSchedule);
         HashSet<Lesson> lessonsSet = lessonService.getSetWithAllLessonByChildId(userId);
         List<Lesson> lessons = new ArrayList<>(lessonsSet);
-        Lesson  lesson = (lessons.size() == 1) ? lessons.get(0) : lessons.get(lessons.size() - 1);
+        Lesson lesson = (lessons.size() == 1) ? lessons.get(0) : lessons.get(lessons.size() - 1);
         List<LessonSchedule> lessonSchedules = new ArrayList<>();
         lessonSchedules.add(lessonSchedule);
         lesson.setLessonSchedules(lessonSchedules);

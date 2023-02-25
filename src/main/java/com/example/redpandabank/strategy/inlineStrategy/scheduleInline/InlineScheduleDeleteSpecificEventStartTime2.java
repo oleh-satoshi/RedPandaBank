@@ -16,10 +16,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-
 import java.time.LocalTime;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandler<Update> {
     final LessonService lessonService;
@@ -54,8 +53,6 @@ public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandle
                 + " <i>\"" + lesson.getTitle() + "\"</i>, "
                 + translateService.getBySlug(JUST_BE_CAREFUL);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
-
-
     }
 
     private Long parseTitle(String data) {

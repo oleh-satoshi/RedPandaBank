@@ -11,14 +11,12 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
-
-import java.security.SecureRandom;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)@Component
-public class InlineScheduleEditEventFieldButton implements
-        PressableWithArgument<ReplyKeyboard, Lesson> {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Component
+public class InlineScheduleEditEventFieldButton implements PressableWithArgument<ReplyKeyboard, Lesson> {
     final TranslateService translateService;
     final String LESSON_NAME = "lesson-name";
     final String TEACHER_NAME = "teacher-name";
