@@ -2,6 +2,8 @@
 
 RedPandaBank is a Telegram bot that helps parents track how their children are doing with homework, measure their academic progress, and more. The bot is designed around the character of a red panda, who is always ready to help children and teach them about investing.
 
+![Our red friend](https://github.com/oleh-satoshi/RedPandaBank/blob/main/redpanda.jpg)
+
 ## 🏠 HOMEWORK AND STUDY MANAGEMENT
 
 The application allows children to create a to-do list for the day and mark off what they have done. Parents can check completed work and add new tasks if needed. Children can also earn coins for completing tasks and for extra assignments.
