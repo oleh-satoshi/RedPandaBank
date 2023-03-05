@@ -76,17 +76,39 @@ public class StateStrategyImpl implements StateStrategy {
         this.eventDurationStateButton = eventDurationStateButton;
         this.translateService = translateService;
         stateStrategyMap = new HashMap<>();
-        stateStrategyMap.put(State.SAVE_TITLE_EVENT.getState(), new SaveTitleEventState(childService, lessonService, checkCorrectTitle, repeatAddLesson, translateService));
-        stateStrategyMap.put(State.SAVE_TEACHER_NAME.getState(), new SaveTeacherNameState(childService, lessonService, this.inlineScheduleAddTeacherNameButton, translateService));
-        stateStrategyMap.put(State.SAVE_DURATION.getState(), new SaveDurationEventState(childService, lessonService, inlineScheduleAddEventDurationButton, translateService));
-        stateStrategyMap.put(State.SAVE_EVENT_DAY.getState(), new SaveEventDayState(childService, lessonService, this.lessonScheduleService, this.inlineScheduleAddExtraDayButton, translateService));
-        stateStrategyMap.put(State.ADD_EVENT_TIME.getState(), new SaveEventTimeState(childService, lessonService, lessonScheduleService, inlineScheduleAddEventTimeButton, translateService));
-        stateStrategyMap.put(State.EDIT_SPECIFIC_EVENT_FIELD.getState(), new EditSpecificEventFieldState(childService, lessonService, this.mainMenuButton, translateService));
-        stateStrategyMap.put(State.EDIT_SPECIFIC_EVENT_TEACHER_NAME.getState(), new EditSpecificEventTeacherNameState(childService, lessonService, mainMenuButton, translateService));
-        stateStrategyMap.put(State.EDIT_SPECIFIC_EVENT_START_TIME.getState(), new EditSpecificEventStartTimeState(childService, lessonService, lessonScheduleService, translateService));
-        stateStrategyMap.put(State.EDIT_SPECIFIC_EVENT_START_TIME_STEP2.getState(), new EditSpecificEventStartTimeStep2State(childService, lessonService, lessonScheduleService, mainMenuButton, translateService));
-        stateStrategyMap.put(State.ADD_SPECIFIC_EVENT_START_TIME.getState(), new AddSpecificEventStartTimeState(childService, lessonService, lessonScheduleService, this.startTimeButton, this.translateService));
-        stateStrategyMap.put(State.EDIT_SPECIFIC_SCHEDULE_EVENT_DURATION.getState(), new EditSpecificScheduleEventDurationState(childService, lessonService, this.eventDurationStateButton, translateService));
+        stateStrategyMap.put(State.SAVE_TITLE_EVENT.getState(),
+                new SaveTitleEventState(childService, lessonService,
+                        checkCorrectTitle, repeatAddLesson, translateService));
+        stateStrategyMap.put(State.SAVE_TEACHER_NAME.getState(),
+                new SaveTeacherNameState(childService, lessonService,
+                        inlineScheduleAddTeacherNameButton, translateService));
+        stateStrategyMap.put(State.SAVE_DURATION.getState(),
+                new SaveDurationEventState(childService, lessonService,
+                        inlineScheduleAddEventDurationButton, translateService));
+        stateStrategyMap.put(State.SAVE_EVENT_DAY.getState(),
+                new SaveEventDayState(childService, lessonService,
+                        lessonScheduleService, inlineScheduleAddExtraDayButton, translateService));
+        stateStrategyMap.put(State.ADD_EVENT_TIME.getState(),
+                new SaveEventTimeState(childService, lessonService,
+                        lessonScheduleService, inlineScheduleAddEventTimeButton, translateService));
+        stateStrategyMap.put(State.EDIT_SPECIFIC_EVENT_FIELD.getState(),
+                new EditSpecificEventFieldState(childService, lessonService,
+                        mainMenuButton, translateService));
+        stateStrategyMap.put(State.EDIT_SPECIFIC_EVENT_TEACHER_NAME.getState(),
+                new EditSpecificEventTeacherNameState(childService,
+                        lessonService, mainMenuButton, translateService));
+        stateStrategyMap.put(State.EDIT_SPECIFIC_EVENT_START_TIME.getState(),
+                new EditSpecificEventStartTimeState(childService, lessonService,
+                        lessonScheduleService, translateService));
+        stateStrategyMap.put(State.EDIT_SPECIFIC_EVENT_START_TIME_STEP2.getState(),
+                new EditSpecificEventStartTimeStep2State(childService, lessonService,
+                        lessonScheduleService, mainMenuButton, translateService));
+        stateStrategyMap.put(State.ADD_SPECIFIC_EVENT_START_TIME.getState(),
+                new AddSpecificEventStartTimeState(childService, lessonService,
+                        lessonScheduleService, startTimeButton, translateService));
+        stateStrategyMap.put(State.EDIT_SPECIFIC_SCHEDULE_EVENT_DURATION.getState(),
+                new EditSpecificScheduleEventDurationState(childService, lessonService,
+                        eventDurationStateButton, translateService));
     }
 
     @Override

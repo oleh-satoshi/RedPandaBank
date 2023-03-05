@@ -1,5 +1,11 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
+import java.util.Comparator;
+import java.util.List;
+
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 import com.example.redpandabank.enums.State;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleAddDaySpecificEventStartTimeButton;
 import com.example.redpandabank.model.Child;
@@ -13,14 +19,10 @@ import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
-import java.util.Comparator;
-import java.util.List;
+
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
@@ -28,18 +30,22 @@ public class InlineScheduleAddDaySpecificEventStartTime implements InlineHandler
     final LessonScheduleService lessonScheduleService;
     final LessonService lessonService;
     final ChildService childService;
-    final InlineScheduleAddDaySpecificEventStartTimeButton inlineScheduleAddDaySpecificEventStartTimeButton;
+    final InlineScheduleAddDaySpecificEventStartTimeButton
+            inlineScheduleAddDaySpecificEventStartTimeButton;
     final TranslateService translateService;
     final String ADDED_DAY = "added_day";
     final String SOMETHING_ELSE_INTERESTING = "something-else-interesting";
 
     public InlineScheduleAddDaySpecificEventStartTime(LessonScheduleService lessonScheduleService,
                                                       LessonService lessonService, ChildService childService,
-                                                      InlineScheduleAddDaySpecificEventStartTimeButton inlineScheduleAddDaySpecificEventStartTimeButton, TranslateService translateService) {
+                                                      InlineScheduleAddDaySpecificEventStartTimeButton
+                                                              inlineScheduleAddDaySpecificEventStartTimeButton,
+                                                      TranslateService translateService) {
         this.lessonScheduleService = lessonScheduleService;
         this.lessonService = lessonService;
         this.childService = childService;
-        this.inlineScheduleAddDaySpecificEventStartTimeButton = inlineScheduleAddDaySpecificEventStartTimeButton;
+        this.inlineScheduleAddDaySpecificEventStartTimeButton
+                = inlineScheduleAddDaySpecificEventStartTimeButton;
         this.translateService = translateService;
     }
 
@@ -81,5 +87,4 @@ public class InlineScheduleAddDaySpecificEventStartTime implements InlineHandler
     private String parseTitle(String text) {
         return text.split(Separator.QUOTE_SEPARATOR)[1];
     }
-
 }

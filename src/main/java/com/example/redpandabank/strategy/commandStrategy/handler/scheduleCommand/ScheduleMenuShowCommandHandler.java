@@ -1,8 +1,8 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
 import com.example.redpandabank.keyboard.schedule.InlineScheduleMenuButton;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +18,8 @@ public class ScheduleMenuShowCommandHandler implements CommandHandler<Update> {
     final TranslateService translateService;
     final String WHAT_INTERESTED_IN = "what-interested-in";
 
-    public ScheduleMenuShowCommandHandler(InlineScheduleMenuButton inlineScheduleMenuButton, TranslateService translateService) {
+    public ScheduleMenuShowCommandHandler(InlineScheduleMenuButton inlineScheduleMenuButton,
+                                          TranslateService translateService) {
         this.inlineScheduleMenuButton = inlineScheduleMenuButton;
         this.translateService = translateService;
     }

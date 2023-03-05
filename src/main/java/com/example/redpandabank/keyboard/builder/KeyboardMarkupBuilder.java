@@ -1,4 +1,4 @@
-package com.example.redpandabank.keyboard.keyboardBuilder;
+package com.example.redpandabank.keyboard.builder;
 
 public interface KeyboardMarkupBuilder {
 

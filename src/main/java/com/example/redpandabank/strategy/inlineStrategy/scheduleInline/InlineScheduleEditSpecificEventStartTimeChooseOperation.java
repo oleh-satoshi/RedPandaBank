@@ -1,6 +1,6 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.keyboard.schedule.InlineScheduleEditSpecificEventStartTimeChooseOperationButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleEditSpecificEventStartTimeButton;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
@@ -18,12 +18,12 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleEditSpecificEventStartTimeChooseOperation implements InlineHandler<Update> {
-    final InlineScheduleEditSpecificEventStartTimeChooseOperationButton chooseOperationButton;
+    final InlineScheduleEditSpecificEventStartTimeButton chooseOperationButton;
     final LessonService lessonService;
     final TranslateService translateService;
     final String OPTION_FOR_START_TIME = "option-for-start-time";
 
-    public InlineScheduleEditSpecificEventStartTimeChooseOperation(InlineScheduleEditSpecificEventStartTimeChooseOperationButton chooseOperationButton,
+    public InlineScheduleEditSpecificEventStartTimeChooseOperation(InlineScheduleEditSpecificEventStartTimeButton chooseOperationButton,
                                                                    LessonService lessonService,
                                                                    TranslateService translateService) {
         this.chooseOperationButton = chooseOperationButton;

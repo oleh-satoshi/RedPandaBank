@@ -2,7 +2,7 @@ package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.Pressable;
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.service.TranslateService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -13,7 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 @Component
 public class InlineScheduleAddExtraDayButton implements Pressable {
     final TranslateService translateService;
-    final String ADD_TIME = "add-time-lesson";
+    static final String ADD_TIME = "add-time-lesson";
 
     public InlineScheduleAddExtraDayButton(TranslateService translateService) {
         this.translateService = translateService;

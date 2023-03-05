@@ -1,8 +1,8 @@
 package com.example.redpandabank.strategy.mainCommandHandler.impl;
 
-import com.example.redpandabank.strategy.mainCommandHandler.MainCommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.CommandStrategy;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
+import com.example.redpandabank.strategy.mainCommandHandler.MainCommandHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;

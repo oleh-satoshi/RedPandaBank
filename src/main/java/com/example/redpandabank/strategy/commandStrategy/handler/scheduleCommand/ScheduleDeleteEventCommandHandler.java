@@ -1,11 +1,11 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -18,10 +18,10 @@ import java.util.HashSet;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class ScheduleDeleteEventCommandHandler implements CommandHandler<Update> {
-    final static String SEPARATOR = ":";
+    static final String SEPARATOR = ":";
     final LessonService lessonService;
     final TranslateService translateService;
-    final String CHOOSE_LESSON_TO_DELETE = "choose-lesson-to-delete";
+    static final String CHOOSE_LESSON_TO_DELETE = "choose-lesson-to-delete";
 
     public ScheduleDeleteEventCommandHandler(LessonService lessonService,
                                              TranslateService translateService) {
@@ -39,7 +39,8 @@ public class ScheduleDeleteEventCommandHandler implements CommandHandler<Update>
                 .row();
         for (Lesson lesson : allByTitle) {
             inlineKeyboardMarkupBuilderImpl.button(lesson.getTitle(),
-                    Command.DELETE_EVENT_BY_ID.getName() + SEPARATOR + lesson.getLessonId()).endRow();
+                    Command.DELETE_EVENT_BY_ID.getName()
+                            + SEPARATOR + lesson.getLessonId()).endRow();
         }
         SendMessage sendMessage = new MessageSenderImpl().sendMessageWithInline(childId,
                 translateService.getBySlug(CHOOSE_LESSON_TO_DELETE),

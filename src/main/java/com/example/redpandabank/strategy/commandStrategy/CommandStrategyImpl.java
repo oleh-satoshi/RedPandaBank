@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.commandStrategy;
 
-import com.example.redpandabank.keyboard.InlineChooseLanguage;
 import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.keyboard.InlineChooseLanguage;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleMenuButton;
 import com.example.redpandabank.service.ChildService;
@@ -13,11 +13,11 @@ import com.example.redpandabank.strategy.commandStrategy.handler.SchedulePlugCom
 import com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.EditScheduleEventCommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.ScheduleDeleteEventCommandHandler;
 import com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.ScheduleMenuShowCommandHandler;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
-import java.util.HashMap;
-import java.util.Map;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
@@ -38,11 +38,17 @@ public class CommandStrategyImpl implements CommandStrategy {
         this.translateService = translateService;
 
         commandStrategyMap = new HashMap<>();
-        commandStrategyMap.put(Command.SCHEDULE.getName(), new ScheduleMenuShowCommandHandler(this.inlineScheduleMenuButton, translateService));
-        commandStrategyMap.put(Command.TO_MAIN_MENU.getName(), new BackToMainMenuCommandHandler(this.replyMainMenuButton, translateService));
-        commandStrategyMap.put(Command.DELETE_EVENT.getName(), new ScheduleDeleteEventCommandHandler(this.lessonService, translateService));
-        commandStrategyMap.put(Command.EDIT_SCHEDULE_EXISTING_EVENT.getName(), new EditScheduleEventCommandHandler(this.lessonService, this.translateService));
-        commandStrategyMap.put(Command.START.getName(), new LanguageCommandHandler(inlineChooseLanguage, childService, translateService));
+        commandStrategyMap.put(Command.SCHEDULE.getName(),
+                new ScheduleMenuShowCommandHandler(inlineScheduleMenuButton, translateService));
+        commandStrategyMap.put(Command.TO_MAIN_MENU.getName(),
+                new BackToMainMenuCommandHandler(replyMainMenuButton, translateService));
+        commandStrategyMap.put(Command.DELETE_EVENT.getName(),
+                new ScheduleDeleteEventCommandHandler(lessonService, translateService));
+        commandStrategyMap.put(Command.EDIT_SCHEDULE_EXISTING_EVENT.getName(),
+                new EditScheduleEventCommandHandler(lessonService, translateService));
+        commandStrategyMap.put(Command.START.getName(),
+                new LanguageCommandHandler(
+                        inlineChooseLanguage, childService, translateService));
     }
 
     @Override

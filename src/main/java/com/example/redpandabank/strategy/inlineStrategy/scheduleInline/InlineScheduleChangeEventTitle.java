@@ -49,6 +49,5 @@ public class InlineScheduleChangeEventTitle implements InlineHandler<Update> {
     private String parseCommand(String command) {
         String result = command.split("\"")[1];
         return result;
-
     }
 }

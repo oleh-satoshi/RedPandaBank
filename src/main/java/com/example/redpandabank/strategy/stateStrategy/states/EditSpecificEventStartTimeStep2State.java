@@ -34,7 +34,8 @@ public class EditSpecificEventStartTimeStep2State implements StateHandler<Update
     final TranslateService translateService;
     final String START_TIME_CHANGED = "start-time-changed";
 
-    public EditSpecificEventStartTimeStep2State(ChildService childService, LessonService lessonService,
+    public EditSpecificEventStartTimeStep2State(ChildService childService,
+                                                LessonService lessonService,
                                                 LessonScheduleService lessonScheduleService,
                                                 ReplyMainMenuButton mainMenuButton,
                                                 TranslateService translateService) {

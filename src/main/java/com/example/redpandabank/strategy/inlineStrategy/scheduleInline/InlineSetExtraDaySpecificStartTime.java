@@ -1,6 +1,5 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.keyboard.schedule.InlineScheduleAddDaySpecificEventStartTimeButton;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.ChildService;
@@ -10,6 +9,7 @@ import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddDaySpecificEventStartTimeButton;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -30,11 +30,15 @@ public class InlineSetExtraDaySpecificStartTime implements InlineHandler<Update>
 
     public InlineSetExtraDaySpecificStartTime(LessonService lessonService,
                                               LessonScheduleService lessonScheduleService,
-                                              ChildService childService, InlineScheduleAddDaySpecificEventStartTimeButton inlineScheduleAddDaySpecificEventStartTimeButton, TranslateService translateService) {
+                                              ChildService childService,
+                                              InlineScheduleAddDaySpecificEventStartTimeButton
+                                                      inlineScheduleAddDaySpecificEventStartTimeButton,
+                                              TranslateService translateService) {
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.childService = childService;
-        this.inlineScheduleAddDaySpecificEventStartTimeButton = inlineScheduleAddDaySpecificEventStartTimeButton;
+        this.inlineScheduleAddDaySpecificEventStartTimeButton
+                = inlineScheduleAddDaySpecificEventStartTimeButton;
         this.translateService = translateService;
     }
 
@@ -54,7 +58,8 @@ public class InlineSetExtraDaySpecificStartTime implements InlineHandler<Update>
         lesson.setLessonSchedules(lessonSchedules);
         lessonScheduleService.create(newLessonSchedule);
         lessonService.create(lesson);
-        InlineKeyboardMarkup keyboard = inlineScheduleAddDaySpecificEventStartTimeButton.getKeyboard(lesson);
+        InlineKeyboardMarkup keyboard =
+                inlineScheduleAddDaySpecificEventStartTimeButton.getKeyboard(lesson);
         String response = translateService.getBySlug(SOMETHING_ELSE_FOR_LESSON)
                 + " <i>\"" + lesson.getTitle() + "\"</i>?";
         String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());

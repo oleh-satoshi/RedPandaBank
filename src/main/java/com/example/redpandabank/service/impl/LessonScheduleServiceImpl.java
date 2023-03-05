@@ -3,10 +3,10 @@ package com.example.redpandabank.service.impl;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.repository.LessonScheduleRepository;
 import com.example.redpandabank.service.LessonScheduleService;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
-import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Service

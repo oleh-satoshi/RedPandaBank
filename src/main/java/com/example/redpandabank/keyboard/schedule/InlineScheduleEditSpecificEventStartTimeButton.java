@@ -2,7 +2,7 @@ package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.PressableWithArgument;
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.util.Separator;
@@ -14,7 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
-public class InlineScheduleEditSpecificEventStartTimeChooseOperationButton
+public class InlineScheduleEditSpecificEventStartTimeButton
         implements PressableWithArgument<ReplyKeyboard, Lesson> {
     final TranslateService translateService;
     final String CHANGE_TIME = "change-time-lesson";
@@ -22,7 +22,8 @@ public class InlineScheduleEditSpecificEventStartTimeChooseOperationButton
     final String DELETE_TIME = "delete-time-lesson";
     final String BACK = "back";
 
-    public InlineScheduleEditSpecificEventStartTimeChooseOperationButton(TranslateService translateService) {
+    public InlineScheduleEditSpecificEventStartTimeButton(
+            TranslateService translateService) {
         this.translateService = translateService;
     }
 

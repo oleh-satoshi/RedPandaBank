@@ -2,8 +2,8 @@ package com.example.redpandabank.strategy.commandStrategy.handler;
 
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.util.UpdateInfo;
 import com.vdurmont.emoji.EmojiParser;
 import lombok.AccessLevel;
@@ -24,7 +24,8 @@ public class ScheduleStartCommandHandler implements CommandHandler<Update> {
     boolean isInitialize;
 
     public ScheduleStartCommandHandler(ReplyMainMenuButton replyMainMenuButton,
-                                       ChildService childService, TranslateService translateService) {
+                                       ChildService childService,
+                                       TranslateService translateService) {
         this.replyMainMenuButton = replyMainMenuButton;
         this.childService = childService;
         this.translateService = translateService;

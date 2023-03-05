@@ -1,6 +1,11 @@
 package com.example.redpandabank.service.impl;
 
 import com.example.redpandabank.service.MessageSender;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,16 +14,11 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 
 @Component
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MessageSenderImpl implements MessageSender {
-    final static String PARSE_MODE = "HTML";
+    static final String PARSE_MODE = "HTML";
     @Value("${urlString}")
     String urlString;
     @Value("${apiToken}")
@@ -60,7 +60,8 @@ public class MessageSenderImpl implements MessageSender {
     }
 
     public EditMessageText sendEditMessageWithInline(Long userId, Integer messageId,
-                                                     InlineKeyboardMarkup keyboard, String content) {
+                                                     InlineKeyboardMarkup keyboard,
+                                                     String content) {
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setChatId(userId);
         editMessageText.setMessageId(messageId);

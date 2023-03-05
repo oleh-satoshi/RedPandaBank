@@ -77,7 +77,8 @@ public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
                 .map(lesson -> lesson.getLessonSchedules())
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
-        LessonSchedule lessonSchedule = allByChildId.size() == 1 ? allByChildId.get(0) : allByChildId.get(allByChildId.size() - 1);
+        LessonSchedule lessonSchedule = allByChildId.size() == 1
+                ? allByChildId.get(0) : allByChildId.get(allByChildId.size() - 1);
         lessonSchedule.setDay(day);
         lessonScheduleService.create(lessonSchedule);
         HashSet<Lesson> lessonsSet = lessonService.getSetWithAllLessonByChildId(userId);

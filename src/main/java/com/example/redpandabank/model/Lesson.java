@@ -7,11 +7,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.FieldDefaults;
-import java.util.List;
 
 @Data
 @EqualsAndHashCode
@@ -33,12 +33,12 @@ public class Lesson {
 
     @Override
     public String toString() {
-        return "Lesson{" +
-                "lessonId =" + lessonId +
-                ", title ='" + title + '\'' +
-                ", teacher ='" + teacher + '\'' +
-                ", duration =" + duration +
-                ", childId =" + childId +
-                '}';
+        return "Lesson{"
+                + "lessonId =" + lessonId
+                + ", title ='" + title + '\''
+                + ", teacher ='" + teacher + '\''
+                + ", duration =" + duration
+                + ", childId =" + childId
+                + '}';
     }
 }

@@ -1,8 +1,8 @@
 package com.example.redpandabank.strategy.commandStrategy.handler;
 
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -17,7 +17,8 @@ public class BackToMainMenuCommandHandler implements CommandHandler<Update> {
     final TranslateService translateService;
     final String MENU = "menu";
 
-    public BackToMainMenuCommandHandler(ReplyMainMenuButton replyMainMenuButton, TranslateService translateService) {
+    public BackToMainMenuCommandHandler(ReplyMainMenuButton replyMainMenuButton,
+                                        TranslateService translateService) {
         this.replyMainMenuButton = replyMainMenuButton;
         this.translateService = translateService;
     }

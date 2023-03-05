@@ -2,8 +2,8 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.enums.State;
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
-import com.example.redpandabank.keyboard.schedule.InlineScheduleEditSpecificEventStartTimeChooseOperationButton;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleEditSpecificEventStartTimeButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
@@ -29,18 +29,18 @@ import java.util.stream.Collectors;
 public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Update> {
     final LessonService lessonService;
     final ChildService childService;
-    final InlineScheduleEditSpecificEventStartTimeChooseOperationButton
-            inlineScheduleEditSpecificEventStartTimeChooseOperationButton;
+    final InlineScheduleEditSpecificEventStartTimeButton
+            inlineScheduleEditSpecificEventStartTimeButton;
     final TranslateService translateService;
     final String WHAT_TIME_FOR_LESSON = "what-time-for-lesson";
     final String YOU_WANT_TO_CHANGE = "you-want-to-change";
 
     public InlineScheduleEditEventLessonStartTime(LessonService lessonService,
                                                   ChildService childService,
-                                                  InlineScheduleEditSpecificEventStartTimeChooseOperationButton inlineScheduleEditSpecificEventStartTimeChooseOperationButton, TranslateService translateService) {
+                                                  InlineScheduleEditSpecificEventStartTimeButton inlineScheduleEditSpecificEventStartTimeButton, TranslateService translateService) {
         this.lessonService = lessonService;
         this.childService = childService;
-        this.inlineScheduleEditSpecificEventStartTimeChooseOperationButton = inlineScheduleEditSpecificEventStartTimeChooseOperationButton;
+        this.inlineScheduleEditSpecificEventStartTimeButton = inlineScheduleEditSpecificEventStartTimeButton;
         this.translateService = translateService;
     }
 

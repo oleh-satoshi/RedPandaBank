@@ -1,15 +1,15 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
 import com.example.redpandabank.enums.State;
-import com.example.redpandabank.keyboard.schedule.InlineScheduleAddTeacherNameButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
-import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
+import com.example.redpandabank.strategy.stateStrategy.StateHandler;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddTeacherNameButton;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;

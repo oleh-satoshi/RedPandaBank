@@ -2,7 +2,7 @@ package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.PressableWithArgument;
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.util.Separator;
@@ -16,8 +16,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 public class InlineScheduleCheckCorrectTitleButton implements
         PressableWithArgument<ReplyKeyboard, Lesson> {
     final TranslateService translateService;
-    final String MADE_MISTAKE = "made-mistake-do-again";
-    final String NEXT = "next";
+    static final String MADE_MISTAKE = "made-mistake-do-again";
+    static final String NEXT = "next";
 
     public InlineScheduleCheckCorrectTitleButton(TranslateService translateService) {
         this.translateService = translateService;
