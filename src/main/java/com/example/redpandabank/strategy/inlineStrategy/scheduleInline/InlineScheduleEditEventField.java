@@ -5,8 +5,8 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -24,7 +24,9 @@ public class InlineScheduleEditEventField implements InlineHandler<Update> {
     final TranslateService translateService;
     final String EDIT_EVENT_FIELD = "edit-event-field";
 
-    public InlineScheduleEditEventField(LessonService lessonService, ChildService childService, TranslateService translateService) {
+    public InlineScheduleEditEventField(LessonService lessonService,
+                                        ChildService childService,
+                                        TranslateService translateService) {
         this.lessonService = lessonService;
         this.childService = childService;
         this.translateService = translateService;

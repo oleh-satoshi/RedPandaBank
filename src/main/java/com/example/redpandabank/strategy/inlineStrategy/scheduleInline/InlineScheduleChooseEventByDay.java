@@ -1,8 +1,8 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.keyboard.schedule.InlineScheduleShowAllDaysButton;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
@@ -19,7 +19,8 @@ public class InlineScheduleChooseEventByDay implements InlineHandler<Update> {
     final TranslateService translateService;
     final String SHOW_LESSON_ON_SPECIFIC_DAY = "show-lesson-on-specific-day";
 
-    public InlineScheduleChooseEventByDay(InlineScheduleShowAllDaysButton inlineScheduleShowAllDaysButton, TranslateService translateService) {
+    public InlineScheduleChooseEventByDay(InlineScheduleShowAllDaysButton inlineScheduleShowAllDaysButton,
+                                          TranslateService translateService) {
         this.inlineScheduleShowAllDaysButton = inlineScheduleShowAllDaysButton;
         this.translateService = translateService;
     }

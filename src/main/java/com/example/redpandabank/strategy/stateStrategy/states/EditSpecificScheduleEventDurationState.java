@@ -31,7 +31,8 @@ public class EditSpecificScheduleEventDurationState implements StateHandler<Upda
 
     public EditSpecificScheduleEventDurationState(ChildService childService,
                                                   LessonService lessonService,
-                                                  ReplyScheduleEditSpecificEventDurationStateButton eventDurationStateButton,
+                                                  ReplyScheduleEditSpecificEventDurationStateButton
+                                                          eventDurationStateButton,
                                                   TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;

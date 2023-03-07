@@ -37,10 +37,13 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
 
     public InlineScheduleEditEventLessonStartTime(LessonService lessonService,
                                                   ChildService childService,
-                                                  InlineScheduleEditSpecificEventStartTimeButton inlineScheduleEditSpecificEventStartTimeButton, TranslateService translateService) {
+                                                  InlineScheduleEditSpecificEventStartTimeButton
+                                                          inlineScheduleEditSpecificEventStartTimeButton,
+                                                  TranslateService translateService) {
         this.lessonService = lessonService;
         this.childService = childService;
-        this.inlineScheduleEditSpecificEventStartTimeButton = inlineScheduleEditSpecificEventStartTimeButton;
+        this.inlineScheduleEditSpecificEventStartTimeButton
+                = inlineScheduleEditSpecificEventStartTimeButton;
         this.translateService = translateService;
     }
 
@@ -56,10 +59,12 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
         InlineKeyboardMarkupBuilderImpl builder = InlineKeyboardMarkupBuilderImpl.create();
         for (LocalTime localTime : timeList) {
             builder.row()
-                    .button(localTime.toString(), Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
+                    .button(localTime.toString(),
+                            Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
                             + Separator.COLON_SEPARATOR + localTime.toString())
                     .endRow();
         }
+
         InlineKeyboardMarkup inline = builder.build();
         Child child = childService.findByUserId(childId);
         child.setState(State.EDIT_SPECIFIC_EVENT_START_TIME.getState());

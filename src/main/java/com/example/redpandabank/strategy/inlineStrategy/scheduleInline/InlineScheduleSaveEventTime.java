@@ -3,13 +3,13 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 import com.example.redpandabank.enums.State;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.experimental.PackagePrivate;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @PackagePrivate
@@ -19,7 +19,8 @@ public class InlineScheduleSaveEventTime implements InlineHandler<Update> {
     final TranslateService translateService;
     final String ENTER_TIME = "enter-time";
 
-    public InlineScheduleSaveEventTime(ChildService childService, TranslateService translateService) {
+    public InlineScheduleSaveEventTime(ChildService childService,
+                                       TranslateService translateService) {
         this.childService = childService;
         this.translateService = translateService;
     }

@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
@@ -112,21 +112,21 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
                 .append(translateService.getBySlug(START_AT) + getStartTime(lesson))
                 .append(translateService.getBySlug(WILL_END_IN) + getFinishTime(lesson) + "\n")
                 .append(translateService.getBySlug(DURATION) + "<b>"
-                        + lesson.getDuration() + "</b>" +
-                        lessonService.getDuration(lesson.getDuration()) + "\n");
+                        + lesson.getDuration() + "</b>"
+                        + lessonService.getDuration(lesson.getDuration()) + "\n");
 
         return EmojiParser.parseToUnicode(stringBuilder.toString());
     }
 
     private String getStartTime(Lesson lesson) {
-            StringBuilder stringBuilder = new StringBuilder();
-            List<String> stringList = lesson.getLessonSchedules().stream()
-                    .map(lessonSchedule -> "<b>"
-                            + lessonSchedule.getLessonStartTime() + "</b>")
-                    .collect(Collectors.toList());
-            String string = stringBuilder.append(stringList).toString();
-            return string.substring(1, string.length() - 1) + "\n";
-        }
+        StringBuilder stringBuilder = new StringBuilder();
+        List<String> stringList = lesson.getLessonSchedules().stream()
+                .map(lessonSchedule -> "<b>"
+                        + lessonSchedule.getLessonStartTime() + "</b>")
+                .collect(Collectors.toList());
+        String string = stringBuilder.append(stringList).toString();
+        return string.substring(1, string.length() - 1) + "\n";
+    }
 
     private String getFinishTime(Lesson lesson) {
         StringBuilder stringBuilder = new StringBuilder();

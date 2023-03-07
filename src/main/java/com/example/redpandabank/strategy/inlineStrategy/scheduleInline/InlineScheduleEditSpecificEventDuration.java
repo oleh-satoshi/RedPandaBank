@@ -5,8 +5,8 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -24,7 +24,8 @@ public class InlineScheduleEditSpecificEventDuration implements InlineHandler<Up
     final TranslateService translateService;
     final String NEW_DURATION_FOR_LESSON = "new-duration-for-lesson";
 
-    public InlineScheduleEditSpecificEventDuration(LessonService lessonService, ChildService childService,
+    public InlineScheduleEditSpecificEventDuration(LessonService lessonService,
+                                                   ChildService childService,
                                                    TranslateService translateService) {
         this.lessonService = lessonService;
         this.childService = childService;

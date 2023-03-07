@@ -6,8 +6,8 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
@@ -15,8 +15,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import java.util.List;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
@@ -51,6 +51,7 @@ public class InlineScheduleSaveEventDay implements InlineHandler<Update> {
         childService.create(child);
         InlineKeyboardMarkup keyboard = inlineScheduleAddEventDay.getKeyboard();
         response = translateService.getBySlug(SAY_FOR_THE_LESSON);
-        return new MessageSenderImpl().sendEditMessageWithInline(userId, messageId, keyboard, response);
+        return new MessageSenderImpl()
+                .sendEditMessageWithInline(userId, messageId, keyboard, response);
     }
 }

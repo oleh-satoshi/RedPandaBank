@@ -9,9 +9,9 @@ import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
+import java.util.Optional;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import java.util.Optional;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component

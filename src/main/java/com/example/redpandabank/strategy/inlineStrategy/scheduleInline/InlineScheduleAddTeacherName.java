@@ -5,8 +5,8 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -24,7 +24,9 @@ public class InlineScheduleAddTeacherName implements InlineHandler<Update> {
     final TranslateService translateService;
     final String WHO_TEACHES = "who-teaches";
 
-    public InlineScheduleAddTeacherName(ChildService childService, LessonService lessonService, TranslateService translateService) {
+    public InlineScheduleAddTeacherName(ChildService childService,
+                                        LessonService lessonService,
+                                        TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.translateService = translateService;

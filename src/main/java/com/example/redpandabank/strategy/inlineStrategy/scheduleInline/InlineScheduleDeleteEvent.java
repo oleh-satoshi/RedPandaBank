@@ -1,20 +1,19 @@
-
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import java.util.HashSet;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
@@ -39,7 +38,9 @@ public class InlineScheduleDeleteEvent implements InlineHandler<Update> {
         InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                 .row();
         for (Lesson lesson : allByTitle) {
-            inlineKeyboardMarkup.button(lesson.getTitle(), Command.DELETE_EVENT_BY_ID.getName() + ":" + lesson.getLessonId()).endRow();
+            inlineKeyboardMarkup.button(lesson.getTitle(),
+                    Command.DELETE_EVENT_BY_ID.getName()
+                            + ":" + lesson.getLessonId()).endRow();
         }
         InlineKeyboardMarkup inline = inlineKeyboardMarkup.row()
                 .button(translateService.getBySlug(BACK),

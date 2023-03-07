@@ -36,6 +36,9 @@ import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineSch
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleDeleteSpecificEventStartTime;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleDeleteSpecificEventStartTime2;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEdit;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.stereotype.Component;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEditEvenTeacherName;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEditEvent;
 import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineScheduleEditEventField;
@@ -53,9 +56,6 @@ import com.example.redpandabank.strategy.inlineStrategy.scheduleInline.InlineSho
 import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Component;
-import java.util.HashMap;
-import java.util.Map;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
@@ -169,13 +169,16 @@ public class InlineStrategyImpl implements InlineStrategy {
                 new InlineScheduleDeleteEvent(lessonService, translateService));
         strategyMap.put(Command.DELETE_EVENT_BY_ID.getName(),
                 new InlineScheduleDeleteEventStep2(
-                        lessonScheduleService, lessonService, messageSender, translateService));
+                        lessonScheduleService, lessonService,
+                        messageSender, translateService));
         strategyMap.put(Command.RECOVER_EVENT_BY_ID.getName(),
                 new InlineScheduleRecoverEvent(lessonService, translateService));
         strategyMap.put(Command.CHOOSE_EVENT_BY_DAY.getName(),
-                new InlineScheduleChooseEventByDay(inlineScheduleShowAllDaysButton, translateService));
+                new InlineScheduleChooseEventByDay(
+                        inlineScheduleShowAllDaysButton, translateService));
         strategyMap.put(Command.EDIT_SCHEDULE.getName(),
-                new InlineScheduleEdit(inlineScheduleEditMenuButton, translateService));
+                new InlineScheduleEdit(
+                        inlineScheduleEditMenuButton, translateService));
         strategyMap.put(Command.SCHEDULE.getName(),
                 new InlineShowMainMenu(inlineScheduleMenuButton, translateService));
         strategyMap.put(Command.SAVE_EVENT_NAME.getName(),
@@ -183,13 +186,16 @@ public class InlineStrategyImpl implements InlineStrategy {
         strategyMap.put(Command.SAVE_EVENT_TIME.getName(),
                 new InlineScheduleSaveEventTime(childService, translateService));
         strategyMap.put(Command.SAVE_EVENT_TEACHER_NAME.getName(),
-                new InlineScheduleAddTeacherName(childService, lessonService, translateService));
+                new InlineScheduleAddTeacherName(childService,
+                        lessonService, translateService));
         strategyMap.put(Command.ADD_SCHEDULE_EVENT.getName(),
                 new InlineScheduleAddTitleEvent(childService, translateService));
         strategyMap.put(Command.SAVE_EVENT_DURATION.getName(),
-                new InlineScheduleAddEventDuration(lessonService, childService, translateService));
+                new InlineScheduleAddEventDuration(
+                        lessonService, childService, translateService));
         strategyMap.put(Command.EDIT_SCHEDULE_EVENT_TITLE.getName(),
-                new InlineScheduleChangeEventTitle(lessonService, childService, translateService));
+                new InlineScheduleChangeEventTitle(
+                        lessonService, childService, translateService));
         strategyMap.put(Command.EDIT_EVENT_TEACHER_NAME.getName(),
                 new InlineScheduleChangeTeacher(childService, translateService));
         strategyMap.put(Command.EDIT_EVENT_DURATION.getName(),
@@ -201,37 +207,48 @@ public class InlineStrategyImpl implements InlineStrategy {
                 new InlineScheduleEditEvent(lessonService, translateService));
         strategyMap.put(Command.EDIT_SPECIFIC_EXISTING_EVENT.getName(),
                 new InlineScheduleEditSpecificExistingEvent(
-                        lessonService, inlineScheduleEditEventFieldButton, translateService));
+                        lessonService,
+                        inlineScheduleEditEventFieldButton,
+                        translateService));
         strategyMap.put(Command.EDIT_SCHEDULE_EVENT_FIELD.getName(),
-                new InlineScheduleEditEventField(lessonService, childService, translateService));
+                new InlineScheduleEditEventField(lessonService,
+                        childService, translateService));
         strategyMap.put(Command.EDIT_SCHEDULE_EVENT_TEACHER.getName(),
-                new InlineScheduleEditEvenTeacherName(lessonService, childService, translateService));
+                new InlineScheduleEditEvenTeacherName(lessonService,
+                        childService, translateService));
         strategyMap.put(Command.SHOW_SPECIFIC_EVENT_START_TIME.getName(),
                 new InlineScheduleEditEventLessonStartTime(
-                        lessonService, childService, chooseOperationButton, translateService));
+                        lessonService, childService,
+                        chooseOperationButton, translateService));
         strategyMap.put(Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName(),
                 new InlineScheduleEditSpecificEventStartTimeChooseOperation(
-                        chooseOperationButton, lessonService, translateService));
+                        chooseOperationButton, lessonService,
+                        translateService));
         strategyMap.put(Command.EDIT_SCHEDULE_EVENT_START_TIME.getName(),
                 new InlineScheduleEditEventLessonStartTime(
-                        lessonService, childService, chooseOperationButton, translateService));
+                        lessonService, childService,
+                        chooseOperationButton, translateService));
         strategyMap.put(Command.ADD_SPECIFIC_EVENT_START_TIME.getName(),
                 new InlineScheduleAddTimeToLesson(
                         lessonService, childService, translateService));
         strategyMap.put(Command.ADD_DAY_SPECIFIC_EVENT_START_TIME.getName(),
                 new InlineScheduleAddDaySpecificEventStartTime(
                         lessonScheduleService, lessonService, childService,
-                        inlineScheduleAddDaySpecificEventStartTimeButton, translateService));
+                        inlineScheduleAddDaySpecificEventStartTimeButton,
+                        translateService));
         strategyMap.put(Command.ADD_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName(),
                 new InlineScheduleAddExtraDaySpecificStartTime(
                         lessonService, lessonScheduleService, childService,
-                        inlineScheduleAddExtraDaySpecificStartTimeButton, translateService));
+                        inlineScheduleAddExtraDaySpecificStartTimeButton,
+                        translateService));
         strategyMap.put(Command.SET_EXTRA_DAY_SPECIFIC_EVENT_START_TIME.getName(),
                 new InlineSetExtraDaySpecificStartTime(
                         lessonService, lessonScheduleService, childService,
-                        inlineScheduleAddDaySpecificEventStartTimeButton, translateService));
+                        inlineScheduleAddDaySpecificEventStartTimeButton,
+                        translateService));
         strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME.getName(),
-                new InlineScheduleDeleteSpecificEventStartTime(lessonService, translateService));
+                new InlineScheduleDeleteSpecificEventStartTime(lessonService,
+                        translateService));
         strategyMap.put(Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName(),
                 new InlineScheduleDeleteSpecificEventStartTime2(
                         lessonService, lessonScheduleService,

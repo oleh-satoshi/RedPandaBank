@@ -30,6 +30,7 @@ public class InlineScheduleEdit implements InlineHandler<Update> {
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
         String content = translateService.getBySlug(EDIT_MENU);
         InlineKeyboardMarkup keyboard = inlineScheduleEditMenuButton.getKeyboard();
-        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, content);
+        return new MessageSenderImpl()
+                .sendEditMessageWithInline(childId, messageId, keyboard, content);
     }
 }

@@ -5,8 +5,8 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -28,8 +28,11 @@ public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandle
     final String REMOVE_ANOTHER_LESSON_START = "remove-another-lesson-start";
     final String JUST_BE_CAREFUL = "just-be-careful";
 
-    public InlineScheduleDeleteSpecificEventStartTime2(LessonService lessonService, LessonScheduleService lessonScheduleService,
-                                                       InlineScheduleDeleteSpecificEventStartTime2Button specificEventStartTime2Button, TranslateService translateService) {
+    public InlineScheduleDeleteSpecificEventStartTime2(LessonService lessonService,
+                                                       LessonScheduleService lessonScheduleService,
+                                                       InlineScheduleDeleteSpecificEventStartTime2Button
+                                                               specificEventStartTime2Button,
+                                                       TranslateService translateService) {
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.specificEventStartTime2Button = specificEventStartTime2Button;

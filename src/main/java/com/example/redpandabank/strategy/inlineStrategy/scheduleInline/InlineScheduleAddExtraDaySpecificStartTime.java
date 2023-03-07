@@ -30,7 +30,9 @@ public class InlineScheduleAddExtraDaySpecificStartTime implements InlineHandler
     public InlineScheduleAddExtraDaySpecificStartTime(LessonService lessonService,
                                                       LessonScheduleService lessonScheduleService,
                                                       ChildService childService,
-                                                      InlineScheduleAddExtraDaySpecificStartTimeButton inlineScheduleAddExtraDaySpecificStartTimeButton, TranslateService translateService) {
+                                                      InlineScheduleAddExtraDaySpecificStartTimeButton
+                                                              inlineScheduleAddExtraDaySpecificStartTimeButton,
+                                                      TranslateService translateService) {
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.childService = childService;
@@ -47,7 +49,7 @@ public class InlineScheduleAddExtraDaySpecificStartTime implements InlineHandler
         InlineKeyboardMarkup keyboard = inlineScheduleAddExtraDaySpecificStartTimeButton.getKeyboard();
         String response = translateService.getBySlug(CHOOSE_DAY_FOR_LESSON)
                 + " <i>\"" + lesson.getTitle() + "\"</i> "
-        + translateService.getBySlug(START_THE_SAME_TIME);
+                + translateService.getBySlug(START_THE_SAME_TIME);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
     }
 

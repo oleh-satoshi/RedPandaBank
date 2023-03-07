@@ -2,8 +2,8 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -41,7 +41,8 @@ public class InlineScheduleRecoverEvent implements InlineHandler<Update> {
                     + translateService.getBySlug(BACK_TO_SCHEDULE);
             new MessageSenderImpl().sendMessageViaURL(childId,
                     content);
-            new MessageSenderImpl().sendMessageViaURL(childId, lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId()));
+            new MessageSenderImpl().sendMessageViaURL(childId,
+                    lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId()));
         } else {
             content = translateService.getBySlug(RETURN_TO_SCHEDULE);
             new MessageSenderImpl().sendMessageViaURL(childId,content);

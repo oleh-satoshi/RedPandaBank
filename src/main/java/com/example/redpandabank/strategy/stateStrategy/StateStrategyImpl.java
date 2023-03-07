@@ -28,12 +28,13 @@ import com.example.redpandabank.strategy.stateStrategy.states.SaveTeacherNameSta
 import com.example.redpandabank.strategy.stateStrategy.states.SaveTitleEventState;
 import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
+
 @Component
 public class StateStrategyImpl implements StateStrategy {
     Map<String, StateHandler> stateStrategyMap;
@@ -57,7 +58,8 @@ public class StateStrategyImpl implements StateStrategy {
                              InlineScheduleAddTeacherNameButton inlineScheduleAddTeacherNameButton,
                              InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton,
                              LessonScheduleService lessonScheduleService,
-                             InlineScheduleAddExtraDayButton inlineScheduleAddExtraDayButton, InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton,
+                             InlineScheduleAddExtraDayButton inlineScheduleAddExtraDayButton,
+                             InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton,
                              ReplyMainMenuButton mainMenuButton,
                              InlineScheduleAddSpecificEventStartTimeButton startTimeButton,
                              ReplyScheduleEditSpecificEventDurationStateButton eventDurationStateButton,

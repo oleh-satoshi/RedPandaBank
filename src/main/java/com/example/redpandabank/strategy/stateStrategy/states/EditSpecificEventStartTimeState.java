@@ -17,8 +17,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import java.time.LocalTime;
 import java.util.List;
+import java.time.LocalTime;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component

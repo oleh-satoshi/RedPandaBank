@@ -1,12 +1,5 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import java.time.LocalTime;
-import java.util.List;
-import java.util.stream.Collectors;
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
@@ -18,6 +11,13 @@ import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
@@ -43,9 +43,11 @@ public class InlineScheduleDeleteSpecificEventStartTime implements InlineHandler
                 .collect(Collectors.toList());
         InlineKeyboardMarkupBuilderImpl builder = InlineKeyboardMarkupBuilderImpl.create();
         for (LocalTime localTime : timeList) {
-                    builder.row()
-                    .button(localTime.toString(), Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName()
-                            + Separator.COLON_SEPARATOR + localTime + Separator.COLON_SEPARATOR + lesson.getLessonId())
+            builder.row()
+                    .button(localTime.toString(),
+                            Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName()
+                            + Separator.COLON_SEPARATOR + localTime
+                                    + Separator.COLON_SEPARATOR + lesson.getLessonId())
                     .endRow();
         }
         InlineKeyboardMarkup inline = builder.build();

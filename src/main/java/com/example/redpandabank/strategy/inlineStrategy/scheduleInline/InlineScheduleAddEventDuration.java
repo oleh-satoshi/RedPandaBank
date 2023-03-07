@@ -14,8 +14,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
 import java.util.List;
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleAddEventDuration implements InlineHandler<Update> {
@@ -25,7 +25,8 @@ public class InlineScheduleAddEventDuration implements InlineHandler<Update> {
     final String DURATION_FOR_LESSON = "duration-of-lesson";
 
     public InlineScheduleAddEventDuration(LessonService lessonService,
-                                          ChildService childService, TranslateService translateService) {
+                                          ChildService childService,
+                                          TranslateService translateService) {
         this.lessonService = lessonService;
         this.childService = childService;
         this.translateService = translateService;

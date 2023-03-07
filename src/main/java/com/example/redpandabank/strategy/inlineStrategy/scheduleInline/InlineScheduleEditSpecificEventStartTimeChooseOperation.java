@@ -3,8 +3,8 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleEditSpecificEventStartTimeButton;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -23,7 +23,8 @@ public class InlineScheduleEditSpecificEventStartTimeChooseOperation implements 
     final TranslateService translateService;
     final String OPTION_FOR_START_TIME = "option-for-start-time";
 
-    public InlineScheduleEditSpecificEventStartTimeChooseOperation(InlineScheduleEditSpecificEventStartTimeButton chooseOperationButton,
+    public InlineScheduleEditSpecificEventStartTimeChooseOperation(InlineScheduleEditSpecificEventStartTimeButton
+                                                                           chooseOperationButton,
                                                                    LessonService lessonService,
                                                                    TranslateService translateService) {
         this.chooseOperationButton = chooseOperationButton;

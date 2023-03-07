@@ -4,8 +4,8 @@ import com.example.redpandabank.keyboard.InlineStartInitButton;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
@@ -26,7 +26,8 @@ public class SetLanguageInlineHandler implements InlineHandler<Update> {
 
     public SetLanguageInlineHandler(ChildService childService,
                                     TranslateService translateService,
-                                    ReplyMainMenuButton mainMenuButton, InlineStartInitButton inlineStartInitButton) {
+                                    ReplyMainMenuButton mainMenuButton,
+                                    InlineStartInitButton inlineStartInitButton) {
         this.childService = childService;
         this.translateService = translateService;
         this.mainMenuButton = mainMenuButton;

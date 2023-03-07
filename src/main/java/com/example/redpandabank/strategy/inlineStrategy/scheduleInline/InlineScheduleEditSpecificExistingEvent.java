@@ -3,8 +3,8 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleEditEventFieldButton;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
@@ -24,7 +24,8 @@ public class InlineScheduleEditSpecificExistingEvent implements InlineHandler<Up
     final String WANT_TO_FIX = "want-to-fix";
 
     public InlineScheduleEditSpecificExistingEvent(LessonService lessonService,
-                                                   InlineScheduleEditEventFieldButton inlineScheduleEditEventFieldButton,
+                                                   InlineScheduleEditEventFieldButton
+                                                           inlineScheduleEditEventFieldButton,
                                                    TranslateService translateService) {
         this.lessonService = lessonService;
         this.inlineScheduleEditEventFieldButton = inlineScheduleEditEventFieldButton;
@@ -41,7 +42,8 @@ public class InlineScheduleEditSpecificExistingEvent implements InlineHandler<Up
         String content = translateService.getBySlug(WHAT_FIELD_IN_THE_LESSON)
                 + " <i>\"" + lesson.getTitle() + "\"</i> "
                 + translateService.getBySlug(WANT_TO_FIX);
-        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, inline, content);
+        return new MessageSenderImpl()
+                .sendEditMessageWithInline(childId, messageId, inline, content);
     }
 
     private Long parseId(String text) {

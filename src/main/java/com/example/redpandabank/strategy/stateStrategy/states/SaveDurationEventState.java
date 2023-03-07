@@ -15,14 +15,14 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import java.util.List;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class SaveDurationEventState implements StateHandler<Update> {
-    final static String NUMBERS_ONLY = "\\W";
-    final static String PLUG = "";
+    static final String NUMBERS_ONLY = "\\W";
+    static final String PLUG = "";
     Long userId;
     String duration;
     final ChildService childService;
@@ -34,7 +34,9 @@ public class SaveDurationEventState implements StateHandler<Update> {
     final String NEXT_BUTTON = "next";
 
     public SaveDurationEventState(ChildService childService, LessonService lessonService,
-                                  InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton, TranslateService translateService) {
+                                  InlineScheduleAddEventDurationButton
+                                          inlineScheduleAddEventDurationButton,
+                                  TranslateService translateService) {
 
         this.childService = childService;
         this.lessonService = lessonService;
