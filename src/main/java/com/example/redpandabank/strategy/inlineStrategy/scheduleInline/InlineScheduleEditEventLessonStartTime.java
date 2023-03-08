@@ -1,5 +1,8 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
+import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.enums.State;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
@@ -9,20 +12,17 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import java.time.LocalTime;
-import java.util.List;
-import java.util.stream.Collectors;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component

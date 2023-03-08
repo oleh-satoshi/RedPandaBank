@@ -1,5 +1,7 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.example.redpandabank.enums.State;
 import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleAddExtraDayButton;
@@ -19,8 +21,6 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import java.util.ArrayList;
-import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component

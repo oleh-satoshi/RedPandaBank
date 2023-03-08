@@ -1,8 +1,8 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.keyboard.schedule.InlineScheduleEditMenuButton;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;

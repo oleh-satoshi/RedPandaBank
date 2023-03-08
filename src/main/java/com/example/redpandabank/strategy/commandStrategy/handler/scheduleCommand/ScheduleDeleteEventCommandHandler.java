@@ -1,19 +1,19 @@
 package com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand;
 
+import java.util.HashSet;
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
+import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import java.util.HashSet;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.springframework.stereotype.Component;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component

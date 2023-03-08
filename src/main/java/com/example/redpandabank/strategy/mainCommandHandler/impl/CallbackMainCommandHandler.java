@@ -8,8 +8,8 @@ import com.example.redpandabank.strategy.mainCommandHandler.MainCommandHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Component;
 import java.util.Optional;
+import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
