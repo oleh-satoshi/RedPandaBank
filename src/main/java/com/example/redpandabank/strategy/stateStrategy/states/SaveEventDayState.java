@@ -1,7 +1,5 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.example.redpandabank.enums.State;
 import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleAddExtraDayButton;
@@ -15,6 +13,8 @@ import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;

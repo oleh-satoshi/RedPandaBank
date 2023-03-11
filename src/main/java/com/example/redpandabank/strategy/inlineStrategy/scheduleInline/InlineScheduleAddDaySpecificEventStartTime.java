@@ -1,7 +1,5 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import java.util.Comparator;
-import java.util.List;
 import com.example.redpandabank.enums.State;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleAddDaySpecificEventStartTimeButton;
 import com.example.redpandabank.model.Child;
@@ -15,12 +13,14 @@ import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
-import org.telegram.telegrambots.meta.api.objects.Update;
+import java.util.Comparator;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component

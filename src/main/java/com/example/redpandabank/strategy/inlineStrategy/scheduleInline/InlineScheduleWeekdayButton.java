@@ -10,15 +10,15 @@ import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.UpdateInfo;
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
 import java.util.ArrayList;
 import java.util.Collection;
-import org.springframework.stereotype.Component;
-import java.util.List;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import java.util.stream.Collectors;
 import java.util.HashSet;
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
