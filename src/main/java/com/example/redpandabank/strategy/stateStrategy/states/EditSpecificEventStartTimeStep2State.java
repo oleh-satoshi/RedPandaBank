@@ -66,7 +66,7 @@ public class EditSpecificEventStartTimeStep2State implements StateHandler<Update
         childService.create(child);
         String response = translateService.getBySlug(START_TIME_CHANGED);
         ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
-        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
+        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getId());
         new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
         return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
     }

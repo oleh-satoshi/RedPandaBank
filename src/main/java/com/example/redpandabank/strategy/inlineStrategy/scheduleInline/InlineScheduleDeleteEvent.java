@@ -40,7 +40,7 @@ public class InlineScheduleDeleteEvent implements InlineHandler<Update> {
         for (Lesson lesson : allByTitle) {
             inlineKeyboardMarkup.button(lesson.getTitle(),
                     Command.DELETE_EVENT_BY_ID.getName()
-                            + ":" + lesson.getLessonId()).endRow();
+                            + ":" + lesson.getId()).endRow();
         }
         InlineKeyboardMarkup inline = inlineKeyboardMarkup.row()
                 .button(translateService.getBySlug(BACK),

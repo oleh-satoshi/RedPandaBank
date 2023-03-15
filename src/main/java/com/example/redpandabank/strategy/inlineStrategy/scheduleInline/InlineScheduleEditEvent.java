@@ -42,7 +42,7 @@ public class InlineScheduleEditEvent implements InlineHandler<Update> {
         for (Lesson lesson : lessons) {
             builder.row();
             builder.button(lesson.getTitle(), Command.EDIT_SPECIFIC_EXISTING_EVENT.getName()
-                    + Separator.COLON_SEPARATOR + lesson.getLessonId());
+                    + Separator.COLON_SEPARATOR + lesson.getId());
             builder.endRow();
         }
         InlineKeyboardMarkup inline = builder.row()

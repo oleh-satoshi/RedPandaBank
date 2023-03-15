@@ -42,7 +42,7 @@ public class InlineScheduleRecoverEvent implements InlineHandler<Update> {
             new MessageSenderImpl().sendMessageViaURL(childId,
                     content);
             new MessageSenderImpl().sendMessageViaURL(childId,
-                    lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId()));
+                    lessonService.getInfoLessonByIdAndSendByUrl(lesson.getId()));
         } else {
             content = translateService.getBySlug(RETURN_TO_SCHEDULE);
             new MessageSenderImpl().sendMessageViaURL(childId,content);

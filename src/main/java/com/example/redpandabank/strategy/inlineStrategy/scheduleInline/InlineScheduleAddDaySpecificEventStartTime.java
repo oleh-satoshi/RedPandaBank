@@ -68,7 +68,7 @@ public class InlineScheduleAddDaySpecificEventStartTime implements InlineHandler
         String response = translateService.getBySlug(ADDED_DAY)
                  + " <i>\"" + lesson.getTitle() + "\"</i>"
                  + translateService.getBySlug(SOMETHING_ELSE_INTERESTING);
-        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
+        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getId());
         new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
         return new MessageSenderImpl().sendMessageWithInline(childId, response, keyboard);
     }
@@ -76,7 +76,7 @@ public class InlineScheduleAddDaySpecificEventStartTime implements InlineHandler
     Comparator<LessonSchedule> comparator = new Comparator<LessonSchedule>() {
         @Override
         public int compare(LessonSchedule lessonSchedule1, LessonSchedule lessonSchedule2) {
-            return lessonSchedule1.getLessonScheduleId().compareTo(lessonSchedule2.getLessonScheduleId());
+            return lessonSchedule1.getId().compareTo(lessonSchedule2.getId());
         }
     };
 

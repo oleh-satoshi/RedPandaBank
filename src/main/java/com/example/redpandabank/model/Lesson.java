@@ -21,7 +21,7 @@ import lombok.experimental.FieldDefaults;
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long lessonId;
+    Long id;
     String title;
     String teacher;
     Integer duration;
@@ -34,7 +34,7 @@ public class Lesson {
     @Override
     public String toString() {
         return "Lesson{"
-                + "lessonId =" + lessonId
+                + "lessonId =" + id
                 + ", title ='" + title + '\''
                 + ", teacher ='" + teacher + '\''
                 + ", duration =" + duration

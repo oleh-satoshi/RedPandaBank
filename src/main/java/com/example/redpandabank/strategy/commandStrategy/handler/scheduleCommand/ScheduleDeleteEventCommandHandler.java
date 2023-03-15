@@ -40,7 +40,7 @@ public class ScheduleDeleteEventCommandHandler implements CommandHandler<Update>
         for (Lesson lesson : allByTitle) {
             inlineKeyboardMarkupBuilderImpl.button(lesson.getTitle(),
                     Command.DELETE_EVENT_BY_ID.getName()
-                            + SEPARATOR + lesson.getLessonId()).endRow();
+                            + SEPARATOR + lesson.getId()).endRow();
         }
         SendMessage sendMessage = new MessageSenderImpl().sendMessageWithInline(childId,
                 translateService.getBySlug(CHOOSE_LESSON_TO_DELETE),

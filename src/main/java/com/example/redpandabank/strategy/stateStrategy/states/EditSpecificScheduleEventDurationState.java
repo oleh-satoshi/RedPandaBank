@@ -55,7 +55,7 @@ public class EditSpecificScheduleEventDurationState implements StateHandler<Upda
         String content = translateService.getBySlug(SET_NEW_DURATION)
                 + " <i>\"" + lesson.getTitle() + "\"</i>!";
         InlineKeyboardMarkup keyboard = eventDurationStateButton.getKeyboard();
-        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
+        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getId());
         new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
         return new MessageSenderImpl().sendMessageWithInline(userId, content, keyboard);
     }

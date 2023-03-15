@@ -62,7 +62,7 @@ public class InlineSetExtraDaySpecificStartTime implements InlineHandler<Update>
                 inlineScheduleAddDaySpecificEventStartTimeButton.getKeyboard(lesson);
         String response = translateService.getBySlug(SOMETHING_ELSE_FOR_LESSON)
                 + " <i>\"" + lesson.getTitle() + "\"</i>?";
-        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
+        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getId());
         new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
     }

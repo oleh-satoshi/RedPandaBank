@@ -52,7 +52,7 @@ public class SaveDurationEventState implements StateHandler<Update> {
         List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
         Lesson lesson = lessons.get(lessons.size() - 1);
         lesson.setDuration(Integer.parseInt(duration.replaceAll(NUMBERS_ONLY, PLUG)));
-        lesson.setLessonId(lesson.getLessonId());
+        lesson.setId(lesson.getId());
         lessonService.create(lesson);
         child.setState(State.NO_STATE.getState());
         childService.create(child);

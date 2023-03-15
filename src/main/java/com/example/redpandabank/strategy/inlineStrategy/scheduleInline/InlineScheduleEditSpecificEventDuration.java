@@ -40,7 +40,7 @@ public class InlineScheduleEditSpecificEventDuration implements InlineHandler<Up
         Integer messageId = UpdateInfo.getMessageId(update);
         Child child = childService.findByUserId(userId);
         child.setState(State.EDIT_SPECIFIC_SCHEDULE_EVENT_DURATION.getState()
-                + Separator.COLON_SEPARATOR + lesson.getLessonId());
+                + Separator.COLON_SEPARATOR + lesson.getId());
         child.setIsSkip(false);
         childService.create(child);
         String content = translateService.getBySlug(NEW_DURATION_FOR_LESSON)

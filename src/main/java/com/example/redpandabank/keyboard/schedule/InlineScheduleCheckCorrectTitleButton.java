@@ -33,7 +33,7 @@ public class InlineScheduleCheckCorrectTitleButton implements
                 .row()
                 .button(translateService.getBySlug(NEXT),
                         Command.SAVE_EVENT_TEACHER_NAME.getName()
-                        + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                        + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .build();
     }

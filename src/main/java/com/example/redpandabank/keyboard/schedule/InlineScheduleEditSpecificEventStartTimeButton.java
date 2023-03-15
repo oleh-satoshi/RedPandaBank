@@ -47,7 +47,7 @@ public class InlineScheduleEditSpecificEventStartTimeButton
                 .row()
                 .button(translateService.getBySlug(BACK),
                         Command.EDIT_SPECIFIC_EXISTING_EVENT.getName()
-                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .build();
     }

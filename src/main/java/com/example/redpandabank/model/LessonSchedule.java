@@ -17,7 +17,7 @@ import lombok.experimental.FieldDefaults;
 public class LessonSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long lessonScheduleId;
+    Long id;
     LocalTime lessonStartTime;
     String day;
 }

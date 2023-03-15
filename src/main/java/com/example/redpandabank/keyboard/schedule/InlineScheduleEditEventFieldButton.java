@@ -35,22 +35,22 @@ public class InlineScheduleEditEventFieldButton
                 .row()
                 .button(translateService.getBySlug(LESSON_NAME) + lesson.getTitle(),
                         Command.EDIT_SPECIFIC_EVENT_FIELD.getName()
-                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(TEACHER_NAME) + lesson.getTeacher(),
                         Command.EDIT_SCHEDULE_EVENT_TEACHER.getName()
-                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(LESSON_START_TIME) + getStartTime(lesson),
                         Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
-                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(LESSON_DURATION) + lesson.getDuration(),
                         Command.EDIT_SCHEDULE_EVENT_DURATION.getName()
-                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(BACK),

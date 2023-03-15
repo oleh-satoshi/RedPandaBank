@@ -69,7 +69,7 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
                 InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                         .row()
                         .button(translateService.getBySlug(RESTORE),
-                                "/recoverData" + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                "/recoverData" + Separator.COLON_SEPARATOR + lesson.getId())
                         .endRow()
                         .build();
                 content = translateService.getBySlug(LESSON) + lesson.getTitle()
@@ -90,7 +90,7 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
                     .row()
                     .button(translateService.getBySlug(I_WANT_TO_DELETE) + lesson.getTitle(),
                             Command.DELETE_EVENT_BY_ID.getName() + Separator.COLON_SEPARATOR
-                                    + YES + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                    + YES + Separator.COLON_SEPARATOR + lesson.getId())
                     .endRow()
                     .row()
                     .button(translateService.getBySlug(BACK_TO_LESSONS),

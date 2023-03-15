@@ -47,7 +47,7 @@ public class InlineScheduleDeleteSpecificEventStartTime implements InlineHandler
                     .button(localTime.toString(),
                             Command.DELETE_SPECIFIC_EVENT_START_TIME_2.getName()
                             + Separator.COLON_SEPARATOR + localTime
-                                    + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                    + Separator.COLON_SEPARATOR + lesson.getId())
                     .endRow();
         }
         InlineKeyboardMarkup inline = builder.build();

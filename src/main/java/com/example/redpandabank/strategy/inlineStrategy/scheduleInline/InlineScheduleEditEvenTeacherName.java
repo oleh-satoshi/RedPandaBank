@@ -40,7 +40,7 @@ public class InlineScheduleEditEvenTeacherName implements InlineHandler<Update> 
         Lesson lesson = lessonService.getById(lessonId);
         Child child = childService.findByUserId(childId);
         child.setState(State.EDIT_SPECIFIC_EVENT_TEACHER_NAME.getState()
-                + Separator.COLON_SEPARATOR + lesson.getLessonId());
+                + Separator.COLON_SEPARATOR + lesson.getId());
         child.setIsSkip(false);
         childService.create(child);
         String response = translateService.getBySlug(ENTER_TEACHER_NAME)

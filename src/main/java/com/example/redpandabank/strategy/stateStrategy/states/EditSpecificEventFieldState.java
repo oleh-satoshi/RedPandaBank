@@ -50,7 +50,7 @@ public class EditSpecificEventFieldState implements StateHandler<Update> {
         lessonService.create(lesson);
         child.setState(State.NO_STATE.getState());
         childService.create(child);
-        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
+        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getId());
         new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
         String response = translateService.getBySlug(LESSON_WAS_SAVE);
         ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();

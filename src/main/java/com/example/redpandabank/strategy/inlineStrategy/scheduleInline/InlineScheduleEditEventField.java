@@ -40,7 +40,7 @@ public class InlineScheduleEditEventField implements InlineHandler<Update> {
         Lesson lesson = lessonService.getById(lessonId);
         Child child = childService.findByUserId(childId);
         child.setState(State.EDIT_SPECIFIC_EVENT_FIELD.getState()
-                + Separator.COLON_SEPARATOR + lesson.getLessonId());
+                + Separator.COLON_SEPARATOR + lesson.getId());
         child.setIsSkip(false);
         childService.create(child);
         String response = translateService.getBySlug(EDIT_EVENT_FIELD) + " <i>\""
