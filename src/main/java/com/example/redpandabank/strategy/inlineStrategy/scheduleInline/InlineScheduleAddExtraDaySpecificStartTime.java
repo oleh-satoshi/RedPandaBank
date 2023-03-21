@@ -2,7 +2,11 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.keyboard.schedule.InlineScheduleAddExtraDaySpecificStartTimeButton;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.*;
+import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonScheduleService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
@@ -12,7 +16,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleAddExtraDaySpecificStartTime implements InlineHandler<Update> {
     final LessonService lessonService;
@@ -26,14 +30,15 @@ public class InlineScheduleAddExtraDaySpecificStartTime implements InlineHandler
     public InlineScheduleAddExtraDaySpecificStartTime(LessonService lessonService,
                                                       LessonScheduleService lessonScheduleService,
                                                       ChildService childService,
-                                                      InlineScheduleAddExtraDaySpecificStartTimeButton inlineScheduleAddExtraDaySpecificStartTimeButton, TranslateService translateService) {
+                                                      InlineScheduleAddExtraDaySpecificStartTimeButton
+                                                              inlineScheduleAddExtraDaySpecificStartTimeButton,
+                                                      TranslateService translateService) {
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.childService = childService;
         this.inlineScheduleAddExtraDaySpecificStartTimeButton = inlineScheduleAddExtraDaySpecificStartTimeButton;
         this.translateService = translateService;
     }
-
 
     @Override
     public BotApiMethod<?> handle(Update update) {
@@ -44,7 +49,7 @@ public class InlineScheduleAddExtraDaySpecificStartTime implements InlineHandler
         InlineKeyboardMarkup keyboard = inlineScheduleAddExtraDaySpecificStartTimeButton.getKeyboard();
         String response = translateService.getBySlug(CHOOSE_DAY_FOR_LESSON)
                 + " <i>\"" + lesson.getTitle() + "\"</i> "
-        +translateService.getBySlug(START_THE_SAME_TIME);
+                + translateService.getBySlug(START_THE_SAME_TIME);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
     }
 

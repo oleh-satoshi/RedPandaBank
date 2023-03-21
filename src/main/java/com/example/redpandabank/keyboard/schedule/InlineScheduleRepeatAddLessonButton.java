@@ -2,7 +2,7 @@ package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.Pressable;
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.service.TranslateService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -26,5 +26,6 @@ public class InlineScheduleRepeatAddLessonButton implements Pressable {
                 .button(translateService.getBySlug(TRY_AGAIN),
                         Command.ADD_SCHEDULE_EVENT.getName())
                 .endRow()
-                .build();    }
+                .build();
+    }
 }

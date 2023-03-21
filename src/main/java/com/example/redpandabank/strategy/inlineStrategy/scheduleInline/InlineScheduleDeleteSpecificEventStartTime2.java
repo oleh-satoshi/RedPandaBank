@@ -5,11 +5,12 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
+import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -17,9 +18,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-import java.time.LocalTime;
-
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandler<Update> {
     final LessonService lessonService;
@@ -29,8 +28,11 @@ public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandle
     final String REMOVE_ANOTHER_LESSON_START = "remove-another-lesson-start";
     final String JUST_BE_CAREFUL = "just-be-careful";
 
-    public InlineScheduleDeleteSpecificEventStartTime2(LessonService lessonService, LessonScheduleService lessonScheduleService,
-                                                       InlineScheduleDeleteSpecificEventStartTime2Button specificEventStartTime2Button, TranslateService translateService) {
+    public InlineScheduleDeleteSpecificEventStartTime2(LessonService lessonService,
+                                                       LessonScheduleService lessonScheduleService,
+                                                       InlineScheduleDeleteSpecificEventStartTime2Button
+                                                               specificEventStartTime2Button,
+                                                       TranslateService translateService) {
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.specificEventStartTime2Button = specificEventStartTime2Button;
@@ -54,8 +56,6 @@ public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandle
                 + " <i>\"" + lesson.getTitle() + "\"</i>, "
                 + translateService.getBySlug(JUST_BE_CAREFUL);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
-
-
     }
 
     private Long parseTitle(String data) {

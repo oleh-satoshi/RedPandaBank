@@ -5,8 +5,8 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleChangeEventTitle implements InlineHandler<Update> {
     final LessonService lessonService;
@@ -36,7 +36,6 @@ public class InlineScheduleChangeEventTitle implements InlineHandler<Update> {
         Long childId = UpdateInfo.getUserId(update);
         String command = UpdateInfo.getText(update);
         Integer messageId = UpdateInfo.getMessageId(update);
-
         Lesson lesson = lessonService.findLessonByTitle(childId, parseCommand(command));
         lessonService.deleteLessonByTitleAndChildId(lesson.getTitle(), childId);
         Child child = childService.getById(childId).get();
@@ -50,6 +49,5 @@ public class InlineScheduleChangeEventTitle implements InlineHandler<Update> {
     private String parseCommand(String command) {
         String result = command.split("\"")[1];
         return result;
-
     }
 }

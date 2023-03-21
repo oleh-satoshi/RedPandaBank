@@ -1,28 +1,32 @@
-package com.example.redpandabank.service;
+package com.example.redpandabank.service.impl;
 
-import org.springframework.context.annotation.Scope;
+import com.example.redpandabank.service.MessageSender;
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
-
 @Component
-@Scope(value = "prototype")
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MessageSenderImpl implements MessageSender {
-    String urlString = "https://api.telegram.org/bot%s/sendMessage?chat_id=%s&text=%s&parse_mode=%s";
-    final static String API_TOKEN = "5805955090:AAGJcLtZpPhcAmT6XxtU-6ZnRVhMikJAxe8";
-    final static String PARSE_MODE = "HTML";
+    static final String PARSE_MODE = "HTML";
+    @Value("${urlString}")
+    String urlString;
+    @Value("${apiToken}")
+    String apiToken;
 
     @Override
     public void sendMessageViaURL(Long chatId, String content) {
-        urlString = String.format(urlString, API_TOKEN, chatId, content, PARSE_MODE);
+        urlString = String.format(urlString, apiToken, chatId, content, PARSE_MODE);
         sendUrl(urlString);
     }
 
@@ -56,7 +60,8 @@ public class MessageSenderImpl implements MessageSender {
     }
 
     public EditMessageText sendEditMessageWithInline(Long userId, Integer messageId,
-                                                     InlineKeyboardMarkup keyboard, String content) {
+                                                     InlineKeyboardMarkup keyboard,
+                                                     String content) {
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setChatId(userId);
         editMessageText.setMessageId(messageId);

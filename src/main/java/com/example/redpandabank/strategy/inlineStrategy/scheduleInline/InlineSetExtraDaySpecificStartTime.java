@@ -3,9 +3,14 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleAddDaySpecificEventStartTimeButton;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
-import com.example.redpandabank.service.*;
+import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonScheduleService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -13,9 +18,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-import java.util.List;
-
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineSetExtraDaySpecificStartTime implements InlineHandler<Update> {
     final LessonService lessonService;
@@ -27,11 +30,15 @@ public class InlineSetExtraDaySpecificStartTime implements InlineHandler<Update>
 
     public InlineSetExtraDaySpecificStartTime(LessonService lessonService,
                                               LessonScheduleService lessonScheduleService,
-                                              ChildService childService, InlineScheduleAddDaySpecificEventStartTimeButton inlineScheduleAddDaySpecificEventStartTimeButton, TranslateService translateService) {
+                                              ChildService childService,
+                                              InlineScheduleAddDaySpecificEventStartTimeButton
+                                                      inlineScheduleAddDaySpecificEventStartTimeButton,
+                                              TranslateService translateService) {
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.childService = childService;
-        this.inlineScheduleAddDaySpecificEventStartTimeButton = inlineScheduleAddDaySpecificEventStartTimeButton;
+        this.inlineScheduleAddDaySpecificEventStartTimeButton
+                = inlineScheduleAddDaySpecificEventStartTimeButton;
         this.translateService = translateService;
     }
 
@@ -45,17 +52,17 @@ public class InlineSetExtraDaySpecificStartTime implements InlineHandler<Update>
         List<LessonSchedule> lessonSchedules = lesson.getLessonSchedules();
         LessonSchedule lessonSchedule = lessonSchedules.get(lessonSchedules.size() - 1);
         LessonSchedule newLessonSchedule = new LessonSchedule();
-        newLessonSchedule.setChildId(childId);
         newLessonSchedule.setDay(day);
         newLessonSchedule.setLessonStartTime(lessonSchedule.getLessonStartTime());
         lessonSchedules.add(newLessonSchedule);
         lesson.setLessonSchedules(lessonSchedules);
         lessonScheduleService.create(newLessonSchedule);
         lessonService.create(lesson);
-        InlineKeyboardMarkup keyboard = inlineScheduleAddDaySpecificEventStartTimeButton.getKeyboard(lesson);
+        InlineKeyboardMarkup keyboard =
+                inlineScheduleAddDaySpecificEventStartTimeButton.getKeyboard(lesson);
         String response = translateService.getBySlug(SOMETHING_ELSE_FOR_LESSON)
                 + " <i>\"" + lesson.getTitle() + "\"</i>?";
-        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
+        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getId());
         new MessageSenderImpl().sendMessageViaURL(childId, infoLesson);
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
     }

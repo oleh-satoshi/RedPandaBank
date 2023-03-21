@@ -2,18 +2,21 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.enums.State;
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
-import com.example.redpandabank.keyboard.schedule.InlineScheduleEditSpecificEventStartTimeChooseOperationButton;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleEditSpecificEventStartTimeButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
+import java.time.LocalTime;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -21,27 +24,26 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-import java.time.LocalTime;
-import java.util.List;
-import java.util.stream.Collectors;
-
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Update> {
     final LessonService lessonService;
     final ChildService childService;
-    final InlineScheduleEditSpecificEventStartTimeChooseOperationButton
-            inlineScheduleEditSpecificEventStartTimeChooseOperationButton;
+    final InlineScheduleEditSpecificEventStartTimeButton
+            inlineScheduleEditSpecificEventStartTimeButton;
     final TranslateService translateService;
     final String WHAT_TIME_FOR_LESSON = "what-time-for-lesson";
     final String YOU_WANT_TO_CHANGE = "you-want-to-change";
 
     public InlineScheduleEditEventLessonStartTime(LessonService lessonService,
                                                   ChildService childService,
-                                                  InlineScheduleEditSpecificEventStartTimeChooseOperationButton inlineScheduleEditSpecificEventStartTimeChooseOperationButton, TranslateService translateService) {
+                                                  InlineScheduleEditSpecificEventStartTimeButton
+                                                          inlineScheduleEditSpecificEventStartTimeButton,
+                                                  TranslateService translateService) {
         this.lessonService = lessonService;
         this.childService = childService;
-        this.inlineScheduleEditSpecificEventStartTimeChooseOperationButton = inlineScheduleEditSpecificEventStartTimeChooseOperationButton;
+        this.inlineScheduleEditSpecificEventStartTimeButton
+                = inlineScheduleEditSpecificEventStartTimeButton;
         this.translateService = translateService;
     }
 
@@ -57,7 +59,8 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
         InlineKeyboardMarkupBuilderImpl builder = InlineKeyboardMarkupBuilderImpl.create();
         for (LocalTime localTime : timeList) {
             builder.row()
-                    .button(localTime.toString(), Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
+                    .button(localTime.toString(),
+                            Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
                             + Separator.COLON_SEPARATOR + localTime.toString())
                     .endRow();
         }

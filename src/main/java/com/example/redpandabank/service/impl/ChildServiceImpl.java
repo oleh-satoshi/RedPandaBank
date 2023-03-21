@@ -1,20 +1,21 @@
-package com.example.redpandabank.service;
+package com.example.redpandabank.service.impl;
 
 import com.example.redpandabank.enums.State;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.repository.ChildRepository;
+import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.util.Separator;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.math.BigDecimal;
 import java.util.Optional;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.springframework.stereotype.Service;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Service
 public class ChildServiceImpl implements ChildService {
-    private final static Integer ZERO = 0;
-
-    private ChildRepository childRepository;
+    static final Integer ZERO = 0;
+    ChildRepository childRepository;
 
     public ChildServiceImpl(ChildRepository childRepository) {
         this.childRepository = childRepository;

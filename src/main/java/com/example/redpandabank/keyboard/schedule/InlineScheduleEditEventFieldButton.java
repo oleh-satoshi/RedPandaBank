@@ -2,23 +2,22 @@ package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.PressableWithArgument;
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.util.Separator;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
-import java.security.SecureRandom;
-import java.util.List;
-import java.util.stream.Collectors;
-
-@FieldDefaults(level= AccessLevel.PRIVATE)@Component
-public class InlineScheduleEditEventFieldButton implements
-        PressableWithArgument<ReplyKeyboard, Lesson> {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Component
+public class InlineScheduleEditEventFieldButton
+        implements PressableWithArgument<ReplyKeyboard, Lesson> {
     final TranslateService translateService;
     final String LESSON_NAME = "lesson-name";
     final String TEACHER_NAME = "teacher-name";
@@ -36,22 +35,22 @@ public class InlineScheduleEditEventFieldButton implements
                 .row()
                 .button(translateService.getBySlug(LESSON_NAME) + lesson.getTitle(),
                         Command.EDIT_SPECIFIC_EVENT_FIELD.getName()
-                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(TEACHER_NAME) + lesson.getTeacher(),
                         Command.EDIT_SCHEDULE_EVENT_TEACHER.getName()
-                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(LESSON_START_TIME) + getStartTime(lesson),
                         Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
-                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(LESSON_DURATION) + lesson.getDuration(),
                         Command.EDIT_SCHEDULE_EVENT_DURATION.getName()
-                                + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(BACK),

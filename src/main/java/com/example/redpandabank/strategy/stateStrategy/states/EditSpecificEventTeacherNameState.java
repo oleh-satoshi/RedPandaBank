@@ -4,7 +4,10 @@ import com.example.redpandabank.enums.State;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.*;
+import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -15,7 +18,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class EditSpecificEventTeacherNameState implements StateHandler<Update> {
     Long userId;
@@ -36,7 +39,6 @@ public class EditSpecificEventTeacherNameState implements StateHandler<Update> {
         this.translateService = translateService;
     }
 
-
     @Override
     public BotApiMethod<?> handle(Update update) {
         userId = UpdateInfo.getUserId(update);
@@ -50,7 +52,7 @@ public class EditSpecificEventTeacherNameState implements StateHandler<Update> {
         childService.create(child);
         String response = translateService.getBySlug(TEACHER_CHANGED);
         ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
-        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
+        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getId());
         new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
         return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
     }

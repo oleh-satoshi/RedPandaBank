@@ -1,13 +1,12 @@
 package com.example.redpandabank.service;
 
 import com.example.redpandabank.strategy.mainCommandHandler.MainCommandHandler;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
-import java.util.List;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
@@ -23,7 +22,8 @@ public class TelegramBot {
                 .filter(handler -> handler.isApplicable(update))
                 .findFirst()
                 .orElseThrow(
-                        () -> new RuntimeException("Can't find implementation for request in TelegramBot class"));
+                        () -> new RuntimeException(
+                                "Can't find implementation for request in TelegramBot class"));
         return mainCommandHandler.handle(update);
     }
 }

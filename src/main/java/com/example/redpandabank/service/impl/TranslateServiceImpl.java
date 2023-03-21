@@ -1,7 +1,7 @@
-package com.example.redpandabank.service;
+package com.example.redpandabank.service.impl;
 
-import com.example.redpandabank.model.Translate;
 import com.example.redpandabank.repository.TranslateRepository;
+import com.example.redpandabank.service.TranslateService;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,10 +1,10 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.keyboard.schedule.InlineScheduleEditSpecificEventStartTimeChooseOperationButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleEditSpecificEventStartTimeButton;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -15,16 +15,16 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleEditSpecificEventStartTimeChooseOperation implements InlineHandler<Update> {
-    final InlineScheduleEditSpecificEventStartTimeChooseOperationButton chooseOperationButton;
+    final InlineScheduleEditSpecificEventStartTimeButton chooseOperationButton;
     final LessonService lessonService;
     final TranslateService translateService;
     final String OPTION_FOR_START_TIME = "option-for-start-time";
 
-
-    public InlineScheduleEditSpecificEventStartTimeChooseOperation(InlineScheduleEditSpecificEventStartTimeChooseOperationButton chooseOperationButton,
+    public InlineScheduleEditSpecificEventStartTimeChooseOperation(InlineScheduleEditSpecificEventStartTimeButton
+                                                                           chooseOperationButton,
                                                                    LessonService lessonService,
                                                                    TranslateService translateService) {
         this.chooseOperationButton = chooseOperationButton;

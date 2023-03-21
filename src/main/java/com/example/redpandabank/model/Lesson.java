@@ -1,20 +1,27 @@
 package com.example.redpandabank.model;
 
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
-
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @EqualsAndHashCode
-@FieldDefaults(level=AccessLevel.PRIVATE)@Entity
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Entity
 @Table(name = "lessons")
 public class Lesson {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long lessonId;
+    Long id;
     String title;
     String teacher;
     Integer duration;
@@ -26,12 +33,12 @@ public class Lesson {
 
     @Override
     public String toString() {
-        return "Lesson{" +
-                "lessonId=" + lessonId +
-                ", title='" + title + '\'' +
-                ", teacher='" + teacher + '\'' +
-                ", duration=" + duration +
-                ", childId=" + childId +
-                '}';
+        return "Lesson{"
+                + "lessonId =" + id
+                + ", title ='" + title + '\''
+                + ", teacher ='" + teacher + '\''
+                + ", duration =" + duration
+                + ", childId =" + childId
+                + '}';
     }
 }

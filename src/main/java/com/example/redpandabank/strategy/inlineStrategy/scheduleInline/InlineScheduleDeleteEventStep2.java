@@ -1,13 +1,19 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.*;
+import com.example.redpandabank.service.LessonScheduleService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
+import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
 import com.vdurmont.emoji.EmojiParser;
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -16,10 +22,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
     final LessonScheduleService lessonScheduleService;
@@ -38,7 +41,6 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
     final String WILL_END_IN = "will-end-in";
     final String DURATION = "duration";
     final String YES = "yes";
-    final String DELETE_LESSON = "delete-lesson";
     private SendMessage sendMessage;
     Long childId;
 
@@ -67,17 +69,20 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
                 InlineKeyboardMarkup inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                         .row()
                         .button(translateService.getBySlug(RESTORE),
-                                "/recoverData" + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                "/recoverData" + Separator.COLON_SEPARATOR + lesson.getId())
                         .endRow()
                         .build();
                 content = translateService.getBySlug(LESSON) + lesson.getTitle()
                         + translateService.getBySlug(DELETE_LESSON_PART_2);
-                new MessageSenderImpl().sendMessageViaURL(childId, new MessageSenderImpl().replaceSpace(content));
+                new MessageSenderImpl().sendMessageViaURL(childId,
+                        new MessageSenderImpl().replaceSpace(content));
                 return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId,
                         inlineKeyboardMarkup, "<strike>" + getLessonInfo(lesson) + "</strike>");
             } else {
-                content = translateService.getBySlug(LESSON) + lesson.getTitle() + translateService.getBySlug(ALREADY_BEEN_REMOVED);
-                new MessageSenderImpl().sendMessageViaURL(childId, new MessageSenderImpl().replaceSpace(content));
+                content = translateService.getBySlug(LESSON)
+                        + lesson.getTitle() + translateService.getBySlug(ALREADY_BEEN_REMOVED);
+                new MessageSenderImpl().sendMessageViaURL(childId,
+                        new MessageSenderImpl().replaceSpace(content));
             }
         } else if (split[0].equals(Command.DELETE_EVENT_BY_ID.getName())) {
             lesson = lessonService.getById(Long.valueOf(split[1]));
@@ -85,7 +90,7 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
                     .row()
                     .button(translateService.getBySlug(I_WANT_TO_DELETE) + lesson.getTitle(),
                             Command.DELETE_EVENT_BY_ID.getName() + Separator.COLON_SEPARATOR
-                                    + YES + Separator.COLON_SEPARATOR + lesson.getLessonId())
+                                    + YES + Separator.COLON_SEPARATOR + lesson.getId())
                     .endRow()
                     .row()
                     .button(translateService.getBySlug(BACK_TO_LESSONS),
@@ -102,32 +107,35 @@ public class InlineScheduleDeleteEventStep2 implements InlineHandler<Update> {
     private String getLessonInfo(Lesson lesson) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(":school_satchel: " + "<b>" + lesson.getTitle() + "</b>" + "\n")
-                .append(translateService.getBySlug(TEACHER) + "<i>" + lesson.getTeacher() + "</i>" + "\n")
+                .append(translateService.getBySlug(TEACHER) + "<i>" + lesson.getTeacher()
+                        + "</i>" + "\n")
                 .append(translateService.getBySlug(START_AT) + getStartTime(lesson))
                 .append(translateService.getBySlug(WILL_END_IN) + getFinishTime(lesson) + "\n")
-                .append(translateService.getBySlug(DURATION) + "<b>" + lesson.getDuration() + "</b>" +
-                        lessonService.getDuration(lesson.getDuration()) + "\n");
+                .append(translateService.getBySlug(DURATION) + "<b>"
+                        + lesson.getDuration() + "</b>"
+                        + lessonService.getDuration(lesson.getDuration()) + "\n");
 
         return EmojiParser.parseToUnicode(stringBuilder.toString());
     }
 
     private String getStartTime(Lesson lesson) {
-            StringBuilder stringBuilder = new StringBuilder();
-            List<String> stringList = lesson.getLessonSchedules().stream()
-                    .map(lessonSchedule -> "<b>" + lessonSchedule.getLessonStartTime() + "</b>")
-                    .collect(Collectors.toList());
-            String string = stringBuilder.append(stringList).toString();
-            return string.substring(1, string.length() - 1) + "\n";
-        }
+        StringBuilder stringBuilder = new StringBuilder();
+        List<String> stringList = lesson.getLessonSchedules().stream()
+                .map(lessonSchedule -> "<b>"
+                        + lessonSchedule.getLessonStartTime() + "</b>")
+                .collect(Collectors.toList());
+        String string = stringBuilder.append(stringList).toString();
+        return string.substring(1, string.length() - 1) + "\n";
+    }
 
     private String getFinishTime(Lesson lesson) {
         StringBuilder stringBuilder = new StringBuilder();
         List<String> stringList = lesson.getLessonSchedules().stream()
                 .map(lessonSchedule -> "<b>"
-                        + lessonSchedule.getLessonStartTime().plusMinutes(lesson.getDuration()) + "</b>")
+                        + lessonSchedule.getLessonStartTime()
+                        .plusMinutes(lesson.getDuration()) + "</b>")
                 .collect(Collectors.toList());
         String string = stringBuilder.append(stringList).toString();
         return string.substring(1, string.length() - 1);
     }
 }
-

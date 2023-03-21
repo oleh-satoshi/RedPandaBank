@@ -1,13 +1,13 @@
-
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import java.util.HashSet;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -15,9 +15,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-import java.util.HashSet;
-
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleDeleteEvent implements InlineHandler<Update> {
     final LessonService lessonService;
@@ -35,12 +33,14 @@ public class InlineScheduleDeleteEvent implements InlineHandler<Update> {
     public BotApiMethod<?> handle(Update update) {
         Long childId = update.getCallbackQuery().getFrom().getId();
         Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        HashSet<Lesson> allByTitle = lessonService.findAllByChildId(childId);
+        HashSet<Lesson> allByTitle = lessonService.getSetWithAllLessonByChildId(childId);
 
         InlineKeyboardMarkupBuilderImpl inlineKeyboardMarkup = InlineKeyboardMarkupBuilderImpl.create()
                 .row();
         for (Lesson lesson : allByTitle) {
-            inlineKeyboardMarkup.button(lesson.getTitle(), Command.DELETE_EVENT_BY_ID.getName() + ":" + lesson.getLessonId()).endRow();
+            inlineKeyboardMarkup.button(lesson.getTitle(),
+                    Command.DELETE_EVENT_BY_ID.getName()
+                            + ":" + lesson.getId()).endRow();
         }
         InlineKeyboardMarkup inline = inlineKeyboardMarkup.row()
                 .button(translateService.getBySlug(BACK),

@@ -2,7 +2,7 @@ package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.keyboard.Pressable;
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.service.TranslateService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -25,16 +25,21 @@ public class InlineScheduleEditMenuButton implements Pressable {
     public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button(translateService.getBySlug(ADD_NEW_LESSON), Command.ADD_SCHEDULE_EVENT.getName())
+                .button(translateService.getBySlug(ADD_NEW_LESSON),
+                        Command.ADD_SCHEDULE_EVENT.getName())
                 .endRow()
                 .row()
-                .button(translateService.getBySlug(EDIT_SAVED_LESSON), Command.EDIT_SCHEDULE_EXISTING_EVENT.getName())
+                .button(translateService.getBySlug(EDIT_SAVED_LESSON),
+
+                        Command.EDIT_SCHEDULE_EXISTING_EVENT.getName())
                 .endRow()
                 .row()
-                .button(translateService.getBySlug(DELETE_LESSON), Command.DELETE_EVENT.getName())
+                .button(translateService.getBySlug(DELETE_LESSON),
+                        Command.DELETE_EVENT.getName())
                 .endRow()
                 .row()
-                .button(translateService.getBySlug(BACK), Command.SCHEDULE.getName())
+                .button(translateService.getBySlug(BACK),
+                        Command.SCHEDULE.getName())
                 .endRow()
                 .build();
     }

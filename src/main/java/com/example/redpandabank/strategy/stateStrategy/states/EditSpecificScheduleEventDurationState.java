@@ -4,7 +4,10 @@ import com.example.redpandabank.enums.State;
 import com.example.redpandabank.keyboard.schedule.ReplyScheduleEditSpecificEventDurationStateButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.*;
+import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -15,7 +18,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class EditSpecificScheduleEventDurationState implements StateHandler<Update> {
     Long userId;
@@ -28,7 +31,8 @@ public class EditSpecificScheduleEventDurationState implements StateHandler<Upda
 
     public EditSpecificScheduleEventDurationState(ChildService childService,
                                                   LessonService lessonService,
-                                                  ReplyScheduleEditSpecificEventDurationStateButton eventDurationStateButton,
+                                                  ReplyScheduleEditSpecificEventDurationStateButton
+                                                          eventDurationStateButton,
                                                   TranslateService translateService) {
         this.childService = childService;
         this.lessonService = lessonService;
@@ -51,7 +55,7 @@ public class EditSpecificScheduleEventDurationState implements StateHandler<Upda
         String content = translateService.getBySlug(SET_NEW_DURATION)
                 + " <i>\"" + lesson.getTitle() + "\"</i>!";
         InlineKeyboardMarkup keyboard = eventDurationStateButton.getKeyboard();
-        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getLessonId());
+        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getId());
         new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
         return new MessageSenderImpl().sendMessageWithInline(userId, content, keyboard);
     }

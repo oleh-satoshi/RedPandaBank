@@ -1,22 +1,17 @@
-package com.example.redpandabank.keyboard.keyboardBuilder;
+package com.example.redpandabank.keyboard.builder;
 
+import static java.lang.Math.toIntExact;
+
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
-import lombok.experimental.PackagePrivate;
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static java.lang.Math.toIntExact;
-
-@FieldDefaults(level= AccessLevel.PRIVATE)
-@Component
-public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder, InlineKeyboardMarkupBuilder {
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder {
 
     List<InlineKeyboardButton> row;
     final List<List<InlineKeyboardButton>> keyboard;
@@ -32,7 +27,7 @@ public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder, I
 
     @Override
     public InlineKeyboardMarkupBuilderImpl row() {
-        this.row = new ArrayList<>();
+        row = new ArrayList<>();
         return this;
     }
 
@@ -40,7 +35,7 @@ public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder, I
         InlineKeyboardButton keyboardButton = new InlineKeyboardButton();
         keyboardButton.setCallbackData(callbackData);
         keyboardButton.setText(text);
-        this.row = new ArrayList<>();
+        row = new ArrayList<>();
         row.add(keyboardButton);
         return this;
     }
@@ -55,12 +50,11 @@ public class InlineKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder, I
 
     @Override
     public InlineKeyboardMarkupBuilderImpl endRow() {
-        this.keyboard.add(this.row);
-        this.row = null;
+        keyboard.add(row);
+        row = null;
         return this;
     }
 
-    @Override
     public InlineKeyboardMarkup build() {
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         keyboardMarkup.setKeyboard(keyboard);

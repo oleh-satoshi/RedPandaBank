@@ -4,9 +4,13 @@ import com.example.redpandabank.enums.State;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventDurationButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.service.*;
+import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -14,13 +18,11 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
-import java.util.List;
-
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class SaveDurationEventState implements StateHandler<Update> {
-    final static String NUMBERS_ONLY = "\\W";
-    final static String PLUG = "";
+    static final String NUMBERS_ONLY = "\\W";
+    static final String PLUG = "";
     Long userId;
     String duration;
     final ChildService childService;
@@ -32,7 +34,9 @@ public class SaveDurationEventState implements StateHandler<Update> {
     final String NEXT_BUTTON = "next";
 
     public SaveDurationEventState(ChildService childService, LessonService lessonService,
-                                  InlineScheduleAddEventDurationButton inlineScheduleAddEventDurationButton, TranslateService translateService) {
+                                  InlineScheduleAddEventDurationButton
+                                          inlineScheduleAddEventDurationButton,
+                                  TranslateService translateService) {
 
         this.childService = childService;
         this.lessonService = lessonService;
@@ -48,7 +52,7 @@ public class SaveDurationEventState implements StateHandler<Update> {
         List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
         Lesson lesson = lessons.get(lessons.size() - 1);
         lesson.setDuration(Integer.parseInt(duration.replaceAll(NUMBERS_ONLY, PLUG)));
-        lesson.setLessonId(lesson.getLessonId());
+        lesson.setId(lesson.getId());
         lessonService.create(lesson);
         child.setState(State.NO_STATE.getState());
         childService.create(child);

@@ -1,24 +1,20 @@
-package com.example.redpandabank.keyboard.keyboardBuilder;
-
-import lombok.AccessLevel;
-import lombok.experimental.FieldDefaults;
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+package com.example.redpandabank.keyboard.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
-@Component
-public class ReplyKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder, ReplyKeyboardMarkupBuilder {
-
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class ReplyKeyboardMarkupBuilderImpl implements KeyboardMarkupBuilder {
     final List<KeyboardRow> keyboard = new ArrayList<>();
     KeyboardRow row;
 
     private ReplyKeyboardMarkupBuilderImpl(){
     }
+
     public static ReplyKeyboardMarkupBuilderImpl create() {
         return new ReplyKeyboardMarkupBuilderImpl();
     }

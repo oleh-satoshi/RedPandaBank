@@ -1,21 +1,23 @@
 package com.example.redpandabank.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalTime;
-
 @Data
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity
 @Table(name = "lessons_schedule")
 public class LessonSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long lessonScheduleId;
-    Long childId;
+    Long id;
     LocalTime lessonStartTime;
     String day;
 }

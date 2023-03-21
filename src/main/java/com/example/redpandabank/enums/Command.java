@@ -1,11 +1,8 @@
 package com.example.redpandabank.enums;
 
-import lombok.Getter;
-import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.objects.Update;
-
 import java.util.HashSet;
 import java.util.Set;
+import lombok.Getter;
 
 @Getter
 public enum Command {
@@ -69,7 +66,7 @@ public enum Command {
     }
 
     public static Set<String> getGeneralCommands() {
-        Set generalCommands = new HashSet();
+        Set<String> generalCommands = new HashSet();
         for (int i = 0; i < Command.values().length; i++) {
             generalCommands.add(Command.values()[i].getName());
         }

@@ -3,7 +3,7 @@ package com.example.redpandabank.keyboard.schedule;
 import com.example.redpandabank.enums.Command;
 import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.keyboard.Pressable;
-import com.example.redpandabank.keyboard.keyboardBuilder.InlineKeyboardMarkupBuilderImpl;
+import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.service.TranslateService;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -14,12 +14,12 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 @Component
 public class InlineScheduleAddEventDay implements Pressable {
     final TranslateService translateService;
-    final String MONDAY = "monday";
-    final String TUESDAY = "tuesday";
-    final String WEDNESDAY = "wednesday";
-    final String THURSDAY = "thursday";
-    final String FRIDAY = "friday";
-    final String SATURDAY = "saturday";
+    static final String MONDAY = "monday";
+    static final String TUESDAY = "tuesday";
+    static final String WEDNESDAY = "wednesday";
+    static final String THURSDAY = "thursday";
+    static final String FRIDAY = "friday";
+    static final String SATURDAY = "saturday";
 
     public InlineScheduleAddEventDay(TranslateService translateService) {
         this.translateService = translateService;

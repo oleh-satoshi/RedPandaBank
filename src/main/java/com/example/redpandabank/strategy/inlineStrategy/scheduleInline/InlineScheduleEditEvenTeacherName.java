@@ -5,8 +5,8 @@ import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.MessageSenderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-@FieldDefaults(level= AccessLevel.PRIVATE)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class InlineScheduleEditEvenTeacherName implements InlineHandler<Update> {
     final LessonService lessonService;
@@ -40,7 +40,7 @@ public class InlineScheduleEditEvenTeacherName implements InlineHandler<Update> 
         Lesson lesson = lessonService.getById(lessonId);
         Child child = childService.findByUserId(childId);
         child.setState(State.EDIT_SPECIFIC_EVENT_TEACHER_NAME.getState()
-                + Separator.COLON_SEPARATOR + lesson.getLessonId());
+                + Separator.COLON_SEPARATOR + lesson.getId());
         child.setIsSkip(false);
         childService.create(child);
         String response = translateService.getBySlug(ENTER_TEACHER_NAME)
