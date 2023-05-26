@@ -105,6 +105,9 @@
                         <configuration>
                             <propertyFile>src/main/resources/liquibase.properties</propertyFile>
                         </configuration>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
