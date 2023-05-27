@@ -16,15 +16,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 @RequiredArgsConstructor
 public class BotController {
     private final TelegramBot telegramBot;
-    private final TranslateService translateService;
 
-    @PostMapping
-    public BotApiMethod onUpdateReceivedParent(@RequestBody Update update) {
+    @PostMapping("/update")
+    public BotApiMethod<?> onUpdateReceivedParent(@RequestBody Update update) {
         return telegramBot. onWebhookUpdateReceived(update);
     }
 
-    @GetMapping("/healthcheck")
-    public List<Translate> healthcheck() {
-        return translateService.findAll();
-    }
 }
