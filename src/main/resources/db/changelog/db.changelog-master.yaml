@@ -4,4 +4,8 @@ databaseChangeLog:
   - include:
       file: /db/changelog/changes/002-init-translates-slug.sql
   - include:
-      file: /db/changelog/changes/003-drop-init-translates-slug.sql
+      file: /db/changelog/changes/003-create-children-table.sql
+  - include:
+      file: /db/changelog/changes/004-create-lessons-table.sql
+  - include:
+      file: /db/changelog/changes/005-create-lessons_schedule-table.sql

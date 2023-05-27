@@ -19,7 +19,8 @@ public class Translate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
     @Column(unique = true)
-    String slug;
-    String value;
     String language;
+    String slug;
+    @Column(columnDefinition = "text")
+    String value;
 }
