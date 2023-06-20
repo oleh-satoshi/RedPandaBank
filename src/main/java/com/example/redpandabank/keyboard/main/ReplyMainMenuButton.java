@@ -1,6 +1,6 @@
 package com.example.redpandabank.keyboard.main;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.builder.ReplyKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.service.TranslateService;
@@ -23,7 +23,7 @@ public class ReplyMainMenuButton implements Pressable {
     public ReplyKeyboardMarkup getKeyboard() {
         return ReplyKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button(Command.SCHEDULE.getName())
+                .button(Commands.SCHEDULE.getName())
                 .button(translateService.getBySlug(MORE))
                 .endRow()
                 .build();

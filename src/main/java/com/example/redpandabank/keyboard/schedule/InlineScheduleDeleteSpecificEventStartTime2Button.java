@@ -1,6 +1,6 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.service.TranslateService;
@@ -25,11 +25,11 @@ public class InlineScheduleDeleteSpecificEventStartTime2Button implements Pressa
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(translateService.getBySlug(DELETE_ANOTHER_LESSON_START),
-                        Command.DELETE_SPECIFIC_EVENT_START_TIME.getName())
+                        Commands.DELETE_SPECIFIC_EVENT_START_TIME.getName())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(DONE),
-                        Command.TO_MAIN_MENU.getName())
+                        Commands.TO_MAIN_MENU.getName())
                 .endRow()
                 .build();
     }

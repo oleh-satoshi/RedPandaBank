@@ -1,6 +1,6 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.service.TranslateService;
@@ -25,11 +25,11 @@ public class ReplyScheduleEditSpecificEventDurationStateButton implements Pressa
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(translateService.getBySlug(MADE_MISTAKE_DO_AGAIN),
-                        Command.EDIT_SCHEDULE_EVENT_DURATION.getName())
+                        Commands.EDIT_SCHEDULE_EVENT_DURATION.getName())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(FINISH),
-                        Command.TO_MAIN_MENU.getName())
+                        Commands.TO_MAIN_MENU.getName())
                 .endRow()
                 .build();
     }

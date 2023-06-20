@@ -1,15 +1,11 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
-import com.example.redpandabank.enums.State;
-import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventTimeButton;
+import com.example.redpandabank.enums.StateCommands;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventTimeAndDayButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
-import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.LessonScheduleService;
-import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.TranslateService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
+import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import java.time.LocalTime;
@@ -25,34 +21,41 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class SaveEventTimeState implements StateHandler<Update> {
-    Long userId;
-    String time;
     final ChildService childService;
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
-    final InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton;
+    final InlineScheduleAddEventTimeAndDayButton inlineScheduleAddEventTimeAndDayButton;
     final TranslateService translateService;
+    final MessageSender messageSender;
     final String LESSON_ADDED_TO_SCHEDULE = "lesson-added-to-schedule";
 
     public SaveEventTimeState(ChildService childService,
                               LessonService lessonService,
                               LessonScheduleService lessonScheduleService,
-                              InlineScheduleAddEventTimeButton inlineScheduleAddEventTimeButton,
-                              TranslateService translateService) {
+                              InlineScheduleAddEventTimeAndDayButton inlineScheduleAddEventTimeAndDayButton,
+                              TranslateService translateService,
+                              MessageSender messageSender) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
-        this.inlineScheduleAddEventTimeButton = inlineScheduleAddEventTimeButton;
+        this.inlineScheduleAddEventTimeAndDayButton = inlineScheduleAddEventTimeAndDayButton;
         this.translateService = translateService;
+        this.messageSender = messageSender;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        userId = UpdateInfo.getUserId(update);
-        time = UpdateInfo.getText(update);
-        Child child = childService.findByUserId(userId);
-        String time = update.getMessage().getText();
-        List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
+        Long userId = UpdateInfo.getUserId(update);
+        String time = UpdateInfo.getText(update);
+        setStartTimeForSpecificLesson(userId, time);
+        setNoStateForUser(userId);
+        InlineKeyboardMarkup keyboard = inlineScheduleAddEventTimeAndDayButton.getKeyboard();
+        String response = translateService.getBySlug(LESSON_ADDED_TO_SCHEDULE);
+        return messageSender.sendMessageWithInline(userId, response, keyboard);
+    }
+
+    private void setStartTimeForSpecificLesson(Long userId, String time) {
+        List<Lesson> lessons = lessonService.findAllByUserId(userId);
         Lesson lesson = lessons.get(lessons.size() - 1);
         int size = lesson.getLessonSchedules().size() - 1;
         LessonSchedule lessonSchedule = lesson.getLessonSchedules().get(size);
@@ -61,11 +64,12 @@ public class SaveEventTimeState implements StateHandler<Update> {
         lessonSchedules.add(lessonSchedule);
         lesson.setLessonSchedules(lessonSchedules);
         lessonService.create(lesson);
-        child.setState(State.NO_STATE.getState());
+    }
+
+    private void setNoStateForUser(Long userId) {
+        Child child = childService.findByUserId(userId);
+        child.setState(StateCommands.NO_STATE.getState());
         childService.create(child);
-        InlineKeyboardMarkup keyboard = inlineScheduleAddEventTimeButton.getKeyboard();
-        String response = translateService.getBySlug(LESSON_ADDED_TO_SCHEDULE);
-        return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
     }
 
     private LocalTime parseTime(String text) {

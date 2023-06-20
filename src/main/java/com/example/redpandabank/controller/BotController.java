@@ -1,11 +1,7 @@
 package com.example.redpandabank.controller;
 
-import com.example.redpandabank.model.Translate;
 import com.example.redpandabank.service.TelegramBot;
-import com.example.redpandabank.service.TranslateService;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +15,7 @@ public class BotController {
 
     @PostMapping("/update")
     public BotApiMethod<?> onUpdateReceivedParent(@RequestBody Update update) {
-        return telegramBot. onWebhookUpdateReceived(update);
+        return telegramBot.onWebhookUpdateReceived(update);
     }
 
 }

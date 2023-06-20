@@ -1,13 +1,13 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
-import com.example.redpandabank.enums.State;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -28,14 +28,17 @@ public class EditSpecificEventFieldState implements StateHandler<Update> {
     final ReplyMainMenuButton mainMenuButton;
     final TranslateService translateService;
     final String LESSON_WAS_SAVE = "lesson-was-save";
+    final MessageSender messageSender;
 
     public EditSpecificEventFieldState(ChildService childService, LessonService lessonService,
                                        ReplyMainMenuButton mainMenuButton,
-                                       TranslateService translateService) {
+                                       TranslateService translateService,
+                                       MessageSender messageSender) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.mainMenuButton = mainMenuButton;
         this.translateService = translateService;
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -44,17 +47,26 @@ public class EditSpecificEventFieldState implements StateHandler<Update> {
         duration = UpdateInfo.getText(update);
         Child child = childService.findByUserId(userId);
         Long lessonId = parseId(child.getState());
+        Lesson lesson = setNewTitleForLesson(update, lessonId);
+        String infoLesson = lessonService.getLessonInfoByIdForSendByUrl(lesson.getId());
+        messageSender.sendMessageViaURL(userId, infoLesson);
+        setNoStateForUser(child);
+        String response = translateService.getBySlug(LESSON_WAS_SAVE);
+        ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
+        return messageSender.sendMessageWithReply(userId, response, keyboard);
+    }
+
+    private void setNoStateForUser(Child child) {
+        child.setState(StateCommands.NO_STATE.getState());
+        childService.create(child);
+    }
+
+    private Lesson setNewTitleForLesson(Update update, Long lessonId) {
         Lesson lesson = lessonService.getById(lessonId);
         String newTitle = UpdateInfo.getText(update);
         lesson.setTitle(newTitle);
         lessonService.create(lesson);
-        child.setState(State.NO_STATE.getState());
-        childService.create(child);
-        String infoLesson = lessonService.getInfoLessonByIdAndSendByUrl(lesson.getId());
-        new MessageSenderImpl().sendMessageViaURL(userId, infoLesson);
-        String response = translateService.getBySlug(LESSON_WAS_SAVE);
-        ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
-        return new MessageSenderImpl().sendMessageWithReply(userId, response, keyboard);
+        return lesson;
     }
 
     private Long parseId(String text) {

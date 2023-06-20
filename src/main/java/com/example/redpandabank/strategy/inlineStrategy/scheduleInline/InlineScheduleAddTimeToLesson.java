@@ -1,14 +1,16 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.enums.State;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
+import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -21,30 +23,41 @@ public class InlineScheduleAddTimeToLesson implements InlineHandler<Update> {
     final LessonService lessonService;
     final ChildService childService;
     final TranslateService translateService;
+    final MessageSender messageSender;
     final String ENTER_TIME_FOR_LESSON = "enter-time-for-lesson";
 
     public InlineScheduleAddTimeToLesson(LessonService lessonService,
                                          ChildService childService,
-                                         TranslateService translateService) {
+                                         TranslateService translateService,
+                                         MessageSender messageSender) {
         this.lessonService = lessonService;
         this.childService = childService;
         this.translateService = translateService;
+        this.messageSender = messageSender;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        Long childId = update.getCallbackQuery().getFrom().getId();
-        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+        Long childId = UpdateInfo.getUserId(update);
+        Integer messageId = UpdateInfo.getMessageId(update);
         Lesson lesson = lessonService.findLessonByTitle(childId,
-                parseTitle(update.getCallbackQuery().getData()));
+                parseTitle(UpdateInfo.getData(update)));
         Child child = childService.findByUserId(childId);
-        child.setState(State.ADD_SPECIFIC_EVENT_START_TIME.getState()
+        setAddStartTimeForUser(lesson, child);
+        String response = getResponse(lesson);
+        childService.create(child);
+        return messageSender.sendEditMessage(childId, messageId, response);
+    }
+
+    private static void setAddStartTimeForUser(Lesson lesson, Child child) {
+        child.setState(StateCommands.ADD_SPECIFIC_EVENT_START_TIME.getState()
                 + Separator.COLON_SEPARATOR + lesson.getTitle());
         child.setIsSkip(false);
-        String response = translateService.getBySlug(ENTER_TIME_FOR_LESSON)
+    }
+
+    private String getResponse(Lesson lesson) {
+        return translateService.getBySlug(ENTER_TIME_FOR_LESSON)
                 + " <i>\"" + lesson.getTitle() + "\"</i>:";
-        childService.create(child);
-        return new MessageSenderImpl().sendEditMessage(childId, messageId, response);
     }
 
     private String parseTitle(String data) {

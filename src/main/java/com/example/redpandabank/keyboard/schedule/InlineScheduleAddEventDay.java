@@ -1,10 +1,11 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
 import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.util.Separator;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -30,21 +31,33 @@ public class InlineScheduleAddEventDay implements Pressable {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(translateService.getBySlug(MONDAY),
-                        Command.SAVE_EVENT_DAY.getName() + WeekDay.MONDAY.getDay())
+                        Commands.SAVE_SPECIFIC_EVENT_DAY.getName()
+                                + Separator.COLON_SEPARATOR
+                                + WeekDay.MONDAY.getDay())
                 .extraButton(translateService.getBySlug(TUESDAY),
-                        Command.SAVE_EVENT_DAY.getName() + WeekDay.TUESDAY.getDay())
+                        Commands.SAVE_SPECIFIC_EVENT_DAY.getName()
+                                + Separator.COLON_SEPARATOR
+                                + WeekDay.TUESDAY.getDay())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(WEDNESDAY),
-                        Command.SAVE_EVENT_DAY.getName() + WeekDay.WEDNESDAY.getDay())
+                        Commands.SAVE_SPECIFIC_EVENT_DAY.getName()
+                                + Separator.COLON_SEPARATOR
+                                + WeekDay.WEDNESDAY.getDay())
                 .extraButton(translateService.getBySlug(THURSDAY),
-                        Command.SAVE_EVENT_DAY.getName() + WeekDay.THURSDAY.getDay())
+                        Commands.SAVE_SPECIFIC_EVENT_DAY.getName()
+                                + Separator.COLON_SEPARATOR
+                                + WeekDay.THURSDAY.getDay())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(FRIDAY),
-                        Command.SAVE_EVENT_DAY.getName() + WeekDay.FRIDAY.getDay())
+                        Commands.SAVE_SPECIFIC_EVENT_DAY.getName()
+                                + Separator.COLON_SEPARATOR
+                                + WeekDay.FRIDAY.getDay())
                 .extraButton(translateService.getBySlug(SATURDAY),
-                        Command.SAVE_EVENT_DAY.getName() + WeekDay.SATURDAY.getDay())
+                        Commands.SAVE_SPECIFIC_EVENT_DAY.getName()
+                                + Separator.COLON_SEPARATOR
+                                + WeekDay.SATURDAY.getDay())
                 .endRow()
                 .build();
     }

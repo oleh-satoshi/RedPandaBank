@@ -1,6 +1,7 @@
 package com.example.redpandabank.strategy.inlineStrategy;
 
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
+import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.util.UpdateInfo;
@@ -16,12 +17,15 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 public class InlineStartInit implements InlineHandler<Update> {
     final TranslateService translateService;
     final ReplyMainMenuButton mainMenuButton;
+    final MessageSender messageSender;
     final String HELLO = "hello";
 
     public InlineStartInit(TranslateService translateService,
-                           ReplyMainMenuButton mainMenuButton) {
+                           ReplyMainMenuButton mainMenuButton,
+                           MessageSender messageSender) {
         this.translateService = translateService;
         this.mainMenuButton = mainMenuButton;
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -29,6 +33,6 @@ public class InlineStartInit implements InlineHandler<Update> {
         Long userId = UpdateInfo.getUserId(update);
         String content = translateService.getBySlug(HELLO);
         ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
-        return new MessageSenderImpl().sendMessageWithReply(userId, content, keyboard);
+        return messageSender.sendMessageWithReply(userId, content, keyboard);
     }
 }

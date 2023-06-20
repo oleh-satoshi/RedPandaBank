@@ -40,7 +40,7 @@ public class SetLanguageInlineHandler implements InlineHandler<Update> {
         Long userId = UpdateInfo.getUserId(update);
         Integer messageId = UpdateInfo.getMessageId(update);
         String data = parseLanguage(UpdateInfo.getData(update));
-        Child child = childService.getById(userId).get();
+        Child child = childService.findByUserId(userId);
         child.setLanguage(data);
         childService.create(child);
         response = translateService.getBySlug(ADVENTURE);

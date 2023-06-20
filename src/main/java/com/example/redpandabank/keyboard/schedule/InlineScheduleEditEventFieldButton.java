@@ -1,6 +1,7 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.keyboard.PressableWithArgument;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
@@ -34,27 +35,27 @@ public class InlineScheduleEditEventFieldButton
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(translateService.getBySlug(LESSON_NAME) + lesson.getTitle(),
-                        Command.EDIT_SPECIFIC_EVENT_FIELD.getName()
+                        StateCommands.EDIT_SPECIFIC_EVENT_FIELD.getState()
                                 + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(TEACHER_NAME) + lesson.getTeacher(),
-                        Command.EDIT_SCHEDULE_EVENT_TEACHER.getName()
+                        Commands.EDIT_SCHEDULE_EVENT_TEACHER.getName()
                                 + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(LESSON_START_TIME) + getStartTime(lesson),
-                        Command.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
+                        Commands.EDIT_SPECIFIC_EVENT_START_TIME_CHOOSE_OPERATION.getName()
                                 + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(LESSON_DURATION) + lesson.getDuration(),
-                        Command.EDIT_SCHEDULE_EVENT_DURATION.getName()
+                        Commands.EDIT_SCHEDULE_EVENT_DURATION.getName()
                                 + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(BACK),
-                        Command.EDIT_SCHEDULE_EXISTING_EVENT.getName())
+                        Commands.EDIT_SCHEDULE_EXISTING_EVENT.getName())
                 .endRow()
                 .build();
     }
@@ -62,7 +63,8 @@ public class InlineScheduleEditEventFieldButton
     public String getStartTime(Lesson lesson) {
         StringBuilder stringBuilder = new StringBuilder();
         List<String> stringList = lesson.getLessonSchedules().stream()
-                .map(lessonSchedule -> lessonSchedule.getLessonStartTime() + " ")
+                .map(lessonSchedule -> lessonSchedule.getLessonStartTime()
+                        +  "(" + lessonSchedule.getDay().substring(0, 3) + ")")
                 .collect(Collectors.toList());
         String string = stringBuilder.append(stringList).toString();
         return string.substring(1, string.length() - 1);

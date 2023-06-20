@@ -1,10 +1,11 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.enums.State;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
@@ -23,29 +24,41 @@ public class InlineScheduleEditEventField implements InlineHandler<Update> {
     final ChildService childService;
     final TranslateService translateService;
     final String EDIT_EVENT_FIELD = "edit-event-field";
+    final MessageSender messageSender;
 
     public InlineScheduleEditEventField(LessonService lessonService,
                                         ChildService childService,
-                                        TranslateService translateService) {
+                                        TranslateService translateService,
+                                        MessageSender messageSender) {
         this.lessonService = lessonService;
         this.childService = childService;
         this.translateService = translateService;
+        this.messageSender = messageSender;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        Long childId = update.getCallbackQuery().getFrom().getId();
-        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+        Long childId = UpdateInfo.getUserId(update);
+        Integer messageId = UpdateInfo.getMessageId(update);
         Long lessonId = parseId(UpdateInfo.getData(update));
         Lesson lesson = lessonService.getById(lessonId);
+        setEditSpecificFieldStateAndLessonId(childId, lesson);
+        String response = getResponse(lesson);
+        return messageSender.sendEditMessage(childId, messageId, response);
+    }
+
+    private String getResponse(Lesson lesson) {
+        return translateService.getBySlug(EDIT_EVENT_FIELD)
+                + " <i>\""
+                + lesson.getTitle() + "\"</i> !";
+    }
+
+    private void setEditSpecificFieldStateAndLessonId(Long childId, Lesson lesson) {
         Child child = childService.findByUserId(childId);
-        child.setState(State.EDIT_SPECIFIC_EVENT_FIELD.getState()
+        child.setState(StateCommands.EDIT_SPECIFIC_EVENT_FIELD.getState()
                 + Separator.COLON_SEPARATOR + lesson.getId());
         child.setIsSkip(false);
         childService.create(child);
-        String response = translateService.getBySlug(EDIT_EVENT_FIELD) + " <i>\""
-                + lesson.getTitle() + "\"</i> !";
-        return new MessageSenderImpl().sendEditMessage(childId, messageId, response);
     }
 
     private Long parseId(String text) {

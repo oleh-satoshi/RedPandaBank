@@ -18,6 +18,7 @@ public class LessonSchedule {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+    Long userId;
     LocalTime lessonStartTime;
     String day;
 }

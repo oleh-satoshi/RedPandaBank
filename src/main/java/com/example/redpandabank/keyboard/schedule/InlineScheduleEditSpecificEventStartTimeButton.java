@@ -1,6 +1,7 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.keyboard.PressableWithArgument;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
@@ -32,21 +33,21 @@ public class InlineScheduleEditSpecificEventStartTimeButton
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(translateService.getBySlug(CHANGE_TIME),
-                        Command.EDIT_SCHEDULE_EVENT_START_TIME.getName()
+                        Commands.EDIT_SCHEDULE_EVENT_START_TIME.getName()
                         + Separator.COLON_SEPARATOR + lesson.getTitle())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(ADD_TIME),
-                        Command.ADD_SPECIFIC_EVENT_START_TIME.getName()
+                        Commands.SET_ADD_SPECIFIC_EVENT_START_TIME_STATE.getName()
                         + Separator.COLON_SEPARATOR + lesson.getTitle())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(DELETE_TIME),
-                        Command.DELETE_SPECIFIC_EVENT_START_TIME.getName())
+                        Commands.DELETE_SPECIFIC_EVENT_START_TIME.getName())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(BACK),
-                        Command.EDIT_SPECIFIC_EXISTING_EVENT.getName()
+                        Commands.EDIT_SPECIFIC_EXISTING_EVENT.getName()
                                 + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .build();

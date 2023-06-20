@@ -1,6 +1,6 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
 import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
@@ -44,22 +44,22 @@ public class InlineScheduleWeekdayButton implements InlineHandler<Update> {
         String inputDay = UpdateInfo.getData(update);
         Long userId = UpdateInfo.getUserId(update);
 
-        if (inputDay.equals(Command.SAVE_EVENT_MONDAY.getName())) {
+        if (inputDay.equals(Commands.SAVE_EVENT_MONDAY.getName())) {
             day = WeekDay.MONDAY.getDay();
             createLessonSchedule(day, userId);
-        } else if (inputDay.equals(Command.SAVE_EVENT_TUESDAY.getName())) {
+        } else if (inputDay.equals(Commands.SAVE_EVENT_TUESDAY.getName())) {
             day = WeekDay.TUESDAY.getDay();
             createLessonSchedule(day, userId);
-        } else if (inputDay.equals(Command.SAVE_EVENT_WEDNESDAY.getName())) {
+        } else if (inputDay.equals(Commands.SAVE_EVENT_WEDNESDAY.getName())) {
             day = WeekDay.WEDNESDAY.getDay();
             createLessonSchedule(day, userId);
-        } else if (inputDay.equals(Command.SAVE_EVENT_THURSDAY.getName())) {
+        } else if (inputDay.equals(Commands.SAVE_EVENT_THURSDAY.getName())) {
             day = WeekDay.THURSDAY.getDay();
             createLessonSchedule(day, userId);
-        } else if (inputDay.equals(Command.SAVE_EVENT_FRIDAY.getName())) {
+        } else if (inputDay.equals(Commands.SAVE_EVENT_FRIDAY.getName())) {
             day = WeekDay.FRIDAY.getDay();
             createLessonSchedule(day, userId);
-        } else if (inputDay.equals(Command.SAVE_EVENT_SATURDAY.getName())) {
+        } else if (inputDay.equals(Commands.SAVE_EVENT_SATURDAY.getName())) {
             day = WeekDay.SATURDAY.getDay();
             createLessonSchedule(day, userId);
         } else {

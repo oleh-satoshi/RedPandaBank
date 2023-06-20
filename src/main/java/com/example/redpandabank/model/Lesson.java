@@ -25,7 +25,7 @@ public class Lesson {
     String title;
     String teacher;
     Integer duration;
-    Long childId;
+    Long userId;
     @OneToMany
     @JoinColumn(name = "lesson_id", nullable = false)
     List<LessonSchedule> lessonSchedules;
@@ -38,7 +38,7 @@ public class Lesson {
                 + ", title ='" + title + '\''
                 + ", teacher ='" + teacher + '\''
                 + ", duration =" + duration
-                + ", childId =" + childId
+                + ", userId =" + userId
                 + '}';
     }
 }

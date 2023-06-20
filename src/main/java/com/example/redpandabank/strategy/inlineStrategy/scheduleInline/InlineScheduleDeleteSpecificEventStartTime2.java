@@ -5,6 +5,7 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
@@ -25,6 +26,7 @@ public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandle
     final LessonScheduleService lessonScheduleService;
     final InlineScheduleDeleteSpecificEventStartTime2Button specificEventStartTime2Button;
     final TranslateService translateService;
+    final MessageSender messageSender;
     final String REMOVE_ANOTHER_LESSON_START = "remove-another-lesson-start";
     final String JUST_BE_CAREFUL = "just-be-careful";
 
@@ -32,11 +34,13 @@ public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandle
                                                        LessonScheduleService lessonScheduleService,
                                                        InlineScheduleDeleteSpecificEventStartTime2Button
                                                                specificEventStartTime2Button,
-                                                       TranslateService translateService) {
+                                                       TranslateService translateService,
+                                                       MessageSender messageSender) {
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
         this.specificEventStartTime2Button = specificEventStartTime2Button;
         this.translateService = translateService;
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -45,17 +49,27 @@ public class InlineScheduleDeleteSpecificEventStartTime2 implements InlineHandle
         Integer messageId = UpdateInfo.getMessageId(update);
         Long lessonId = parseTitle(UpdateInfo.getData(update));
         LocalTime localTime = parseTime(UpdateInfo.getData(update));
+        Lesson lesson = removeLessonSchedule(lessonId, localTime);
+        InlineKeyboardMarkup keyboard = specificEventStartTime2Button.getKeyboard();
+        String response = getResponse(lesson);
+        return messageSender.sendEditMessageWithInline(childId, messageId, keyboard, response);
+    }
+
+    private Lesson removeLessonSchedule(Long lessonId, LocalTime localTime) {
         Lesson lesson = lessonService.getById(lessonId);
         LessonSchedule lessonSchedule = lesson.getLessonSchedules().stream()
-                .filter(lessonSchedul -> lessonSchedul.getLessonStartTime().equals(localTime))
+                .filter(lessonschedule -> lessonschedule.getLessonStartTime().equals(localTime))
                 .findFirst()
                 .get();
         lessonScheduleService.delete(lessonSchedule);
-        InlineKeyboardMarkup keyboard = specificEventStartTime2Button.getKeyboard();
+        return lesson;
+    }
+
+    private String getResponse(Lesson lesson) {
         String response = translateService.getBySlug(REMOVE_ANOTHER_LESSON_START)
                 + " <i>\"" + lesson.getTitle() + "\"</i>, "
                 + translateService.getBySlug(JUST_BE_CAREFUL);
-        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
+        return response;
     }
 
     private Long parseTitle(String data) {

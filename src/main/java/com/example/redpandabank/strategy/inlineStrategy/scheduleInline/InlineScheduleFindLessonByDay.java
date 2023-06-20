@@ -2,7 +2,7 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
+import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import java.util.Optional;
@@ -18,20 +18,23 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 public class InlineScheduleFindLessonByDay implements InlineHandler<Update> {
     final LessonService lessonService;
     final ReplyMainMenuButton mainMenuButton;
+    final MessageSender messageSender;
 
     public InlineScheduleFindLessonByDay(LessonService lessonService,
-                                         ReplyMainMenuButton mainMenuButton) {
+                                         ReplyMainMenuButton mainMenuButton,
+                                         MessageSender messageSender) {
         this.lessonService = lessonService;
         this.mainMenuButton = mainMenuButton;
+        this.messageSender = messageSender;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
         String day = UpdateInfo.getData(update);
         Long childId = UpdateInfo.getUserId(update);
-        lessonService.getLessonsByDayAndChildId(childId, day);
+        lessonService.getLessonsByDayAndUserId(childId, day);
         ReplyKeyboardMarkup keyboard = mainMenuButton.getKeyboard();
         Optional<String> content = Optional.of("");
-        return new MessageSenderImpl().sendMessageWithReply(childId, content.get(), keyboard);
+        return messageSender.sendMessageWithReply(childId, content.get(), keyboard);
     }
 }

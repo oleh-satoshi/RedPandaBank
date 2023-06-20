@@ -1,6 +1,7 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.keyboard.PressableWithArgument;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
@@ -11,6 +12,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
+
+import javax.swing.plaf.nimbus.State;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
@@ -29,11 +32,11 @@ public class InlineScheduleAddTeacherNameButton implements
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(translateService.getBySlug(CHANGE_TEACHER_NAME),
-                        Command.EDIT_EVENT_TEACHER_NAME.getName())
+                        Commands.EDIT_EVENT_TEACHER_NAME.getName())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(NEXT),
-                        Command.SAVE_EVENT_DURATION.getName()
+                        Commands.SET_SAVE_EVENT_DURATION_STATE.getName()
                         + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .build();

@@ -9,13 +9,15 @@ import java.net.URLConnection;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
-@Component
+@Service
+@Scope("prototype")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class MessageSenderImpl implements MessageSender {
     static final String PARSE_MODE = "HTML";
@@ -26,8 +28,8 @@ public class MessageSenderImpl implements MessageSender {
 
     @Override
     public void sendMessageViaURL(Long chatId, String content) {
-        urlString = String.format(urlString, apiToken, chatId, content, PARSE_MODE);
-        sendUrl(urlString);
+        String newUrlString = String.format(urlString, apiToken, chatId, content, PARSE_MODE);
+        sendUrl(newUrlString);
     }
 
     @Override
@@ -59,7 +61,9 @@ public class MessageSenderImpl implements MessageSender {
                 .build();
     }
 
-    public EditMessageText sendEditMessageWithInline(Long userId, Integer messageId,
+    @Override
+    public EditMessageText sendEditMessageWithInline(Long userId,
+                                                     Integer messageId,
                                                      InlineKeyboardMarkup keyboard,
                                                      String content) {
         EditMessageText editMessageText = new EditMessageText();
@@ -71,6 +75,20 @@ public class MessageSenderImpl implements MessageSender {
         return editMessageText;
     }
 
+    //eксперимент
+    @Override
+    public EditMessageText sendEditMessageWithInlineWithoutMessageId(Long userId,
+                                                                     InlineKeyboardMarkup keyboard,
+                                                                     String content) {
+        EditMessageText editMessageText = new EditMessageText();
+        editMessageText.setChatId(userId);
+        editMessageText.setReplyMarkup(keyboard);
+        editMessageText.setText(content);
+        editMessageText.setParseMode(PARSE_MODE);
+        return editMessageText;
+    }
+
+    @Override
     public EditMessageText sendEditMessage(Long userId, Integer messageId, String content) {
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setChatId(userId);
@@ -80,6 +98,7 @@ public class MessageSenderImpl implements MessageSender {
         return editMessageText;
     }
 
+    @Override
     public String replaceSpace(String text) {
         return text.replaceAll(" ", "%20");
     }

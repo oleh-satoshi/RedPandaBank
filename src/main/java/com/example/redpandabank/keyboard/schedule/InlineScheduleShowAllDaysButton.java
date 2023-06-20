@@ -1,6 +1,6 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
 import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
@@ -41,7 +41,7 @@ public class InlineScheduleShowAllDaysButton implements Pressable<InlineKeyboard
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(BACK),
-                        Command.SCHEDULE.getName())
+                        Commands.SCHEDULE.getName())
                 .endRow()
                 .build();
     }

@@ -2,6 +2,7 @@ package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
@@ -19,13 +20,16 @@ public class InlineScheduleRecoverEvent implements InlineHandler<Update> {
     final LessonService lessonService;
     final TranslateService translateService;
     final String LESSON = "lesson";
+    final MessageSender messageSender;
     final String BACK_TO_SCHEDULE = "back-to-schedule";
     final String RETURN_TO_SCHEDULE = "return-to-schedule";
 
     public InlineScheduleRecoverEvent(LessonService lessonService,
-                                      TranslateService translateService) {
+                                      TranslateService translateService,
+                                      MessageSender messageSender) {
         this.lessonService = lessonService;
         this.translateService = translateService;
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -39,13 +43,13 @@ public class InlineScheduleRecoverEvent implements InlineHandler<Update> {
             lessonService.create(lesson);
             content = translateService.getBySlug(LESSON) + lesson.getTitle()
                     + translateService.getBySlug(BACK_TO_SCHEDULE);
-            new MessageSenderImpl().sendMessageViaURL(childId,
+            messageSender.sendMessageViaURL(childId,
                     content);
-            new MessageSenderImpl().sendMessageViaURL(childId,
-                    lessonService.getInfoLessonByIdAndSendByUrl(lesson.getId()));
+            messageSender.sendMessageViaURL(childId,
+                    lessonService.getLessonInfoByIdForSendByUrl(lesson.getId()));
         } else {
             content = translateService.getBySlug(RETURN_TO_SCHEDULE);
-            new MessageSenderImpl().sendMessageViaURL(childId,content);
+            messageSender.sendMessageViaURL(childId,content);
         }
         return null;
     }

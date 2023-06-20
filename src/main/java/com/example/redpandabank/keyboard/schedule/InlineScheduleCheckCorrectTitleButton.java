@@ -1,6 +1,7 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.keyboard.PressableWithArgument;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
@@ -28,11 +29,11 @@ public class InlineScheduleCheckCorrectTitleButton implements
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(translateService.getBySlug(MADE_MISTAKE),
-                        Command.EDIT_SCHEDULE_EVENT_TITLE.getName())
+                        Commands.EDIT_SCHEDULE_EVENT_TITLE.getName())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(NEXT),
-                        Command.SAVE_EVENT_TEACHER_NAME.getName()
+                        Commands.SET_SAVE_EVENT_TEACHER_NAME_STATE.getName()
                         + Separator.COLON_SEPARATOR + lesson.getId())
                 .endRow()
                 .build();

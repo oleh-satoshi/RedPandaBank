@@ -1,6 +1,6 @@
 package com.example.redpandabank.keyboard;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.service.TranslateService;
 import lombok.AccessLevel;
@@ -23,7 +23,7 @@ public class InlineStartInitButton implements Pressable<InlineKeyboardMarkup> {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(translateService.getBySlug(START_INIT),
-                        Command.START_INIT.getName())
+                        Commands.START_INIT.getName())
                 .endRow()
                 .build();
     }

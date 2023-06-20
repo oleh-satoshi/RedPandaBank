@@ -1,6 +1,7 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.builder.ReplyKeyboardMarkupBuilderImpl;
 import org.springframework.stereotype.Component;
@@ -12,8 +13,8 @@ public class ReplyScheduleAddLessonNameButton implements Pressable {
     public ReplyKeyboard getKeyboard() {
         return ReplyKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button(Command.SAVE_EVENT_NAME.getName())
-                .button(Command.TO_MAIN_MENU.getName())
+                .button(StateCommands.SAVE_TITLE_EVENT.getState())
+                .button(Commands.TO_MAIN_MENU.getName())
                 .endRow()
                 .build();
     }

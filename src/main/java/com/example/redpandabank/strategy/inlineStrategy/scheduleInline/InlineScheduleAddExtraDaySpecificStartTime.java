@@ -42,15 +42,16 @@ public class InlineScheduleAddExtraDaySpecificStartTime implements InlineHandler
 
     @Override
     public BotApiMethod<?> handle(Update update) {
-        Long childId = update.getCallbackQuery().getFrom().getId();
-        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
-        String title = parseTitle(update.getCallbackQuery().getMessage().getText());
-        Lesson lesson = lessonService.findLessonByTitle(childId, title);
-        InlineKeyboardMarkup keyboard = inlineScheduleAddExtraDaySpecificStartTimeButton.getKeyboard();
-        String response = translateService.getBySlug(CHOOSE_DAY_FOR_LESSON)
-                + " <i>\"" + lesson.getTitle() + "\"</i> "
-                + translateService.getBySlug(START_THE_SAME_TIME);
-        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
+//        Long childId = update.getCallbackQuery().getFrom().getId();
+//        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+//        String title = parseTitle(update.getCallbackQuery().getMessage().getText());
+//        Lesson lesson = lessonService.findLessonByTitle(childId, title);
+//        //InlineKeyboardMarkup keyboard = inlineScheduleAddExtraDaySpecificStartTimeButton.getKeyboard(lesson);
+//        String response = translateService.getBySlug(CHOOSE_DAY_FOR_LESSON)
+//                + " <i>\"" + lesson.getTitle() + "\"</i> "
+//                + translateService.getBySlug(START_THE_SAME_TIME);
+//        return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, response);
+        return null;
     }
 
     private String parseTitle(String text) {

@@ -19,7 +19,9 @@ public class UpdateInfo {
     }
 
     public static String getData(Update update) {
-        return update.getCallbackQuery().getData();
+        return update.hasCallbackQuery()
+                ? update.getCallbackQuery().getData()
+                : update.getMessage().getText();
     }
 
     public static Integer getMessageId(Update update) {

@@ -1,12 +1,12 @@
 package com.example.redpandabank.strategy.inlineStrategy.scheduleInline;
 
-import com.example.redpandabank.enums.State;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -22,14 +22,17 @@ public class InlineScheduleAddTeacherName implements InlineHandler<Update> {
     final ChildService childService;
     final LessonService lessonService;
     final TranslateService translateService;
+    final MessageSender messageSender;
     final String WHO_TEACHES = "who-teaches";
 
     public InlineScheduleAddTeacherName(ChildService childService,
                                         LessonService lessonService,
-                                        TranslateService translateService) {
+                                        TranslateService translateService,
+                                        MessageSender messageSender) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.translateService = translateService;
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -38,16 +41,20 @@ public class InlineScheduleAddTeacherName implements InlineHandler<Update> {
         String text = UpdateInfo.getData(update);
         Long userId = UpdateInfo.getUserId(update);
         Integer messageId = UpdateInfo.getMessageId(update);
-        Child child = childService.getById(userId).get();
+        Child child = childService.findByUserId(userId);
         if (child.getIsSkip()) {
             child.setIsSkip(false);
         }
         Lesson lesson = lessonService.getById(parseId(text));
-        response = translateService.getBySlug(WHO_TEACHES)
-                + " <i>\"" + lesson.getTitle() + " \"</i>?";
-        child.setState(State.SAVE_TEACHER_NAME.getState());
+        response = getResponseBySlug(child, lesson);
+        child.setState(StateCommands.SAVE_EVENT_TEACHER_NAME.getState());
         childService.create(child);
-        return new MessageSenderImpl().sendEditMessage(userId, messageId, response);
+        return messageSender.sendEditMessage(userId, messageId, response);
+    }
+
+    private String getResponseBySlug(Child child, Lesson lesson) {
+        return translateService.getBySlug(WHO_TEACHES)
+                + " <i>\"" + lesson.getTitle() + " \"</i>?";
     }
 
     private Long parseId(String text) {

@@ -1,13 +1,13 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
-import com.example.redpandabank.enums.State;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleAddTeacherNameButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import java.util.List;
@@ -27,6 +27,7 @@ public class SaveTeacherNameState implements StateHandler<Update> {
     final LessonService lessonService;
     final InlineScheduleAddTeacherNameButton inlineScheduleAddTeacherNameButton;
     final TranslateService translateService;
+    final MessageSender messageSender;
     final String TEACHER = "teacher";
     final String SMTH_SAVED_CHECK = "smth-saved-check";
     final String NEXT_BUTTON = "next";
@@ -34,11 +35,13 @@ public class SaveTeacherNameState implements StateHandler<Update> {
     public SaveTeacherNameState(ChildService childService,
                                 LessonService lessonService,
                                 InlineScheduleAddTeacherNameButton inlineScheduleAddTeacherNameButton,
-                                TranslateService translateService) {
+                                TranslateService translateService,
+                                MessageSender messageSender) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.inlineScheduleAddTeacherNameButton = inlineScheduleAddTeacherNameButton;
         this.translateService = translateService;
+        this.messageSender = messageSender;
     }
 
     @Override
@@ -46,17 +49,29 @@ public class SaveTeacherNameState implements StateHandler<Update> {
         userId = UpdateInfo.getUserId(update);
         teacherName = UpdateInfo.getText(update);
         Child child = childService.findByUserId(userId);
-        List<Lesson> lessons = lessonService.findAllByChildIdWithoutLessonSchedule(userId);
+        List<Lesson> lessons = lessonService.findAllByUserId(userId);
         Lesson lesson = lessons.get(lessons.size() - 1);
+        setTeacherNameForSpecificLesson(lesson);
+        setStateFofChild(child);
+        InlineKeyboardMarkup keyboard = inlineScheduleAddTeacherNameButton.getKeyboard(lesson);
+        String response = getStringBySlug(lesson);
+        return messageSender.sendMessageWithInline(userId, response, keyboard);
+    }
+
+    private void setTeacherNameForSpecificLesson(Lesson lesson) {
         lesson.setTeacher(teacherName);
         lessonService.create(lesson);
-        child.setState(State.NO_STATE.getState());
+    }
+
+    private void setStateFofChild(Child child) {
+        child.setState(StateCommands.NO_STATE.getState());
         childService.create(child);
-        InlineKeyboardMarkup keyboard = inlineScheduleAddTeacherNameButton.getKeyboard(lesson);
-        String response = translateService.getBySlug(TEACHER)
+    }
+
+    private String getStringBySlug(Lesson lesson) {
+        return translateService.getBySlug(TEACHER)
                 + " \"<i>" + lesson.getTeacher() + "\"</i> "
                 + translateService.getBySlug(SMTH_SAVED_CHECK)
                 + "<b>" + translateService.getBySlug(NEXT_BUTTON) + "</b>";
-        return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
     }
 }

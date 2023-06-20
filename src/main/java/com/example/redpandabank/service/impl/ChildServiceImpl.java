@@ -1,6 +1,6 @@
 package com.example.redpandabank.service.impl;
 
-import com.example.redpandabank.enums.State;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.repository.ChildRepository;
 import com.example.redpandabank.service.ChildService;
@@ -49,7 +49,7 @@ public class ChildServiceImpl implements ChildService {
         child.setRating(ZERO);
         child.setCompleteTask(ZERO);
         child.setIncompleteTask(ZERO);
-        child.setState(State.NO_STATE.getState());
+        child.setState(StateCommands.NO_STATE.getState());
         child.setIsSkip(false);
         return create(child);
     }

@@ -28,7 +28,7 @@ public class InlineScheduleChooseEventByDay implements InlineHandler<Update> {
     @Override
     public BotApiMethod<?> handle(Update update) {
         Long childId = UpdateInfo.getUserId(update);
-        Integer messageId = update.getCallbackQuery().getMessage().getMessageId();
+        Integer messageId = UpdateInfo.getMessageId(update);
         String content = translateService.getBySlug(SHOW_LESSON_ON_SPECIFIC_DAY);
         InlineKeyboardMarkup keyboard = inlineScheduleShowAllDaysButton.getKeyboard();
         return new MessageSenderImpl().sendEditMessageWithInline(childId, messageId, keyboard, content);

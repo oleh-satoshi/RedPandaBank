@@ -1,5 +1,9 @@
 package com.example.redpandabank.strategy.mainCommandHandler.impl;
 
+import com.example.redpandabank.enums.Commands;
+import com.example.redpandabank.enums.StateCommands;
+import com.example.redpandabank.model.Child;
+import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.strategy.commandStrategy.CommandStrategy;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import com.example.redpandabank.strategy.mainCommandHandler.MainCommandHandler;
@@ -10,13 +14,18 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.Optional;
+
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class ReplyCommandHandler implements MainCommandHandler {
     final CommandStrategy commandStrategy;
+    final ChildService childService;
 
-    public ReplyCommandHandler(CommandStrategy commandStrategy) {
+    public ReplyCommandHandler(CommandStrategy commandStrategy,
+                               ChildService childService) {
         this.commandStrategy = commandStrategy;
+        this.childService = childService;
     }
 
     @Override
@@ -28,6 +37,16 @@ public class ReplyCommandHandler implements MainCommandHandler {
 
     @Override
     public boolean isApplicable(Update update) {
-        return UpdateInfo.hasReply(update);
+        Long userId = UpdateInfo.getUserId(update);
+        String incomingCommand = UpdateInfo.getText(update);
+        Optional<Child> user = Optional.ofNullable(childService.findByUserId(userId));
+        if (incomingCommand.equals(Commands.START.getName())) {
+            return true;
+        }
+        if (user.isPresent()) {
+            return UpdateInfo.hasReply(update)
+                    && user.get().getState().equals(StateCommands.NO_STATE.getState());
+        }
+        return false;
     }
 }

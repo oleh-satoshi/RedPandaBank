@@ -23,7 +23,7 @@ public class InlineScheduleAddEventByWeekday implements Pressable {
                 .extraButton(WeekDay.THURSDAY.getDay(), "/scheduleThursday")
                 .endRow()
                 .row()
-                .button(WeekDay.FRIDAY.getDay(), "/scheduleThursday")
+                .button(WeekDay.FRIDAY.getDay(), "/scheduleFriday")
                 .extraButton(WeekDay.SATURDAY.getDay(), "/scheduleSaturday")
                 .endRow()
                 .build();

@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.mainCommandHandler.impl;
 
-import com.example.redpandabank.enums.Command;
-import com.example.redpandabank.enums.State;
+import com.example.redpandabank.enums.Commands;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.strategy.mainCommandHandler.MainCommandHandler;
@@ -22,7 +22,8 @@ public class StateMainCommandHandler implements MainCommandHandler {
     final ChildService childService;
     Optional<Child> childOptional;
 
-    public StateMainCommandHandler(StateStrategy stateStrategy, ChildService childService) {
+    public StateMainCommandHandler(StateStrategy stateStrategy,
+                                   ChildService childService) {
         this.stateStrategy = stateStrategy;
         this.childService = childService;
     }
@@ -30,16 +31,18 @@ public class StateMainCommandHandler implements MainCommandHandler {
     @Override
     public BotApiMethod<?> handle(Update update) {
         Long userId = UpdateInfo.getUserId(update);
-        childOptional = childService.getById(userId);
+        childOptional = Optional.ofNullable(childService.findByUserId(userId));
         StateHandler stateHandler = stateStrategy.get(childOptional.get());
         return stateHandler.handle(update);
     }
 
     @Override
     public boolean isApplicable(Update update) {
+        Long userId = UpdateInfo.getUserId(update);
+        childOptional = Optional.ofNullable(childService.findByUserId(userId));
         return childOptional.isPresent()
-                && !childOptional.get().getState().equals(State.NO_STATE.getState())
                 && !childOptional.get().getIsSkip()
-                && !Command.getGeneralCommands().contains(UpdateInfo.getText(update));
+                && !childOptional.get().getState().equals(StateCommands.NO_STATE.getState())
+                && !Commands.getGeneralCommands().contains(UpdateInfo.getText(update));
     }
 }

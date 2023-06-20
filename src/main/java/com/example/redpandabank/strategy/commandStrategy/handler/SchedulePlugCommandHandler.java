@@ -1,7 +1,7 @@
 package com.example.redpandabank.strategy.commandStrategy.handler;
 
+import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.util.UpdateInfo;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -10,10 +10,13 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SchedulePlugCommandHandler implements CommandHandler<Update> {
+    final MessageSender messageSender;
     final TranslateService translateService;
     final String NO_COMMAND = "no-command";
 
-    public SchedulePlugCommandHandler(TranslateService translateService) {
+    public SchedulePlugCommandHandler(MessageSender messageSender,
+                                      TranslateService translateService) {
+        this.messageSender = messageSender;
         this.translateService = translateService;
     }
 
@@ -22,6 +25,6 @@ public class SchedulePlugCommandHandler implements CommandHandler<Update> {
         String firstName = UpdateInfo.getFirstName(update);
         Long chatId = UpdateInfo.getUserId(update);
         String response = firstName + translateService.getBySlug(NO_COMMAND);
-        return new MessageSenderImpl().sendMessage(chatId, response);
+        return messageSender.sendMessage(chatId, response);
     }
 }

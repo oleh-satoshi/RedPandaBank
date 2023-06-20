@@ -2,7 +2,8 @@ package com.example.redpandabank.strategy.commandStrategy.handler.scheduleComman
 
 import static com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.ScheduleDeleteEventCommandHandler.SEPARATOR;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
+import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
@@ -40,7 +41,7 @@ public class EditScheduleEventCommandHandler implements CommandHandler<Update> {
                         .row();
         for (Lesson lesson : lessons) {
             inlineKeyboardMarkupBuilderImpl.button(lesson.getTitle(),
-                    Command.EDIT_SPECIFIC_EVENT_FIELD.getName()
+                    StateCommands.EDIT_SPECIFIC_EVENT_FIELD.getState()
                             + SEPARATOR + lesson.getTitle()).endRow();
         }
         SendMessage sendMessage = new MessageSenderImpl().sendMessageWithInline(childId,

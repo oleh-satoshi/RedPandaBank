@@ -1,6 +1,6 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.service.TranslateService;
@@ -11,12 +11,11 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
-public class InlineScheduleAddEventTimeButton implements Pressable {
+public class InlineScheduleAddLessonStartTimeButton implements Pressable {
     final TranslateService translateService;
-    static final String ADD_ANOTHER_DAY_AND_TIME = "add-another-day-and-time";
-    static final String DONE = "done";
+    static final String ADD_TIME = "add-time-lesson";
 
-    public InlineScheduleAddEventTimeButton(TranslateService translateService) {
+    public InlineScheduleAddLessonStartTimeButton(TranslateService translateService) {
         this.translateService = translateService;
     }
 
@@ -24,12 +23,8 @@ public class InlineScheduleAddEventTimeButton implements Pressable {
     public InlineKeyboardMarkup getKeyboard() {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
-                .button(translateService.getBySlug(ADD_ANOTHER_DAY_AND_TIME),
-                        Command.SAVE_EVENT_DAY.getName())
-                .endRow()
-                .row()
-                .button(translateService.getBySlug(DONE),
-                        Command.SCHEDULE.getName())
+                .button(translateService.getBySlug(ADD_TIME),
+                        Commands.SET_SAVE_EVENT_TIME_STATE.getName())
                 .endRow()
                 .build();
     }

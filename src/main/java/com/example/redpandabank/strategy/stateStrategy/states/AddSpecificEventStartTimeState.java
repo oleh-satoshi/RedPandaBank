@@ -1,15 +1,13 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
-import com.example.redpandabank.enums.State;
-import com.example.redpandabank.keyboard.schedule.InlineScheduleAddSpecificEventStartTimeButton;
+import com.example.redpandabank.enums.StateCommands;
+import com.example.redpandabank.enums.WeekDay;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddAgainEventTimeAndDayButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventTimeAndDayButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
-import com.example.redpandabank.service.ChildService;
-import com.example.redpandabank.service.LessonScheduleService;
-import com.example.redpandabank.service.LessonService;
-import com.example.redpandabank.service.TranslateService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
+import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -26,57 +24,82 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 @Component
 public class AddSpecificEventStartTimeState implements StateHandler<Update> {
     Long userId;
-    LocalTime localTime;
     final ChildService childService;
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
-    final InlineScheduleAddSpecificEventStartTimeButton startTimeButton;
     final TranslateService translateService;
-    final String TIME_ALREADY_ADD_FOR_LESSON = "time-already-add-for-lesson";
-    final String WHAT_DAY_OF_WEEK = "what-day-of-week";
+    final MessageSender messageSender;
+    static final String timePattern = "^\\d{1,2}:\\d{2}$";
+    final InlineScheduleAddAgainEventTimeAndDayButton
+            inlineScheduleAddAgainEventTimeAndDayButton;
+    final String RESCHEDULED_START_TIME_AND_DAY = "rescheduled-start-time-and-day";
+
 
     public AddSpecificEventStartTimeState(ChildService childService, LessonService lessonService,
                                           LessonScheduleService lessonScheduleService,
-                                          InlineScheduleAddSpecificEventStartTimeButton startTimeButton,
-                                          TranslateService translateService) {
+                                          TranslateService translateService,
+                                          MessageSender messageSender,
+                                          InlineScheduleAddAgainEventTimeAndDayButton
+                                                  inlineScheduleAddAgainEventTimeAndDayButton) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;
-        this.startTimeButton = startTimeButton;
         this.translateService = translateService;
+        this.messageSender = messageSender;
+        this.inlineScheduleAddAgainEventTimeAndDayButton = inlineScheduleAddAgainEventTimeAndDayButton;
     }
 
     @Override
     public BotApiMethod<?> handle(Update update) {
         userId = UpdateInfo.getUserId(update);
-        localTime = parseTime(UpdateInfo.getText(update));
         Child child = childService.findByUserId(userId);
-        String title = parseTitleFromState(child.getState());
-        LocalTime localTime = parseTime(update.getMessage().getText());
-        Lesson lesson = lessonService.findLessonByTitle(userId, title);
+        LocalTime localTime = parseTime(UpdateInfo.getText(update), userId);
+        if (localTime != null) {
+            String title = parseTitleFromState(child.getState());
+            Lesson lesson = lessonService.findLessonByTitle(userId, title);
+            setStartTimeForLessonSchedule(lesson, localTime);
+            setNoStateAndIsSkipForUser(child);
+            String response = getResponse();
+            InlineKeyboardMarkup keyboard =
+                    inlineScheduleAddAgainEventTimeAndDayButton.getKeyboard();
+            return messageSender.sendMessageWithInline(userId, response, keyboard);
+        }
+        return null;
+    }
+
+    private LessonSchedule setStartTimeForLessonSchedule(Lesson lesson, LocalTime localTime) {
         List<LessonSchedule> lessonSchedules = lesson.getLessonSchedules();
-        LessonSchedule lessonSchedule = new LessonSchedule();
+        LessonSchedule lessonSchedule = lessonSchedules.get(lessonSchedules.size() - 1);
         lessonSchedule.setLessonStartTime(localTime);
         lessonSchedules.add(lessonSchedule);
         lessonScheduleService.create(lessonSchedule);
         lessonService.create(lesson);
-        child.setState(State.NO_STATE.getState());
+        return lessonSchedule;
+    }
+
+    private void setNoStateAndIsSkipForUser(Child child) {
+        child.setState(StateCommands.NO_STATE.getState());
         child.setIsSkip(false);
         childService.create(child);
-        String response = translateService.getBySlug(TIME_ALREADY_ADD_FOR_LESSON)
-                + " <i>\"" + lesson.getTitle() + "\"</i>,"
-                + translateService.getBySlug(WHAT_DAY_OF_WEEK);
-        InlineKeyboardMarkup keyboard = startTimeButton.getKeyboard();
-        return new MessageSenderImpl().sendMessageWithInline(userId, response, keyboard);
     }
 
-    private LocalTime parseTime(String text) {
-        String[] response = text.split(":");
-        return LocalTime.of(Integer.parseInt(response[0]), Integer.parseInt(response[1]));
+    private String getResponse() {
+        return translateService.getBySlug(RESCHEDULED_START_TIME_AND_DAY);
     }
 
-    private String parseTitleFromState(String name) {
-        return name.split(Separator.COLON_SEPARATOR)[1];
+    private LocalTime parseTime(String text, Long userId) {
+        try {
+            String[] response = text.replaceAll(".*?(\\d{1,2}:\\d{2}).*", "$1")
+                    .split(":");
+            return LocalTime.of(Integer.parseInt(response[0]), Integer.parseInt(response[1]));
+        } catch (Exception e) {
+            messageSender.sendMessageViaURL(userId, "Я думаю ты не правильно написал формат времени! Попробуй написать еще раз");
+            return null;
+        }
+    }
+
+    private String parseTitleFromState(String title) {
+        return title.split(Separator.COLON_SEPARATOR)[1];
     }
 
 }

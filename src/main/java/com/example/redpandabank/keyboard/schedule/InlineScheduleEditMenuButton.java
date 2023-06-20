@@ -1,6 +1,6 @@
 package com.example.redpandabank.keyboard.schedule;
 
-import com.example.redpandabank.enums.Command;
+import com.example.redpandabank.enums.Commands;
 import com.example.redpandabank.keyboard.Pressable;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.service.TranslateService;
@@ -26,20 +26,20 @@ public class InlineScheduleEditMenuButton implements Pressable {
         return InlineKeyboardMarkupBuilderImpl.create()
                 .row()
                 .button(translateService.getBySlug(ADD_NEW_LESSON),
-                        Command.ADD_SCHEDULE_EVENT.getName())
+                        Commands.ADD_SCHEDULE_EVENT.getName())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(EDIT_SAVED_LESSON),
 
-                        Command.EDIT_SCHEDULE_EXISTING_EVENT.getName())
+                        Commands.EDIT_SCHEDULE_EXISTING_EVENT.getName())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(DELETE_LESSON),
-                        Command.DELETE_EVENT.getName())
+                        Commands.DELETE_EVENT.getName())
                 .endRow()
                 .row()
                 .button(translateService.getBySlug(BACK),
-                        Command.SCHEDULE.getName())
+                        Commands.SCHEDULE.getName())
                 .endRow()
                 .build();
     }

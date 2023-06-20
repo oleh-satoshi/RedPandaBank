@@ -1,4 +1,4 @@
-package com.example.redpandabank.strategy.inlineStrategy.mainMenu;
+package com.example.redpandabank.strategy.inlineStrategy;
 
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
 import com.example.redpandabank.service.TranslateService;
