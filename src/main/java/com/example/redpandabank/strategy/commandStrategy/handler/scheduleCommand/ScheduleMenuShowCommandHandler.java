@@ -3,7 +3,6 @@ package com.example.redpandabank.strategy.commandStrategy.handler.scheduleComman
 import com.example.redpandabank.keyboard.schedule.InlineScheduleMenuButton;
 import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;

@@ -4,7 +4,6 @@ import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
