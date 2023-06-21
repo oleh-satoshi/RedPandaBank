@@ -19,7 +19,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
-public class InlineEditSpecificEventDay implements InlineHandler<Update> {
+public class InlineEditSpecificEventDay implements InlineHandler<Update>  {
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
     final MessageSender messageSender;
@@ -61,7 +61,9 @@ public class InlineEditSpecificEventDay implements InlineHandler<Update> {
                 .orElseThrow(() ->
                         new RuntimeException("Can't find any lessonSchedules by day "
                                 + "and specific start time"));
-        lessonSchedule.setDay(newDay);
+                        new RuntimeException("Can't find any lessonSchedules by day " +
+                                "and specific start time"));
+      lessonSchedule.setDay(newDay);
         return lessonScheduleService.create(lessonSchedule);
     }
 
