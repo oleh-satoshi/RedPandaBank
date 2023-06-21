@@ -29,10 +29,11 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update> {
     final LessonScheduleService lessonScheduleService;
     final TranslateService translateService;
     final MessageSender messageSender;
-    static final String timePattern = "^\\d{1,2}:\\d{2}$";
+    static final String TIME_PATTERN = ".*?(\\d{1,2}:\\d{2}).*";
     final InlineScheduleAddAgainEventTimeAndDayButton
             inlineScheduleAddAgainEventTimeAndDayButton;
     final String RESCHEDULED_START_TIME_AND_DAY = "rescheduled-start-time-and-day";
+    final String WRONG_TIME_FORMAT = "wrong-time-format";
 
 
     public AddSpecificEventStartTimeState(ChildService childService, LessonService lessonService,
@@ -89,11 +90,12 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update> {
 
     private LocalTime parseTime(String text, Long userId) {
         try {
-            String[] response = text.replaceAll(".*?(\\d{1,2}:\\d{2}).*", "$1")
+            String[] response = text.replaceAll(TIME_PATTERN, "$1")
                     .split(":");
             return LocalTime.of(Integer.parseInt(response[0]), Integer.parseInt(response[1]));
         } catch (Exception e) {
-            messageSender.sendMessageViaURL(userId, "Я думаю ты не правильно написал формат времени! Попробуй написать еще раз");
+            String content = messageSender.replaceSpace(translateService.getBySlug(WRONG_TIME_FORMAT));
+            messageSender.sendMessageViaURL(userId, content);
             return null;
         }
     }

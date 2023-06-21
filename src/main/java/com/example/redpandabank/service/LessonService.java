@@ -42,4 +42,6 @@ public interface LessonService {
     List<Lesson> findAllByUserId(Long childId);
 
     String getLessonInfoByLessonAndLessonScheduleForSendByUrl(Lesson lesson, LessonSchedule lessonSchedule);
+
+    String parseLessonForUrlWithLessonSchedule(Lesson lesson, LessonSchedule lessonSchedule);
 }
