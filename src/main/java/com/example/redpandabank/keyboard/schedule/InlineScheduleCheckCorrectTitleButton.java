@@ -1,7 +1,6 @@
 package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.enums.Commands;
-import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.keyboard.PressableWithArgument;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;

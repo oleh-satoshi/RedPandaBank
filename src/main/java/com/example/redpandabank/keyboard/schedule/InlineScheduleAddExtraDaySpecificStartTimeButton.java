@@ -2,8 +2,6 @@ package com.example.redpandabank.keyboard.schedule;
 
 import com.example.redpandabank.enums.Commands;
 import com.example.redpandabank.enums.WeekDay;
-import com.example.redpandabank.keyboard.Pressable;
-import com.example.redpandabank.keyboard.PressableWithArgument;
 import com.example.redpandabank.keyboard.PressableWithArguments;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;
@@ -13,7 +11,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @Component
-public class InlineScheduleAddExtraDaySpecificStartTimeButton implements PressableWithArguments<InlineKeyboardMarkup, Lesson, LessonSchedule> {
+public class InlineScheduleAddExtraDaySpecificStartTimeButton
+        implements PressableWithArguments<InlineKeyboardMarkup, Lesson, LessonSchedule> {
     @Override
     public InlineKeyboardMarkup getKeyboard(Lesson lesson, LessonSchedule lessonSchedule) {
         return InlineKeyboardMarkupBuilderImpl.create()

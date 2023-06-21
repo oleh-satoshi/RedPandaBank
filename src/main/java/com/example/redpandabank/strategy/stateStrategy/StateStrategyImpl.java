@@ -2,14 +2,32 @@ package com.example.redpandabank.strategy.stateStrategy;
 
 import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.keyboard.main.ReplyMainMenuButton;
-import com.example.redpandabank.keyboard.schedule.*;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddAgainEventTimeAndDayButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventDurationButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventTimeAndDayButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddExtraDaySpecificStartTimeButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddSpecificEventStartTimeButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleAddTeacherNameButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleCheckCorrectTitleButton;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleEditEventDayStep2;
+import com.example.redpandabank.keyboard.schedule.InlineScheduleRepeatAddLessonButton;
+import com.example.redpandabank.keyboard.schedule.ReplyScheduleEditSpecificEventDurationStateButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.service.ChildService;
 import com.example.redpandabank.service.LessonScheduleService;
 import com.example.redpandabank.service.LessonService;
 import com.example.redpandabank.service.MessageSender;
 import com.example.redpandabank.service.TranslateService;
-import com.example.redpandabank.strategy.stateStrategy.states.*;
+import com.example.redpandabank.strategy.stateStrategy.states.AddSpecificEventStartTimeState;
+import com.example.redpandabank.strategy.stateStrategy.states.EditSpecificEventFieldState;
+import com.example.redpandabank.strategy.stateStrategy.states.EditSpecificEventStartTimeState;
+import com.example.redpandabank.strategy.stateStrategy.states.EditSpecificEventStartTimeStep2State;
+import com.example.redpandabank.strategy.stateStrategy.states.EditSpecificEventTeacherNameState;
+import com.example.redpandabank.strategy.stateStrategy.states.EditSpecificScheduleEventDurationState;
+import com.example.redpandabank.strategy.stateStrategy.states.SaveDurationEventState;
+import com.example.redpandabank.strategy.stateStrategy.states.SaveEventTimeState;
+import com.example.redpandabank.strategy.stateStrategy.states.SaveTeacherNameState;
+import com.example.redpandabank.strategy.stateStrategy.states.SaveTitleEventState;
 import com.example.redpandabank.util.Separator;
 import java.util.HashMap;
 import java.util.Map;
@@ -83,7 +101,7 @@ public class StateStrategyImpl implements StateStrategy {
         stateStrategyMap.put(StateCommands.SAVE_EVENT_DURATION.getState(),
                 new SaveDurationEventState(childService, lessonService,
                         inlineScheduleAddEventDurationButton, translateService, messageSender));
-               stateStrategyMap.put(StateCommands.ADD_SPECIFIC_EVENT_START_TIME.getState(),
+        stateStrategyMap.put(StateCommands.ADD_SPECIFIC_EVENT_START_TIME.getState(),
                 new SaveEventTimeState(childService, lessonService,
                         lessonScheduleService, inlineScheduleAddEventTimeAndDayButton, translateService, messageSender));
         stateStrategyMap.put(StateCommands.EDIT_SPECIFIC_EVENT_FIELD.getState(),

@@ -136,10 +136,10 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public String getLessonInfoByLessonAndLessonScheduleForSendByUrl(Lesson lesson, LessonSchedule lessonSchedule) {
+    public String getLessonInfoByLessonAndLessonScheduleForSendByUrl(
+            Lesson lesson, LessonSchedule lessonSchedule) {
         return parseLessonForUrlWithLessonSchedule(lesson, lessonSchedule);
     }
-
 
     @Transactional
     @Override

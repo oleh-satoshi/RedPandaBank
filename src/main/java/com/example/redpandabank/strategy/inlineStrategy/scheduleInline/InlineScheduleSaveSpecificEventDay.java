@@ -6,15 +6,21 @@ import com.example.redpandabank.keyboard.schedule.InlineScheduleAddLessonStartTi
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
+import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonScheduleService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
+import com.example.redpandabank.service.TranslateService;
+import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
+import com.example.redpandabank.util.UpdateInfo;
+import java.util.ArrayList;
+import java.util.List;
 import com.example.redpandabank.service.*;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.UpdateInfo;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class InlineScheduleSaveSpecificEventDay implements InlineHandler<Update> {
     Long userId;
@@ -27,11 +33,11 @@ public class InlineScheduleSaveSpecificEventDay implements InlineHandler<Update>
     final MessageSender messageSender;
     final String ADD_LESSON_START_TIME = "add-lesson-start-time";
 
-    public InlineScheduleSaveSpecificEventDay
-            (ChildService childService, LessonService lessonService,
-                             LessonScheduleService lessonScheduleService,
-                             InlineScheduleAddLessonStartTimeButton inlineScheduleAddLessonStartTimeButton,
-                             TranslateService translateService, MessageSender messageSender) {
+
+    public InlineScheduleSaveSpecificEventDay(ChildService childService, LessonService lessonService,
+             LessonScheduleService lessonScheduleService,
+             InlineScheduleAddLessonStartTimeButton inlineScheduleAddLessonStartTimeButton,
+             TranslateService translateService, MessageSender messageSender) {
         this.childService = childService;
         this.lessonService = lessonService;
         this.lessonScheduleService = lessonScheduleService;

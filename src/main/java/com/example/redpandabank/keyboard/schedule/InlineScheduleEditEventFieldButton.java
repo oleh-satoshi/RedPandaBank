@@ -64,7 +64,7 @@ public class InlineScheduleEditEventFieldButton
         StringBuilder stringBuilder = new StringBuilder();
         List<String> stringList = lesson.getLessonSchedules().stream()
                 .map(lessonSchedule -> lessonSchedule.getLessonStartTime()
-                        +  "(" + lessonSchedule.getDay().substring(0, 3) + ")")
+                        + "(" + lessonSchedule.getDay().substring(0, 3) + ")")
                 .collect(Collectors.toList());
         String string = stringBuilder.append(stringList).toString();
         return string.substring(1, string.length() - 1);

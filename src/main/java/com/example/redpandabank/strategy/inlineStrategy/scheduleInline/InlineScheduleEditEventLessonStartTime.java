@@ -13,10 +13,7 @@ import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
-import java.time.LocalTime;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
@@ -83,8 +80,8 @@ public class InlineScheduleEditEventLessonStartTime implements InlineHandler<Upd
                     .button(lessonSchedule.getLessonStartTime()
                                     + " " + lessonSchedule.getDay(),
                             StateCommands.EDIT_SPECIFIC_EVENT_START_TIME.getState()
-                            + Separator.QUOTE_SEPARATOR + lesson.getTitle()
-                            + Separator.QUOTE_SEPARATOR +  lessonSchedule.getLessonStartTime())
+                                    + Separator.QUOTE_SEPARATOR + lesson.getTitle()
+                                    + Separator.QUOTE_SEPARATOR + lessonSchedule.getLessonStartTime())
                     .endRow();
         }
         InlineKeyboardMarkup inline = builder.build();

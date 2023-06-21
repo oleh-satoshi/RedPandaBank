@@ -39,7 +39,7 @@ public class CallbackMainCommandHandler implements MainCommandHandler {
         Long userId = UpdateInfo.getUserId(update);
         Optional<Child> childOptional = Optional.ofNullable(childService.findByUserId(userId));
         Set<String> generalCommands = Commands.getGeneralCommands();
-        Optional<String> result =    generalCommands.stream()
+        Optional<String> result = generalCommands.stream()
                 .filter(command -> UpdateInfo.getData(update).contains(command))
                 .findFirst();
         return result.isPresent() && childOptional.isPresent();

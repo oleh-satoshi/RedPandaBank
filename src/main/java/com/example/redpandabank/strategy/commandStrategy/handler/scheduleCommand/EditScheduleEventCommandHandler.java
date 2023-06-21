@@ -2,7 +2,6 @@ package com.example.redpandabank.strategy.commandStrategy.handler.scheduleComman
 
 import static com.example.redpandabank.strategy.commandStrategy.handler.scheduleCommand.ScheduleDeleteEventCommandHandler.SEPARATOR;
 
-import com.example.redpandabank.enums.Commands;
 import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.keyboard.builder.InlineKeyboardMarkupBuilderImpl;
 import com.example.redpandabank.model.Lesson;

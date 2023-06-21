@@ -8,13 +8,12 @@ import com.example.redpandabank.strategy.commandStrategy.CommandStrategy;
 import com.example.redpandabank.strategy.commandStrategy.handler.CommandHandler;
 import com.example.redpandabank.strategy.mainCommandHandler.MainCommandHandler;
 import com.example.redpandabank.util.UpdateInfo;
+import java.util.Optional;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-
-import java.util.Optional;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
