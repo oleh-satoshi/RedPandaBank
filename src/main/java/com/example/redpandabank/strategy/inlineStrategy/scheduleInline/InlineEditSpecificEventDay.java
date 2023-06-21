@@ -10,16 +10,16 @@ import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.inlineStrategy.InlineHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
+import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import java.time.LocalTime;
 
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
-public class InlineEditSpecificEventDay implements InlineHandler<Update>  {
+public class InlineEditSpecificEventDay implements InlineHandler<Update> {
     final LessonService lessonService;
     final LessonScheduleService lessonScheduleService;
     final MessageSender messageSender;
@@ -59,8 +59,8 @@ public class InlineEditSpecificEventDay implements InlineHandler<Update>  {
                 .filter(lessonschedule -> lessonschedule.getDay().startsWith(oldDay))
                 .findFirst()
                 .orElseThrow(() ->
-                        new RuntimeException("Can't find any lessonSchedules by day " +
-                                "and specific start time"));
+                        new RuntimeException("Can't find any lessonSchedules by day "
+                                + "and specific start time"));
         lessonSchedule.setDay(newDay);
         return lessonScheduleService.create(lessonSchedule);
     }

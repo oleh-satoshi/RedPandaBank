@@ -21,8 +21,6 @@ import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
 
-import javax.swing.plaf.nimbus.State;
-
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Component
 public class CommandStrategyImpl implements CommandStrategy {

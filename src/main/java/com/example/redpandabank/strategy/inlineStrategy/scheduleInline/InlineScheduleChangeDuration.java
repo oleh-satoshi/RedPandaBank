@@ -40,7 +40,7 @@ public class InlineScheduleChangeDuration implements InlineHandler<Update> {
 
     private void updateDurationForUser(Long userId) {
         Child child = childService.findByUserId(userId);
-        child.setState(StateCommands.SAVE_EVENT_DURATION .getState());
+        child.setState(StateCommands.SAVE_EVENT_DURATION.getState());
         child.setIsSkip(false);
         childService.create(child);
     }

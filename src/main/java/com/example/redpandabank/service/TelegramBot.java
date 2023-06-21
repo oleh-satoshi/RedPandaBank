@@ -1,6 +1,5 @@
 package com.example.redpandabank.service;
 
-import com.example.redpandabank.service.impl.MessageSenderImpl;
 import com.example.redpandabank.strategy.mainCommandHandler.MainCommandHandler;
 import java.util.List;
 import lombok.AccessLevel;
@@ -19,7 +18,7 @@ public class TelegramBot {
     }
 
     public BotApiMethod<?> onWebhookUpdateReceived(Update update) {
-//        return new MessageSenderImpl().sendMessage(601575485L, "plug");
+        //return new MessageSenderImpl().sendMessage(601575485L, "plug");
         MainCommandHandler mainCommandHandler = handlers.stream()
                 .filter(handler -> handler.isApplicable(update))
                 .findFirst()

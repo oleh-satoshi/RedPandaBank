@@ -1,13 +1,15 @@
 package com.example.redpandabank.strategy.stateStrategy.states;
 
 import com.example.redpandabank.enums.StateCommands;
-import com.example.redpandabank.enums.WeekDay;
 import com.example.redpandabank.keyboard.schedule.InlineScheduleAddAgainEventTimeAndDayButton;
-import com.example.redpandabank.keyboard.schedule.InlineScheduleAddEventTimeAndDayButton;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
-import com.example.redpandabank.service.*;
+import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonScheduleService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
@@ -34,7 +36,6 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update> {
             inlineScheduleAddAgainEventTimeAndDayButton;
     final String RESCHEDULED_START_TIME_AND_DAY = "rescheduled-start-time-and-day";
     final String WRONG_TIME_FORMAT = "wrong-time-format";
-
 
     public AddSpecificEventStartTimeState(ChildService childService, LessonService lessonService,
                                           LessonScheduleService lessonScheduleService,

@@ -4,15 +4,16 @@ import com.example.redpandabank.enums.StateCommands;
 import com.example.redpandabank.model.Child;
 import com.example.redpandabank.model.Lesson;
 import com.example.redpandabank.model.LessonSchedule;
-import com.example.redpandabank.service.*;
-import com.example.redpandabank.service.impl.MessageSenderImpl;
+import com.example.redpandabank.service.ChildService;
+import com.example.redpandabank.service.LessonScheduleService;
+import com.example.redpandabank.service.LessonService;
+import com.example.redpandabank.service.MessageSender;
+import com.example.redpandabank.service.TranslateService;
 import com.example.redpandabank.strategy.stateStrategy.StateHandler;
 import com.example.redpandabank.util.Separator;
 import com.example.redpandabank.util.UpdateInfo;
-
 import java.time.LocalTime;
 import java.util.List;
-
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
