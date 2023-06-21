@@ -168,7 +168,8 @@ public class LessonServiceImpl implements LessonService {
         return EmojiParser.parseToUnicode(stringBuilder.toString().replaceAll(" ", "%20"));
     }
 
-    private String parseLessonForUrlWithLessonSchedule(Lesson lesson, LessonSchedule lessonSchedule) {
+    @Override
+    public String parseLessonForUrlWithLessonSchedule(Lesson lesson, LessonSchedule lessonSchedule) {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(":school_satchel: " + "<b>"
                         + lesson.getTitle() + "</b>" + NEXT_LINE)

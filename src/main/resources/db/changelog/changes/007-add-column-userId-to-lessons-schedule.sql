@@ -1,0 +1,1 @@
+ALTER TABLE lessons_schedule ADD user_id BIGINT NOT NULL;

@@ -1,0 +1,3 @@
+UPDATE translates
+SET value = 'I know that you measure time in seconds, minutes and so on ⌚️ But in our forest🌳 we measure time a little differently, but I have long learned to use your hours and completely understand how it works for you 😁 Therefore, lets write the duration of the lesson in minutes, for example, my favorite bamboo studio lesson lasted 45 minutes, and how many minutes does your lesson lasts?'
+WHERE slug = 'duration-of-lesson';

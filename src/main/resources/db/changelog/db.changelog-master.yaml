@@ -25,6 +25,10 @@ databaseChangeLog:
       file: /db/changelog/changes/012-add-start-time-day-updated-slug.sql
   - include:
       file: /db/changelog/changes/013-add-rescheduled-start-time-and-day-slug.sql
+  - include:
+      file: /db/changelog/changes/014-add-wrong-time-format-slug.sql
+  - include:
+      file: /db/changelog/changes/015-update-wrong-time-format-slug.sql
 
 
 
