@@ -18,6 +18,7 @@ import java.util.List;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -69,7 +70,8 @@ public class AddSpecificEventStartTimeState implements StateHandler<Update> {
         return null;
     }
 
-    private LessonSchedule setStartTimeForLessonSchedule(Lesson lesson, LocalTime localTime) {
+    @Transactional
+    public LessonSchedule setStartTimeForLessonSchedule(Lesson lesson, LocalTime localTime) {
         List<LessonSchedule> lessonSchedules = lesson.getLessonSchedules();
         LessonSchedule lessonSchedule = lessonSchedules.get(lessonSchedules.size() - 1);
         lessonSchedule.setLessonStartTime(localTime);

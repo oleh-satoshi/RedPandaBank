@@ -1,9 +1,9 @@
 package com.example.redpandabank.repository;
 
 import com.example.redpandabank.model.Lesson;
-import com.example.redpandabank.model.LessonSchedule;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -31,11 +31,15 @@ public interface LessonRepository extends JpaRepository<Lesson, Long> {
 
     HashSet<Lesson> findAllByTitleAndUserId(String title, Long childId);
 
-    Lesson findLessonByUserIdAndTitle(Long childId, String title);
+    @Query("select distinct les from Lesson les left join fetch les.lessonSchedules "
+            + "where les.userId = ?1 and les.title = ?2")
+    Lesson findLessonByUserIdAndTitle(Long userId, String title);
 
     void deleteLessonByTitleAndUserId(String title, Long id);
 
-    Lesson findLessonByLessonSchedules(LessonSchedule lessonSchedule);
-
     List<Lesson> getAllByUserId(Long childId);
+
+    @Query("select distinct les from Lesson les left join fetch les.lessonSchedules "
+            + "where les.id = ?1")
+    Optional<Lesson> findById(Long id);
 }

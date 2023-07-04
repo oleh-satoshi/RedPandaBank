@@ -16,15 +16,6 @@ public class TranslateServiceImpl implements TranslateService {
 
     @Override
     public String getBySlug(String slug) {
-        System.out.println("--------------------");
-        System.out.println("--------------------");
-        System.out.println("--------------------");
-        System.out.println("--------------------");
-        System.out.println("--------------------");
-        System.out.println("--------------------");
-        System.out.println("--------------------");
-        System.out.println("--------------------");
-        System.out.println("--------------------");
         String result = translateRepository.getBySlug(slug).getValue();
         System.out.println("Translate object: " + result);
         return result == null ? "result is null" : result;

@@ -29,6 +29,8 @@ databaseChangeLog:
       file: /db/changelog/changes/014-add-wrong-time-format-slug.sql
   - include:
       file: /db/changelog/changes/015-update-wrong-time-format-slug.sql
+  - include:
+      file: /db/changelog/changes/016-update-space-signs.sql
 
 
 
